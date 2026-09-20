@@ -1,0 +1,174 @@
+.shell {
+  display: flex;
+  height: 100%;
+}
+
+.shell__main {
+  flex: 1;
+  min-width: 0;
+  overflow-y: auto;
+  position: relative;
+}
+
+/* ── Spine — 320px ink panel on Start and Dashboard only ── */
+
+.spine {
+  width: var(--spine-w);
+  flex: none;
+  background: var(--ink);
+  color: var(--ink-text);
+  display: flex;
+  flex-direction: column;
+  padding: var(--gutter) var(--sp-8);
+  gap: var(--sp-6);
+}
+
+.spine__brand {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+}
+
+.spine__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-display);
+  font-weight: 600;
+  line-height: 1.08;
+  overflow-wrap: break-word;
+}
+
+.spine__desc {
+  font-size: var(--fs-ui);
+  line-height: 1.6;
+  color: var(--ink-text-muted);
+}
+
+.spine__meta {
+  font-size: var(--fs-meta);
+  color: var(--ink-text-muted);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+
+.spine__actions {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  align-items: stretch;
+}
+
+.spine__spacer {
+  flex: 1;
+}
+
+.spine__nav {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+}
+
+.spine__navitem {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 8px 10px;
+  margin: 0 calc(-1 * var(--sp-4));
+  border-radius: var(--r-dock-item);
+  font-size: var(--fs-ui);
+  color: var(--ink-text-muted);
+  transition:
+    background var(--t-hover) var(--ease),
+    color var(--t-hover) var(--ease);
+}
+.spine__navitem:hover {
+  background: var(--ink-hover);
+  color: var(--ink-text);
+}
+
+.spine__cover {
+  width: 100%;
+  aspect-ratio: 5 / 3;
+  border-radius: var(--r-card);
+  object-fit: cover;
+  border: 1px solid var(--ink-hairline);
+}
+
+/* ── Dock — the one persistent surface ── */
+
+.dock {
+  position: fixed;
+  bottom: var(--sp-6);
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 50;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-5);
+  background: var(--ink);
+  color: var(--ink-text);
+  border-radius: var(--r-dock);
+  box-shadow: var(--shadow-soft);
+  padding: var(--sp-3) var(--sp-5);
+  max-width: calc(100% - 2 * var(--gutter));
+  animation: sheet-rise var(--t-enter) var(--ease);
+}
+
+/* Centre over the content area when the 320px spine is visible */
+.dock--spine {
+  left: calc(50% + (var(--spine-w) / 2));
+}
+
+.dock__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-2);
+}
+
+.dock__sep {
+  width: 1px;
+  align-self: stretch;
+  margin: var(--sp-3) 0;
+  background: var(--ink-hairline);
+}
+
+/* ── Breadcrumb (lives in the dock) ── */
+
+.crumbs {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  min-width: 0;
+  overflow: hidden;
+}
+
+.crumbs__item {
+  flex: none;
+  font-size: var(--fs-ui);
+  color: var(--ink-text-muted);
+  padding: 5px 8px;
+  border-radius: var(--r-dock-item);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 200px;
+  transition:
+    background var(--t-hover) var(--ease),
+    color var(--t-hover) var(--ease);
+}
+.crumbs__item:hover {
+  background: var(--ink-hover);
+  color: var(--ink-text);
+}
+.crumbs__item--current {
+  color: var(--ink-text);
+  font-weight: 500;
+}
+
+.crumbs__sep {
+  color: var(--ink-text-muted);
+  opacity: 0.5;
+  font-size: var(--fs-ui);
+  flex: none;
+}

@@ -1,0 +1,98 @@
+/* Category colours appear only as small dots, chips and tints — never as
+   large backgrounds, so ink/paper contrast stays the hierarchy. */
+
+.catchip {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--text);
+  background: color-mix(in srgb, var(--chip-color) var(--cat-tint), transparent);
+  border-radius: var(--r-chip);
+  padding: 2px 8px 2px 6px;
+  white-space: nowrap;
+}
+
+.catchip__dot,
+.catdot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--chip-color);
+  flex: none;
+}
+
+.catpicker {
+  position: fixed;
+  z-index: 220;
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-dock-item);
+  box-shadow: var(--shadow-lift);
+  padding: var(--sp-2);
+  min-width: 200px;
+  animation: popup-enter 200ms var(--ease);
+}
+
+.catpicker__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  text-align: left;
+  padding: 6px 10px;
+  border-radius: var(--r-btn);
+  font-size: var(--fs-ui);
+  color: var(--text);
+  transition: background var(--t-hover) var(--ease);
+}
+.catpicker__row:hover {
+  background: var(--hover-wash);
+}
+.catpicker__check {
+  margin-left: auto;
+  color: var(--text-muted);
+}
+
+.swatches {
+  display: flex;
+  gap: var(--sp-3);
+  flex-wrap: wrap;
+  align-items: center;
+}
+.swatch {
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  border: 2px solid transparent;
+  transition: transform var(--t-hover) var(--ease), border-color var(--t-hover) var(--ease);
+}
+.swatch:hover {
+  transform: scale(1.12);
+}
+.swatch--active {
+  border-color: var(--text);
+}
+.swatch--custom {
+  overflow: hidden;
+  position: relative;
+  background: conic-gradient(#c8503f, #d9a441, #3f9a5a, #3b7dd8, #7c5cbf, #c8503f);
+}
+.swatch--custom input {
+  position: absolute;
+  inset: -6px;
+  opacity: 0;
+  cursor: pointer;
+}
+
+.catmanager__row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: var(--sp-3) 0;
+  border-bottom: 1px solid var(--hairline);
+}
+.catmanager__row .input {
+  flex: 1;
+}

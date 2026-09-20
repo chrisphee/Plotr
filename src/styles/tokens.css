@@ -1,0 +1,97 @@
+/* ── Quill · UI system v1 ─────────────────────────────────────────────
+   Ink & paper: one dark ink, one warm-neutral paper, four category
+   colours. Bricolage for titles, Figtree for everything the app says. */
+
+:root {
+  /* Colour — light (paper) */
+  --ink: oklch(17% 0.02 250);
+  --ink-hover: oklch(26% 0.02 250);
+  --ink-text: oklch(96% 0.005 220);        /* text on ink surfaces */
+  --ink-text-muted: oklch(75% 0.01 230);
+  --ink-hairline: oklch(32% 0.02 250);
+
+  --text: oklch(18% 0.015 240);
+  --text-muted: oklch(52% 0.015 240);
+  --paper: oklch(98% 0.004 220);
+  --surface: #ffffff;
+  --hairline: oklch(90% 0.004 220);
+  --hairline-strong: oklch(84% 0.006 220);
+  --hover-wash: oklch(94.5% 0.005 220);
+
+  --accent: var(--ink);
+  --danger: #c8503f;
+
+  /* Category presets */
+  --cat-character: #7c5cbf;
+  --cat-location: #3f9a5a;
+  --cat-conflict: #c8503f;
+  --cat-lore: #3b7dd8;
+  --cat-tint: 13%; /* tint strength for note backgrounds */
+
+  /* Type */
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
+  --font-ui: "Figtree Variable", "Figtree", sans-serif;
+  --font-mono: ui-monospace, "Cascadia Mono", Menlo, monospace;
+
+  --fs-display: 42px;   /* project title */
+  --fs-board: 36px;     /* board title */
+  --fs-shelf: 26px;     /* folder shelf */
+  --fs-note-heading: 17px;
+  --fs-section: 13px;   /* plot sections, groups — medium */
+  --fs-body: 15px;      /* line-height 1.7 */
+  --fs-label: 14px;     /* card names, list titles — medium */
+  --fs-ui: 13px;        /* dock, buttons, menus */
+  --fs-meta: 12px;      /* paths, counts, timestamps — muted */
+  --fs-eyebrow: 11px;   /* tracking .12em */
+  --fs-mono: 11px;
+
+  /* Space & shape */
+  --r-chip: 4px;
+  --r-btn: 6px;
+  --r-card: 6px;
+  --r-dock-item: 8px;
+  --r-dock: 12px;
+  --r-popup: 14px;
+
+  --sp-1: 2px; --sp-2: 4px; --sp-3: 6px; --sp-4: 8px;
+  --sp-5: 12px; --sp-6: 16px; --sp-7: 24px; --sp-8: 32px;
+  --gutter: 44px;
+
+  --spine-w: 320px;
+
+  /* Elevation — one long soft shadow, never stacked */
+  --shadow-soft: 0 12px 40px rgba(10, 12, 24, 0.14);
+  --shadow-lift: 0 6px 24px rgba(10, 12, 24, 0.1);
+
+  /* Motion — one curve everywhere */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-hover: 180ms;   /* background, border, colour; cards lift 2px */
+  --t-focus: 200ms;
+  --t-enter: 320ms;   /* popups scale from 96.5%, sheets rise 10px */
+  --t-exit: 160ms;    /* always faster than entry, fade only */
+
+  color-scheme: light;
+}
+
+[data-theme="dark"] {
+  --ink: oklch(23% 0.02 250);
+  --ink-hover: oklch(30% 0.02 250);
+  --ink-text: oklch(95% 0.005 220);
+  --ink-text-muted: oklch(72% 0.01 230);
+  --ink-hairline: oklch(34% 0.02 250);
+
+  --text: oklch(92% 0.008 230);
+  --text-muted: oklch(64% 0.012 235);
+  --paper: oklch(17% 0.012 250);
+  --surface: oklch(21.5% 0.014 250);
+  --hairline: oklch(29% 0.014 250);
+  --hairline-strong: oklch(35% 0.015 250);
+  --hover-wash: oklch(25% 0.014 250);
+
+  --cat-tint: 20%;
+
+  --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --shadow-lift: 0 6px 24px rgba(0, 0, 0, 0.4);
+
+  color-scheme: dark;
+}

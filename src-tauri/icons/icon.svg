@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1024 1024" width="1024" height="1024">
+  <!-- Plotr - low-poly quill: five triangles, centred on the ink tile.
+       The feather is sliced into four triangular sections by zigzag cuts;
+       the fifth triangle is the ink-purple nib. -->
+  <rect x="0" y="0" width="1024" height="1024" rx="184" fill="#131722"/>
+
+  <g stroke="none">
+    <!-- Feather sections -->
+    <polygon points="304,777 377,578 533,458" fill="#f5f3ec"/>
+    <polygon points="385,557 552,429 456,364" fill="#f5f3ec"/>
+    <polygon points="463,355 561,421 764,138" fill="#f5f3ec"/>
+    <polygon points="465,339 500,244 742,140" fill="#f5f3ec"/>
+
+    <!-- Nib -->
+    <polygon points="283,824 301,841 243,906" fill="#8b6cc9"/>
+  </g>
+</svg>

@@ -1,0 +1,291 @@
+.im {
+  position: absolute;
+  inset: 0;
+}
+
+.im .react-flow {
+  background: var(--paper);
+}
+
+.im .react-flow__attribution {
+  display: none;
+}
+
+/* Board title floats over the canvas like the plot line */
+.im__title {
+  position: absolute;
+  top: var(--sp-7);
+  left: var(--gutter);
+  font-family: var(--font-display);
+  font-size: var(--fs-board);
+  font-weight: 600;
+  pointer-events: none;
+  z-index: 10;
+  opacity: 0.9;
+}
+
+/* ── Add / tool panel ── */
+
+.im__panel {
+  position: absolute;
+  left: var(--sp-6);
+  top: 50%;
+  transform: translateY(-50%);
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-1);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-dock);
+  box-shadow: var(--shadow-lift);
+  padding: var(--sp-3);
+  animation: sheet-rise 240ms var(--ease);
+}
+
+.im__panelbtn {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  padding: 7px 10px;
+  border-radius: var(--r-dock-item);
+  font-size: var(--fs-ui);
+  color: var(--text-muted);
+  transition:
+    background var(--t-hover) var(--ease),
+    color var(--t-hover) var(--ease);
+  white-space: nowrap;
+}
+.im__panelbtn:hover {
+  background: var(--hover-wash);
+  color: var(--text);
+}
+.im__panelbtn--active {
+  background: var(--ink);
+  color: var(--ink-text);
+}
+.im__panelbtn--active:hover {
+  background: var(--ink-hover);
+  color: var(--ink-text);
+}
+
+.im__panelsep {
+  height: 1px;
+  background: var(--hairline);
+  margin: var(--sp-2) var(--sp-3);
+}
+
+/* ── Nodes ── */
+
+.imnode {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-card);
+  transition: box-shadow var(--t-hover) var(--ease);
+}
+
+.imnode--note {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  padding: var(--sp-5) var(--sp-6);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-2);
+}
+.imnode--note.imnode--tinted {
+  background: color-mix(in srgb, var(--node-tint) var(--cat-tint), var(--surface));
+}
+.imnode--selected {
+  box-shadow: 0 0 0 2px color-mix(in oklch, var(--text) 60%, transparent);
+}
+.imnode--note:hover {
+  box-shadow: var(--shadow-lift);
+}
+.imnode--note.imnode--selected:hover {
+  box-shadow:
+    0 0 0 2px color-mix(in oklch, var(--text) 60%, transparent),
+    var(--shadow-lift);
+}
+
+.imnode__title {
+  font-family: var(--font-display);
+  font-size: var(--fs-note-heading);
+  font-weight: 600;
+  line-height: 1.25;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-3);
+}
+
+.imnode__preview {
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+  line-height: 1.55;
+  overflow: hidden;
+  flex: 1;
+}
+
+.imnode__cats {
+  display: flex;
+  gap: var(--sp-2);
+}
+
+.imnode--image {
+  overflow: hidden;
+  border: 1px solid var(--hairline);
+  background: var(--surface);
+}
+.imnode--image img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  pointer-events: none;
+}
+
+.imnode--text {
+  display: flex;
+  align-items: center;
+  background: transparent;
+  font-family: var(--font-display);
+  font-weight: 500;
+  color: var(--text);
+  padding: var(--sp-2) var(--sp-3);
+}
+.imnode--text textarea {
+  width: 100%;
+  height: 100%;
+  border: none;
+  background: transparent;
+  resize: none;
+  font: inherit;
+  color: inherit;
+  outline: none;
+  overflow: hidden;
+}
+
+.imnode--group {
+  border: 1.5px solid var(--hairline-strong);
+  background: color-mix(in srgb, var(--text-muted) 4%, transparent);
+  border-radius: var(--r-dock-item);
+}
+.imnode--group .imnode__grouptitle {
+  position: absolute;
+  top: -26px;
+  left: 2px;
+  font-family: var(--font-display);
+  font-size: var(--fs-section);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: transparent;
+  border: none;
+  outline: none;
+  white-space: nowrap;
+}
+input.imnode__grouptitle:focus {
+  color: var(--text);
+}
+
+/* Handles: subtle, appear on hover */
+.im .react-flow__handle {
+  width: 8px;
+  height: 8px;
+  background: var(--text-muted);
+  border: 2px solid var(--paper);
+  opacity: 0;
+  transition: opacity var(--t-hover) var(--ease);
+}
+.im .react-flow__node:hover .react-flow__handle,
+.im .react-flow__node.selected .react-flow__handle {
+  opacity: 1;
+}
+
+/* Resizer */
+.im .react-flow__resize-control.handle {
+  width: 8px;
+  height: 8px;
+  border-radius: 2px;
+  background: var(--surface);
+  border: 1.5px solid var(--text);
+}
+
+/* Edges */
+.im .react-flow__edge-path {
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+}
+.im .react-flow__edge.selected .react-flow__edge-path {
+  stroke: var(--text);
+  stroke-width: 2;
+}
+
+.imedge__label {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  font-size: var(--fs-meta);
+  font-weight: 500;
+  color: var(--text-muted);
+  background: var(--paper);
+  padding: 1px 7px;
+  border-radius: var(--r-chip);
+  pointer-events: all;
+}
+.imedge__label--selected {
+  color: var(--text);
+  outline: 1px solid var(--hairline-strong);
+}
+.imedge__label input {
+  border: none;
+  background: transparent;
+  font: inherit;
+  color: var(--text);
+  outline: none;
+  width: 120px;
+  text-align: center;
+}
+
+/* ── Drag-preview ghosts ─────────────────────────────────────────────
+   Rendered off-screen; setDragImage snapshots them at dragstart. They
+   must not be display:none or the snapshot comes out empty.           */
+
+.im__ghosts {
+  position: fixed;
+  top: -4000px;
+  left: -4000px;
+  pointer-events: none;
+}
+
+.im__ghost {
+  margin-bottom: 8px;
+}
+
+.im__ghostline {
+  height: 8px;
+  border-radius: 4px;
+  background: var(--hairline);
+}
+
+.im__ghost--image {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: var(--text-muted);
+  border-style: dashed;
+}
+
+.im__ghost--group {
+  display: flex;
+  align-items: flex-start;
+  padding: var(--sp-4) var(--sp-5);
+}
+
+/* Empty state overlay */
+.im__empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+  z-index: 5;
+}

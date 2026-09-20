@@ -1,0 +1,117 @@
+.start__main {
+  padding: var(--gutter);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-7);
+}
+
+.start__shelf-label {
+  display: flex;
+  align-items: baseline;
+  gap: var(--sp-4);
+}
+
+.start__covers {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-6);
+}
+
+/* Project as a cover on a shelf */
+.cover {
+  width: 168px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-4);
+  text-align: left;
+  border-radius: var(--r-card);
+}
+
+.cover__face {
+  width: 100%;
+  aspect-ratio: 2 / 3;
+  border-radius: var(--r-card);
+  background: var(--ink);
+  color: var(--ink-text);
+  border: 1px solid var(--hairline);
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: var(--sp-6);
+  overflow: hidden;
+  position: relative;
+  transition:
+    transform var(--t-hover) var(--ease),
+    box-shadow var(--t-hover) var(--ease);
+}
+.cover:hover .cover__face {
+  transform: translateY(-2px);
+  box-shadow: var(--shadow-lift);
+}
+
+.cover__face img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+/* Scrim so the title stays readable over a cover image */
+.cover__face:has(img)::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(10, 12, 24, 0.55) 0%,
+    rgba(10, 12, 24, 0) 45%,
+    rgba(10, 12, 24, 0.35) 100%
+  );
+}
+
+/* Dark text for light custom colours */
+.cover__face[data-text="dark"] {
+  color: oklch(18% 0.015 240);
+}
+.cover__face[data-text="dark"] .cover__rule {
+  background: oklch(18% 0.015 240);
+}
+.cover__face:has(img)[data-text="dark"] {
+  color: #fff; /* over an image the scrim is dark, keep light text */
+}
+
+.cover__title {
+  position: relative;
+  z-index: 1;
+  font-family: var(--font-display);
+  font-size: 19px;
+  font-weight: 600;
+  line-height: 1.15;
+  overflow-wrap: break-word;
+}
+
+.cover__rule {
+  position: relative;
+  z-index: 1;
+  height: 2px;
+  width: 28px;
+  background: var(--ink-text-muted);
+  opacity: 0.6;
+}
+
+.cover__name {
+  font-size: var(--fs-label);
+  font-weight: 500;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.cover__meta {
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

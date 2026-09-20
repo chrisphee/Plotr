@@ -1,0 +1,1094 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet data-dc-atomics><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,400;0,500;0,600;1,400&family=Instrument+Sans:wght@400;500;600&family=Manrope:wght@400;500;600;700&family=Onest:wght@400;500;600&family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;0,6..72,400;0,6..72,500;1,6..72,300;1,6..72,400&family=Schibsted+Grotesk:wght@400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@400;500;600&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,500;12..96,600&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<style>body{margin:0;background:#ecebe7;font-family:system-ui,sans-serif}a{color:inherit}a:hover{color:inherit}.dv-turn{padding:40px 44px 32px;border-bottom:1px solid rgba(0,0,0,.08);scroll-margin-top:16px}.dv-thd{display:flex;align-items:baseline;gap:10px;margin:0 0 20px}.dv-tid{font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px;text-decoration:none}.dv-tname{font:600 13px/1.2 system-ui,sans-serif;color:#1a1a1a}.dv-opts{display:flex;flex-wrap:wrap;gap:36px;align-items:flex-start}.dv-opt{flex:none;display:flex;flex-direction:column;gap:9px;scroll-margin-top:16px}.dv-oid{font:600 10.5px ui-monospace,Menlo,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px;text-decoration:none}.dv-olabel{display:flex;align-items:baseline;gap:8px;font:400 11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)}.dv-card{max-width:100%;background:#fff;border:1px solid rgba(0,0,0,.08);border-radius:10px;box-shadow:0 1px 3px rgba(0,0,0,.06),0 12px 40px rgba(0,0,0,.06);overflow:hidden}.dv-opt:target .dv-oid{background:#2a78d6;color:#fff}.dv-next{margin:22px 0 0;font:12px/1.5 system-ui,sans-serif;color:rgba(0,0,0,.5)}@keyframes dv-rise{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:none}}@keyframes dv-pop{from{opacity:0;transform:translate(-50%,-50%) scale(.965)}to{opacity:1;transform:translate(-50%,-50%) scale(1)}}@keyframes dv-fade{from{opacity:0}to{opacity:1}}@keyframes dv-dock{from{opacity:0;transform:translate(-50%,14px)}to{opacity:1;transform:translate(-50%,0)}}@keyframes dv-pulse{0%,100%{box-shadow:0 0 0 0 oklch(18% 0.015 240 / .25)}50%{box-shadow:0 0 0 8px oklch(18% 0.015 240 / 0)}}.dv-intro{max-width:720px;font:13px/1.55 system-ui,sans-serif;color:rgba(0,0,0,.62);margin:0 0 26px}</style></helmet>
+
+<section class="dv-turn" id="t4">
+<div class="dv-thd"><a class="dv-tid" href="#t4">4</a><span class="dv-tname">Remaining screens + design system, with motion</span></div>
+<p class="dv-intro">Completes the system (2a ink/paper, 2b type): Start screen, note popup (toggle Read / Edit), global search (type to filter), and a reference sheet of tokens, type, components and motion rules. Every panel enters with a short rise or scale; hover states use one 180ms ease-out curve throughout.</p>
+<div class="dv-opts">
+
+<!-- ===================== 4a START ===================== -->
+<div class="dv-opt" id="4a"><div class="dv-olabel"><a class="dv-oid" href="#4a">4a</a>Start — projects as covers on a shelf, recent boards, open/new in the spine</div>
+<div class="dv-card" data-screen-label="4a Start" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;display:grid;grid-template-columns:320px 1fr;position:relative;overflow:hidden">
+  <div style="background:oklch(17% 0.02 250);color:oklch(96% 0.006 220);padding:32px 36px;display:flex;flex-direction:column;position:relative">
+    <div style="font:500 24px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.01em">Quill<em style="font-style:normal;color:oklch(68% 0.015 230)">.</em></div>
+    <div style="margin-top:48px;display:flex;flex-direction:column;gap:2px;margin-left:-10px;margin-right:-10px">
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:8px;cursor:pointer;background:#fff;color:oklch(17% 0.02 250);font-weight:500;transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(90% 0.006 220)"><span style="font-size:16px;line-height:1">+</span>New project</div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230);transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250);color:#fff">Open project…<span style="margin-left:auto;font-size:11px;opacity:.6">⌘O</span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:10px 10px;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230);transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250);color:#fff">Import from folder</div>
+    </div>
+    <div style="margin-top:40px;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(60% 0.015 230)">Recent boards</div>
+      <div style="display:flex;flex-direction:column;gap:2px;margin:0 -10px">
+        <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250)"><span style="font-size:13px;font-weight:500">Main Plot</span><span style="font-size:11.5px;color:oklch(68% 0.015 230)">The Silent Kingdom · 2 hours ago</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250)"><span style="font-size:13px;font-weight:500">Character Web</span><span style="font-size:11.5px;color:oklch(68% 0.015 230)">The Silent Kingdom · Yesterday</span></div>
+        <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;border-radius:8px;cursor:pointer;transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250)"><span style="font-size:13px;font-weight:500">Timeline</span><span style="font-size:11.5px;color:oklch(68% 0.015 230)">Saltwater · 4 days ago</span></div>
+      </div>
+    </div>
+    <div style="margin-top:auto;display:flex;gap:2px;font-size:12px;color:oklch(68% 0.015 230);margin:auto -6px 0"><span style="cursor:pointer;padding:5px 6px;border-radius:5px" style-hover="color:#fff">Settings</span><span style="cursor:pointer;padding:5px 6px;border-radius:5px" style-hover="color:#fff">Trash</span><span style="margin-left:auto;padding:5px 6px;opacity:.6">v0.4</span></div>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;overflow:hidden;padding:0 44px">
+    <div style="display:flex;justify-content:space-between;align-items:flex-end;padding-top:40px">
+      <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:oklch(52% 0.015 240)">Thursday, 18 September</div><h1 style="margin:0;font:500 36px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Your projects</h1></div>
+      <div style="display:flex;gap:2px;font-size:12px;color:oklch(45% 0.015 240)"><span style="padding:6px 10px;border-radius:6px;background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Recent</span><span style="cursor:pointer;padding:6px 10px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">A–Z</span><span style="cursor:pointer;padding:6px 10px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Genre</span></div>
+    </div>
+    <div style="flex:1;display:flex;align-items:center">
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:28px;width:100%">
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <div style="display:flex;flex-direction:column;gap:14px;cursor:pointer;animation:dv-rise .5s cubic-bezier(.2,.7,.2,1) both;animation-delay:{{ p.delay }}">
+            <div style="aspect-ratio:3/4;border-radius:3px;background:{{ p.bg }};box-shadow:0 18px 36px -18px rgba(0,0,0,.45);display:grid;place-items:center;font:10px ui-monospace,monospace;color:oklch(45% 0.015 240);transition:transform .22s cubic-bezier(.2,.7,.2,1),box-shadow .22s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-6px) rotate(-.6deg);box-shadow:0 28px 44px -18px rgba(0,0,0,.5)">{{ p.cover }}</div>
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font:500 18px/1.1 'Bricolage Grotesque',system-ui,sans-serif">{{ p.name }}</span><span style="font-size:12px;color:oklch(52% 0.015 240)">{{ p.meta }}</span></div>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+    <div style="padding-bottom:36px;display:flex;justify-content:space-between;font-size:12px;color:oklch(52% 0.015 240)"><span>4 projects · ~/Writing</span><span style="cursor:pointer;border-bottom:1px solid oklch(82% 0.01 240)" style-hover="color:oklch(18% 0.015 240);border-bottom-color:oklch(18% 0.015 240)">Change default location</span></div>
+  </div>
+</div></div>
+
+<!-- ===================== 4b NOTE POPUP ===================== -->
+<div class="dv-opt" id="4b"><div class="dv-olabel"><a class="dv-oid" href="#4b">4b</a>Note popup — click Read / Edit to switch; opens over a dimmed board</div>
+<div class="dv-card" data-screen-label="4b Note popup" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(oklch(86% 0.008 220) 1px,transparent 1px);background-size:24px 24px;background-position:12px 12px;opacity:.7"></div>
+  <div style="position:absolute;left:44px;top:26px;display:flex;flex-direction:column;gap:6px;opacity:.5"><div style="font-size:12px;color:oklch(52% 0.015 240)">Worldbuilding · Info Map · 27 items</div><h1 style="margin:0;font:500 36px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Character Web</h1></div>
+  <div style="position:absolute;left:250px;top:150px;width:560px;height:330px;border:1.5px dashed oklch(80% 0.01 240);border-radius:12px;opacity:.6"></div>
+  <div style="position:absolute;left:290px;top:210px;width:220px;height:140px;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;opacity:.6"></div>
+  <div style="position:absolute;left:560px;top:225px;width:200px;height:110px;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;opacity:.6"></div>
+  <div style="position:absolute;left:860px;top:425px;width:220px;height:120px;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;opacity:.6"></div>
+  <div style="position:absolute;inset:0;background:oklch(17% 0.02 250 / .28);backdrop-filter:blur(2px);animation:dv-fade .25s ease-out both"></div>
+  <div style="position:absolute;left:50%;top:50%;width:720px;height:600px;transform:translate(-50%,-50%);background:oklch(98.5% 0.003 220);border-radius:14px;box-shadow:0 40px 90px -30px rgba(0,0,0,.55),0 0 0 1px oklch(90% 0.006 220);display:flex;flex-direction:column;overflow:hidden;animation:dv-pop .32s cubic-bezier(.2,.7,.2,1) both">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:16px 20px 0 24px">
+      <div style="display:flex;align-items:center;gap:10px;font-size:12px;color:oklch(52% 0.015 240)"><span>Worldbuilding</span><span style="opacity:.5">/</span><span>Characters</span><span style="opacity:.5">/</span><span>Main Cast</span><span style="padding:2px 8px;border-radius:5px;background:oklch(94% 0.006 220);color:oklch(35% 0.015 240);margin-left:6px">⧉ 3 boards</span></div>
+      <div style="display:flex;align-items:center;gap:10px">
+        <div style="position:relative;display:flex;padding:3px;border-radius:8px;background:oklch(93% 0.006 220);font-size:12px;font-weight:500;user-select:none">
+          <span style="position:absolute;left:3px;top:3px;bottom:3px;width:56px;border-radius:6px;background:oklch(17% 0.02 250);transform:translateX({{ segX }});transition:transform .26s cubic-bezier(.2,.7,.2,1)"></span>
+          <span onClick="{{ setRead }}" style="position:relative;width:56px;text-align:center;padding:5px 0;cursor:pointer;color:{{ readColor }};transition:color .2s">Read</span>
+          <span onClick="{{ setEdit }}" style="position:relative;width:56px;text-align:center;padding:5px 0;cursor:pointer;color:{{ editColor }};transition:color .2s">Edit</span>
+        </div>
+        <span style="width:30px;height:30px;display:grid;place-items:center;border-radius:7px;cursor:pointer;color:oklch(52% 0.015 240);font-size:16px;transition:background .18s" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">×</span>
+      </div>
+    </div>
+    <sc-if value="{{ isRead }}" hint-placeholder-val="{{ true }}">
+      <div style="flex:1;display:flex;flex-direction:column;gap:18px;padding:24px 48px 24px;overflow:hidden;animation:dv-fade .25s ease-out both">
+        <div style="display:flex;gap:6px"><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#7c5cbf22;color:#4a3280">Character</span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#3b7dd822;color:#1f4d8f">Lore</span></div>
+        <h2 style="margin:0;font:500 38px/1.05 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Queen Elara</h2>
+        <div style="font-size:15px;line-height:1.7;color:oklch(28% 0.015 240);display:flex;flex-direction:column;gap:12px;text-wrap:pretty">
+          <p style="margin:0">Crowned at nineteen, three days after the fire. She has not spoken since, and the court has stopped waiting for her to. Decrees arrive in her own hand, sealed in grey wax.</p>
+          <p style="margin:0">Her brother <span style="border-bottom:1px solid oklch(70% 0.012 240);cursor:pointer;transition:background .18s" style-hover="background:oklch(94% 0.006 220);border-bottom-color:oklch(18% 0.015 240)">Kael</span> believes the silence is a choice. The <span style="border-bottom:1px solid oklch(70% 0.012 240);cursor:pointer;transition:background .18s" style-hover="background:oklch(94% 0.006 220);border-bottom-color:oklch(18% 0.015 240)">Northern Kingdom</span> believes it is a weakness.</p>
+          <blockquote style="margin:0;padding:2px 0 2px 16px;border-left:2px solid oklch(80% 0.01 240);font:400 17px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">"A queen who says nothing cannot be misquoted."</blockquote>
+          <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px"><li>Wants: to be understood without explaining</li><li>Fears: that the silence has become who she is</li></ul>
+        </div>
+        <div style="margin-top:auto;display:flex;align-items:center;justify-content:space-between;font-size:11.5px;color:oklch(60% 0.012 240)"><span>Modified yesterday, 16:40</span><span style="display:flex;gap:2px;margin-right:-8px"><span style="padding:5px 8px;border-radius:5px;cursor:pointer;transition:background .18s" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Pin</span><span style="padding:5px 8px;border-radius:5px;cursor:pointer;transition:background .18s" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Open in board</span><span style="padding:5px 8px;border-radius:5px;cursor:pointer;transition:background .18s" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Delete</span></span></div>
+      </div>
+    </sc-if>
+    <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+      <div style="flex:1;display:flex;flex-direction:column;overflow:hidden;animation:dv-fade .25s ease-out both">
+        <div style="display:flex;flex-direction:column;gap:14px;padding:22px 48px 0">
+          <div style="display:flex;gap:6px;align-items:center"><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#7c5cbf22;color:#4a3280;display:flex;gap:6px;align-items:center">Character<span style="opacity:.6;cursor:pointer">×</span></span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#3b7dd822;color:#1f4d8f;display:flex;gap:6px;align-items:center">Lore<span style="opacity:.6;cursor:pointer">×</span></span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;border:1px dashed oklch(80% 0.01 240);color:oklch(52% 0.015 240);cursor:pointer;transition:border-color .18s" style-hover="border-color:oklch(18% 0.015 240);color:oklch(18% 0.015 240)">+ Category</span></div>
+          <input value="Queen Elara" style="all:unset;font:500 38px/1.05 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em;color:oklch(18% 0.015 240);border-bottom:1px solid oklch(90% 0.006 220);padding-bottom:6px;transition:border-color .18s" style-focus="border-bottom-color:oklch(18% 0.015 240)">
+        </div>
+        <div style="display:flex;gap:2px;padding:12px 44px 0;font-size:12.5px;color:oklch(40% 0.015 240)">
+          <span style="width:30px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer;font-weight:700;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">B</span><span style="width:30px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer;font-style:italic;font-family:'Bricolage Grotesque',sans-serif;font-size:15px;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">I</span><span style="width:30px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer;text-decoration:underline;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">U</span>
+          <span style="width:1px;height:18px;background:oklch(90% 0.006 220);margin:5px 6px"></span>
+          <span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">H2</span><span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">Quote</span><span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">• List</span><span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">1. List</span>
+          <span style="width:1px;height:18px;background:oklch(90% 0.006 220);margin:5px 6px"></span>
+          <span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">Link</span><span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">Image</span><span style="height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;transition:background .18s" style-hover="background:oklch(93% 0.006 220)">Attach</span>
+          <span style="margin-left:auto;height:28px;padding:0 9px;display:grid;place-items:center;border-radius:6px;cursor:pointer;color:oklch(52% 0.015 240);transition:background .18s" style-hover="background:oklch(93% 0.006 220)">⧉ Link note</span>
+        </div>
+        <textarea style="all:unset;flex:1;display:block;margin:12px 48px 0;font:15px/1.7 Figtree,system-ui,sans-serif;color:oklch(28% 0.015 240);white-space:pre-wrap;resize:none;overflow:auto">Crowned at nineteen, three days after the fire. She has not spoken since, and the court has stopped waiting for her to. Decrees arrive in her own hand, sealed in grey wax.
+
+Her brother [[Kael]] believes the silence is a choice. The [[Northern Kingdom]] believes it is a weakness.
+
+> "A queen who says nothing cannot be misquoted."
+
+- Wants: to be understood without explaining
+- Fears: that the silence has become who she is</textarea>
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:14px 24px 16px 48px;border-top:1px solid oklch(92% 0.006 220);font-size:12px;color:oklch(52% 0.015 240)">
+          <span style="display:flex;align-items:center;gap:8px"><span style="width:6px;height:6px;border-radius:50%;background:#3f9a5a;animation:dv-pulse 1.8s ease-out infinite"></span>Autosaved · 312 words</span>
+          <span style="display:flex;gap:6px"><span onClick="{{ setRead }}" style="padding:7px 12px;border-radius:7px;cursor:pointer;transition:background .18s" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Cancel</span><span onClick="{{ setRead }}" style="padding:7px 14px;border-radius:7px;cursor:pointer;background:oklch(17% 0.02 250);color:#fff;font-weight:500;transition:background .18s" style-hover="background:oklch(26% 0.02 250)">Done</span></span>
+        </div>
+      </div>
+    </sc-if>
+  </div>
+</div></div>
+
+<!-- ===================== 4c GLOBAL SEARCH ===================== -->
+<div class="dv-opt" id="4c"><div class="dv-olabel"><a class="dv-oid" href="#4c">4c</a>Global search — ⌘⇧F overlay; type to filter, results grouped by kind with staggered entrance</div>
+<div class="dv-card" data-screen-label="4c Global search" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;position:relative;overflow:hidden">
+  <div style="position:absolute;left:0;top:0;bottom:0;width:320px;background:oklch(17% 0.02 250)"></div>
+  <div style="position:absolute;left:364px;top:26px;font-size:12px;color:oklch(52% 0.015 240)">Continue — Main Plot, 2 hours ago</div>
+  <div style="position:absolute;left:364px;right:44px;top:120px;display:flex;flex-direction:column;gap:110px;opacity:.5">
+    <div style="display:flex;gap:10px"><div style="width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220)"></div><div style="width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220)"></div><div style="width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220)"></div></div>
+    <div style="display:flex;gap:10px"><div style="width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220)"></div><div style="width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220)"></div></div>
+  </div>
+  <div style="position:absolute;inset:0;background:oklch(17% 0.02 250 / .28);backdrop-filter:blur(2px);animation:dv-fade .25s ease-out both"></div>
+  <div style="position:absolute;left:50%;top:96px;transform:translateX(-50%);width:680px;background:oklch(98.5% 0.003 220);border-radius:14px;box-shadow:0 40px 90px -30px rgba(0,0,0,.55),0 0 0 1px oklch(90% 0.006 220);display:flex;flex-direction:column;overflow:hidden;animation:dv-dock .32s cubic-bezier(.2,.7,.2,1) both">
+    <div style="display:flex;align-items:center;gap:12px;padding:16px 20px;border-bottom:1px solid oklch(92% 0.006 220)">
+      <span style="width:16px;height:16px;border:1.5px solid oklch(52% 0.015 240);border-radius:50%;position:relative;flex:none"><span style="position:absolute;right:-5px;bottom:-4px;width:6px;height:1.5px;background:oklch(52% 0.015 240);transform:rotate(45deg)"></span></span>
+      <input value="{{ searchQ }}" onChange="{{ onSearch }}" placeholder="Search notes, boards, folders…" style="all:unset;flex:1;font:500 20px/1.2 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(18% 0.015 240);min-width:0">
+      <span style="font-size:11px;color:oklch(60% 0.012 240);padding:2px 6px;border:1px solid oklch(90% 0.006 220);border-radius:4px">esc</span>
+    </div>
+    <div style="display:flex;gap:2px;padding:10px 14px 0;font-size:12px">
+      <sc-for list="{{ filters }}" as="f" hint-placeholder-count="4"><span onClick="{{ f.onClick }}" style="padding:5px 10px;border-radius:6px;cursor:pointer;background:{{ f.bg }};color:{{ f.fg }};font-weight:{{ f.w }};transition:background .18s,color .18s" style-hover="background:oklch(93% 0.006 220)">{{ f.name }}<span style="margin-left:6px;opacity:.55">{{ f.n }}</span></span></sc-for>
+      <span style="margin-left:auto;padding:5px 10px;color:oklch(52% 0.015 240)">in The Silent Kingdom ▾</span>
+    </div>
+    <div style="display:flex;flex-direction:column;padding:8px 8px 10px;min-height:120px">
+      <sc-for list="{{ results }}" as="g" hint-placeholder-count="2">
+        <div style="padding:10px 12px 4px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:oklch(60% 0.012 240)">{{ g.kind }}</div>
+        <sc-for list="{{ g.items }}" as="r" hint-placeholder-count="2">
+          <div style="display:flex;align-items:center;gap:12px;padding:9px 12px;border-radius:8px;cursor:pointer;background:{{ r.bg }};animation:dv-rise .3s cubic-bezier(.2,.7,.2,1) both;animation-delay:{{ r.delay }};transition:background .15s" style-hover="background:oklch(94% 0.006 220)">
+            <span style="width:8px;height:8px;border-radius:50%;background:{{ r.c }};flex:none"></span>
+            <span style="display:flex;flex-direction:column;gap:2px;min-width:0"><span style="font-size:14px;font-weight:500;letter-spacing:-.01em">{{ r.t }}</span><span style="font-size:12px;color:oklch(52% 0.015 240);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ r.s }}</span></span>
+            <span style="margin-left:auto;font-size:11.5px;color:oklch(60% 0.012 240);white-space:nowrap">{{ r.path }}</span>
+            <sc-if value="{{ r.first }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;color:oklch(60% 0.012 240);padding:1px 6px;border:1px solid oklch(90% 0.006 220);border-radius:4px">↵</span></sc-if>
+          </div>
+        </sc-for>
+      </sc-for>
+      <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}"><div style="padding:34px 12px;text-align:center;font:400 17px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(52% 0.015 240);animation:dv-fade .25s both">Nothing matches "{{ searchQ }}"</div></sc-if>
+    </div>
+    <div style="display:flex;gap:14px;padding:10px 20px 12px;border-top:1px solid oklch(92% 0.006 220);font-size:11.5px;color:oklch(60% 0.012 240)"><span>↑↓ move</span><span>↵ open</span><span>⌘↵ open in new tab</span><span style="margin-left:auto">Search body text too ▸</span></div>
+  </div>
+</div></div>
+
+<!-- ===================== 4d DESIGN SYSTEM ===================== -->
+<div class="dv-opt" id="4d"><div class="dv-olabel"><a class="dv-oid" href="#4d">4d</a>Design system — tokens, type, components, motion</div>
+<div class="dv-card" data-screen-label="4d Design system" style="width:1280px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;padding:48px 56px 56px;box-sizing:border-box;display:flex;flex-direction:column;gap:48px">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;border-bottom:1px solid oklch(90% 0.006 220);padding-bottom:22px"><div><div style="font-size:12px;color:oklch(52% 0.015 240);margin-bottom:8px">Quill · UI system v1</div><h1 style="margin:0;font:500 44px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Ink &amp; paper</h1></div><div style="font-size:13px;color:oklch(45% 0.015 240);max-width:380px;line-height:1.5;text-wrap:pretty">One dark ink, one warm-neutral paper, four category colours. Bricolage for titles, Figtree for everything the app says.</div></div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:32px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(52% 0.015 240);padding-top:6px">Colour</div>
+    <div style="display:flex;flex-direction:column;gap:18px">
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;font-size:11.5px">
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:8px;background:oklch(17% 0.02 250)"></div><span style="font-weight:500">Ink</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">oklch(17% .02 250)</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:8px;background:oklch(26% 0.02 250)"></div><span style="font-weight:500">Ink hover</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">oklch(26% .02 250)</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:8px;background:oklch(18% 0.015 240)"></div><span style="font-weight:500">Text</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">oklch(18% .015 240)</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:8px;background:oklch(52% 0.015 240)"></div><span style="font-weight:500">Text muted</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">oklch(52% .015 240)</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:8px;background:oklch(98% 0.004 220);border:1px solid oklch(90% 0.006 220)"></div><span style="font-weight:500">Paper</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">oklch(98% .004 220)</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:64px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.006 220)"></div><span style="font-weight:500">Surface</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">#fff · hairline oklch(90%)</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(6,1fr);gap:10px;font-size:11.5px">
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:40px;border-radius:8px;background:#7c5cbf"></div><span style="font-weight:500">Character</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">#7c5cbf · tint 13%</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:40px;border-radius:8px;background:#3f9a5a"></div><span style="font-weight:500">Location</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">#3f9a5a</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:40px;border-radius:8px;background:#c8503f"></div><span style="font-weight:500">Conflict</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">#c8503f</span></div>
+        <div style="display:flex;flex-direction:column;gap:6px"><div style="height:40px;border-radius:8px;background:#3b7dd8"></div><span style="font-weight:500">Lore</span><span style="color:oklch(52% 0.015 240);font-family:ui-monospace,monospace;font-size:10.5px">#3b7dd8</span></div>
+        <div style="grid-column:span 2;font-size:12px;color:oklch(45% 0.015 240);line-height:1.5;text-wrap:pretty">Category colours appear only as 7px dots, 6px chips and note tints. Never as backgrounds larger than a chip, so the ink/paper contrast stays the hierarchy.</div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:32px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(52% 0.015 240);padding-top:6px">Type</div>
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:40px">
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font-size:11.5px;color:oklch(52% 0.015 240)">Bricolage Grotesque — titles, note headings, section labels</div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 42px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Display 42</span><span style="font-size:11px;color:oklch(60% 0.012 240);font-family:ui-monospace,monospace">project title</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 36px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Board 36</span><span style="font-size:11px;color:oklch(60% 0.012 240);font-family:ui-monospace,monospace">board title</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 26px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.01em">Shelf 26</span><span style="font-size:11px;color:oklch(60% 0.012 240);font-family:ui-monospace,monospace">folder shelf</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:500 17px/1.15 'Bricolage Grotesque',system-ui,sans-serif">Note heading 17</span><span style="font-size:11px;color:oklch(60% 0.012 240);font-family:ui-monospace,monospace">card title</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font:italic 400 15px/1 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">Section label 13 medium</span><span style="font-size:11px;color:oklch(60% 0.012 240);font-family:ui-monospace,monospace">plot sections, groups</span></div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:18px">
+        <div style="font-size:11.5px;color:oklch(52% 0.015 240)">Figtree — body, UI, metadata</div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:15px;line-height:1.7">Body 15 / 1.7 — reading pane and popup</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:14px;font-weight:500;letter-spacing:-.01em">Label 14 medium — card names, list titles</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:13px">UI 13 — dock, buttons, menus</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:12px;color:oklch(52% 0.015 240)">Meta 12 muted — paths, counts, timestamps</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(52% 0.015 240)">Eyebrow 11 · tracking .12em</span></div>
+        <div style="display:flex;align-items:baseline;gap:16px"><span style="font-size:11px;font-family:ui-monospace,monospace;color:oklch(52% 0.015 240)">Mono 11 — file paths, shortcuts, dates in dense views</span></div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:32px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(52% 0.015 240);padding-top:6px">Components</div>
+    <div style="display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;flex-wrap:wrap;gap:24px;align-items:center">
+        <div style="display:flex;align-items:center;gap:4px;padding:6px;border-radius:12px;background:oklch(17% 0.02 250);color:oklch(92% 0.006 220);font-size:13px;box-shadow:0 16px 40px -12px rgba(0,0,0,.5)">
+          <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:oklch(68% 0.015 230)"><span>Projects</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">Current</span></div>
+          <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+          <span style="padding:8px 12px;border-radius:8px;cursor:pointer;color:oklch(68% 0.015 230);transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250);color:#fff">Ghost</span>
+          <span style="padding:8px 12px;border-radius:8px;cursor:pointer;background:#fff;color:oklch(17% 0.02 250);font-weight:500;transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(90% 0.006 220)">Primary</span>
+        </div>
+        <span style="font-size:12px;color:oklch(52% 0.015 240);max-width:260px;line-height:1.5">Dock: the one persistent surface. Breadcrumb left, board-specific actions right, zoom when the board is spatial.</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:12px;align-items:center">
+        <span style="padding:7px 14px;border-radius:7px;cursor:pointer;background:oklch(17% 0.02 250);color:#fff;font-size:13px;font-weight:500;transition:background .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:oklch(26% 0.02 250)">Primary on paper</span>
+        <span style="padding:7px 14px;border-radius:7px;cursor:pointer;border:1px solid oklch(88% 0.008 220);background:#fff;font-size:13px;font-weight:500;transition:border-color .18s" style-hover="border-color:oklch(18% 0.015 240)">Secondary</span>
+        <span style="padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:oklch(45% 0.015 240);transition:background .18s" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Ghost</span>
+        <span style="padding:7px 12px;border-radius:7px;cursor:pointer;font-size:13px;color:#8a3225;transition:background .18s" style-hover="background:#c8503f14">Destructive</span>
+        <div style="position:relative;display:flex;padding:3px;border-radius:8px;background:oklch(93% 0.006 220);font-size:12px;font-weight:500;margin-left:12px"><span style="position:absolute;left:3px;top:3px;bottom:3px;width:56px;border-radius:6px;background:oklch(17% 0.02 250)"></span><span style="position:relative;width:56px;text-align:center;padding:5px 0;color:#fff">Read</span><span style="position:relative;width:56px;text-align:center;padding:5px 0;color:oklch(45% 0.015 240)">Edit</span></div>
+        <div style="display:flex;gap:2px;font-size:12px;color:oklch(45% 0.015 240);margin-left:12px"><span style="padding:6px 10px;border-radius:6px;background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Recent</span><span style="padding:6px 10px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)">A–Z</span></div>
+      </div>
+      <div style="display:grid;grid-template-columns:208px 208px 1fr;gap:12px;align-items:start">
+        <div style="box-sizing:border-box;width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .18s cubic-bezier(.2,.7,.2,1),border-color .18s" style-hover="transform:translateY(-2px);border-color:oklch(40% 0.02 240)"><div style="display:flex;justify-content:space-between"><span style="font-weight:500;font-size:14px;letter-spacing:-.01em">Board card</span><span style="display:flex;gap:3px;padding-top:5px"><span style="width:5px;height:5px;border-radius:50%;background:#7c5cbf"></span><span style="width:5px;height:5px;border-radius:50%;background:#c8503f"></span></span></div><span style="font-size:11.5px;color:oklch(52% 0.015 240)">Type · count</span></div>
+        <div style="box-sizing:border-box;width:208px;height:82px;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;padding:12px 14px;display:flex;flex-direction:column;gap:5px;cursor:move;transition:border-color .18s" style-hover="border-color:oklch(40% 0.015 240)"><div style="display:flex;align-items:center;gap:6px;font-size:11px;color:oklch(52% 0.015 240)"><span style="width:7px;height:7px;border-radius:50%;background:#3f9a5a"></span>Location</div><div style="font:500 16px/1.15 'Bricolage Grotesque',system-ui,sans-serif">Map note</div></div>
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:6px;flex-wrap:wrap"><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#7c5cbf22;color:#4a3280">Character</span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#3f9a5a22;color:#265c36">Location</span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#c8503f22;color:#8a3225">Conflict</span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#3b7dd822;color:#1f4d8f">Lore</span><span style="font-size:11.5px;padding:2px 8px;border-radius:5px;background:oklch(94% 0.006 220);color:oklch(35% 0.015 240)">⧉ 3 boards</span><span style="font-size:11px;color:oklch(60% 0.012 240);padding:1px 6px;border:1px solid oklch(90% 0.006 220);border-radius:4px">⌘⇧F</span></div>
+          <div style="height:32px;max-width:320px;border-radius:7px;border:1px solid oklch(90% 0.006 220);background:#fff;display:flex;align-items:center;padding:0 10px;gap:8px;font-size:12.5px;color:oklch(60% 0.012 240);transition:border-color .18s" style-hover="border-color:oklch(40% 0.015 240)"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Input / search field</div>
+          <div style="display:flex;flex-direction:column;max-width:320px;font-size:13px"><div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;background:oklch(18% 0.015 240);color:#fff">Selected list row<span style="margin-left:auto;font-size:11px;opacity:.7">12</span></div><div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;transition:background .15s" style-hover="background:oklch(94% 0.006 220)">List row<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">5</span></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:32px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(52% 0.015 240);padding-top:6px">Motion</div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:24px;font-size:12.5px;line-height:1.5">
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font-weight:500">Hover · 180ms</div><div style="color:oklch(45% 0.015 240)">Background, border, colour. Cards lift 2px. One curve everywhere: <span style="font-family:ui-monospace,monospace;font-size:11px">cubic-bezier(.2,.7,.2,1)</span>.</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font-weight:500">Focus · 200ms</div><div style="color:oklch(45% 0.015 240)">Sibling shelves fade to 35% opacity; the segmented indicator slides at 260ms. Nothing moves that the user did not touch.</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font-weight:500">Enter · 320ms</div><div style="color:oklch(45% 0.015 240)">Popups scale from 96.5%, sheets rise 10px, backdrop fades in 250ms. Lists stagger 30ms per row, max 8 rows.</div></div>
+      <div style="display:flex;flex-direction:column;gap:8px"><div style="font-weight:500">Exit · 160ms</div><div style="color:oklch(45% 0.015 240)">Always faster than entry, fade only. No bounce, no spring, no motion on typing.</div></div>
+    </div>
+  </div>
+
+  <div style="display:grid;grid-template-columns:200px 1fr;gap:32px">
+    <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(52% 0.015 240);padding-top:6px">Space &amp; shape</div>
+    <div style="display:flex;gap:40px;font-size:12.5px;line-height:1.6;color:oklch(45% 0.015 240)">
+      <div><span style="color:oklch(18% 0.015 240);font-weight:500">Radii</span><br>4 chips · 6 buttons/cards · 8 dock items · 12 dock · 14 popups</div>
+      <div><span style="color:oklch(18% 0.015 240);font-weight:500">Spacing</span><br>2 · 4 · 6 · 8 · 12 · 16 · 24 · 32 · 44 (page gutter)</div>
+      <div><span style="color:oklch(18% 0.015 240);font-weight:500">Elevation</span><br>Paper flat · surface 1px hairline · dock and popups one long soft shadow, no stacked shadows</div>
+      <div><span style="color:oklch(18% 0.015 240);font-weight:500">Spine</span><br>320px ink panel on Start and Dashboard only; boards go full-bleed</div>
+    </div>
+  </div>
+</div></div>
+
+</div>
+<p class="dv-next">Try next: "dark mode across the set" · "empty states for a new project" · "settings and trash screens"</p>
+</section>
+<section class="dv-turn" id="t3">
+<div class="dv-thd"><a class="dv-tid" href="#t3">3</a><span class="dv-tname">Board screens — 2a layout, <a class="dv-oid" href="#2b">2b</a> type (Bricolage Grotesque + Figtree)</span></div>
+<p class="dv-intro">Same ink/paper palette, Bricolage Grotesque titles, Figtree UI, dark dock as the persistent nav + board tools. The wide spine gives way to the board; breadcrumb lives in the dock. Click plot dots, canvas items and notes to select.</p>
+<div class="dv-opts">
+
+<!-- ===================== 3a PLOT LINE ===================== -->
+<div class="dv-opt" id="3a"><div class="dv-olabel"><a class="dv-oid" href="#3a">3a</a>Plot Line — Main Plot, four user-defined sections, selected + expanded point</div>
+<div class="dv-card" data-screen-label="3a Plot Line" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;position:relative;overflow:hidden;display:flex;flex-direction:column">
+  <div style="display:flex;justify-content:space-between;align-items:flex-end;padding:26px 44px 0">
+    <div style="display:flex;flex-direction:column;gap:6px">
+      <div style="font-size:12px;color:oklch(52% 0.015 240)">Plot · Plot Line · 11 points · saved just now</div>
+      <h1 style="margin:0;font:500 36px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Main Plot</h1>
+    </div>
+    <div style="display:flex;gap:2px;font-size:12px;color:oklch(45% 0.015 240)">
+      <span style="cursor:pointer;padding:6px 10px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Expand all</span>
+      <span style="cursor:pointer;padding:6px 10px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Collapse all</span>
+      <span style="cursor:pointer;padding:6px 10px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">List view</span>
+      <span style="cursor:pointer;padding:6px 10px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Sections…</span>
+    </div>
+  </div>
+  <div style="flex:1;position:relative;margin:26px 44px 96px 44px">
+    <div style="position:absolute;left:0;top:0;bottom:0;width:60px;display:flex;flex-direction:column;justify-content:space-between;padding:26px 0 0;font-size:11px;color:oklch(60% 0.012 240);letter-spacing:.06em;text-transform:uppercase"><span>High</span><span>Medium</span><span>Low</span></div>
+    <div style="position:absolute;left:68px;right:0;top:0;bottom:0">
+      <div style="position:absolute;inset:26px 0 0 0;display:grid;grid-template-columns:22fr 28fr 28fr 22fr">
+        <div style="border-left:1px solid oklch(88% 0.008 220);position:relative"><span style="position:absolute;top:-26px;left:0;font:500 13px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">Beginning</span></div>
+        <div style="border-left:1px solid oklch(88% 0.008 220);position:relative;background:oklch(96% 0.006 220 / .6)"><span style="position:absolute;top:-26px;left:10px;font:500 13px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">Journey</span></div>
+        <div style="border-left:1px solid oklch(88% 0.008 220);position:relative"><span style="position:absolute;top:-26px;left:10px;font:500 13px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">Siege</span></div>
+        <div style="border-left:1px solid oklch(88% 0.008 220);border-right:1px solid oklch(88% 0.008 220);position:relative;background:oklch(96% 0.006 220 / .6)"><span style="position:absolute;top:-26px;left:10px;font:500 13px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">Aftermath</span></div>
+      </div>
+      <div style="position:absolute;left:0;right:0;top:26px;bottom:0;background:repeating-linear-gradient(to bottom,oklch(91% 0.006 220) 0 1px,transparent 1px calc((100% - 1px) / 2));pointer-events:none"></div>
+      <div style="position:absolute;left:0;right:0;bottom:0;height:1px;background:oklch(30% 0.015 240)"></div>
+      <div style="position:absolute;left:0;bottom:-20px;font-size:11px;color:oklch(60% 0.012 240)">Beginning</div><div style="position:absolute;right:0;bottom:-20px;font-size:11px;color:oklch(60% 0.012 240)">Ending</div>
+      <div style="position:absolute;left:0;right:0;top:26px;bottom:0">
+        <sc-for list="{{ points }}" as="p" hint-placeholder-count="0">
+          <div onClick="{{ p.onClick }}" style="position:absolute;left:{{ p.left }};top:{{ p.top }};width:28px;height:28px;margin:-14px 0 0 -14px;display:grid;place-items:center;cursor:grab;border-radius:50%;box-shadow:{{ p.ring }};transition:box-shadow .15s" style-hover="box-shadow:0 0 0 6px oklch(18% 0.015 240 / .12)" title="{{ p.t }}">
+            <span style="width:{{ p.size }};height:{{ p.size }};border-radius:50%;background:{{ p.c }};border:2px solid oklch(98% 0.004 220);box-sizing:border-box;transition:width .15s,height .15s"></span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ selPoint }}" hint-placeholder-val="{{ false }}">
+          <div style="position:absolute;left:{{ selPoint.left }};top:{{ selPoint.top }};width:1px;height:{{ selPoint.lineH }};margin-top:{{ selPoint.lineTop }};background:oklch(18% 0.015 240);pointer-events:none"></div>
+          <div style="position:absolute;left:{{ selPoint.left }};top:{{ selPoint.top }};transform:translate(-50%,{{ selPoint.cardShift }});width:260px;background:oklch(17% 0.02 250);color:oklch(96% 0.006 220);border-radius:8px;padding:14px 16px 12px;box-shadow:0 18px 40px -16px rgba(0,0,0,.5);display:flex;flex-direction:column;gap:8px;cursor:pointer" style-hover="background:oklch(21% 0.02 250)">
+            <div style="display:flex;align-items:center;gap:8px;font-size:11px;color:oklch(70% 0.015 230)"><span style="width:7px;height:7px;border-radius:50%;background:{{ selPoint.c }}"></span>{{ selPoint.cat }}<span style="margin-left:auto;opacity:.7">⧉ linked</span></div>
+            <div style="font:500 17px/1.2 'Bricolage Grotesque',system-ui,sans-serif">{{ selPoint.t }}</div>
+            <div style="font-size:12.5px;line-height:1.5;color:oklch(78% 0.012 230)">{{ selPoint.s }}</div>
+            <div style="display:flex;gap:2px;margin:4px -8px -6px;font-size:12px"><span style="padding:5px 8px;border-radius:5px;color:#fff" style-hover="background:oklch(28% 0.02 250)">Open</span><span style="padding:5px 8px;border-radius:5px;color:oklch(78% 0.012 230)" style-hover="background:oklch(28% 0.02 250);color:#fff">Edit</span><span style="padding:5px 8px;border-radius:5px;color:oklch(78% 0.012 230);margin-left:auto" style-hover="background:oklch(28% 0.02 250);color:#fff">Collapse</span></div>
+          </div>
+        </sc-if>
+      </div>
+    </div>
+  </div>
+  <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;width:max-content;display:flex;align-items:center;gap:4px;padding:6px;border-radius:12px;background:oklch(17% 0.02 250);color:oklch(92% 0.006 220);box-shadow:0 16px 40px -12px rgba(0,0,0,.5);font-size:13px">
+    <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:oklch(68% 0.015 230)"><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="opacity:.4">/</span><span style="cursor:pointer" style-hover="color:#fff">The Silent Kingdom</span><span style="opacity:.4">/</span><span style="cursor:pointer" style-hover="color:#fff">Plot</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">Main Plot</span></div>
+    <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+    <span style="padding:8px 12px;border-radius:8px;cursor:pointer;background:#fff;color:oklch(17% 0.02 250);font-weight:500" style-hover="background:oklch(90% 0.006 220)">+ Plot point</span>
+    <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+    <span style="width:30px;height:30px;display:grid;place-items:center;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230)" style-hover="background:oklch(26% 0.02 250);color:#fff">−</span><span style="font-size:12px;color:oklch(78% 0.012 230);width:38px;text-align:center">100%</span><span style="width:30px;height:30px;display:grid;place-items:center;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230)" style-hover="background:oklch(26% 0.02 250);color:#fff">+</span>
+    <span style="padding:8px 10px;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230);font-size:12px" style-hover="background:oklch(26% 0.02 250);color:#fff">Fit</span>
+  </div>
+</div></div>
+
+<!-- ===================== 3b INFO MAP ===================== -->
+<div class="dv-opt" id="3b"><div class="dv-olabel"><a class="dv-oid" href="#3b">3b</a>Info Map — Character Web with a group, image, label, line + arrow connections; floating tool panel</div>
+<div class="dv-card" data-screen-label="3b Info Map" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;position:relative;overflow:hidden">
+  <div style="position:absolute;inset:0;background-image:radial-gradient(oklch(86% 0.008 220) 1px,transparent 1px);background-size:24px 24px;background-position:12px 12px"></div>
+  <div style="position:absolute;left:44px;top:26px;display:flex;flex-direction:column;gap:6px;pointer-events:none">
+    <div style="font-size:12px;color:oklch(52% 0.015 240)">Worldbuilding · Info Map · 27 items</div>
+    <h1 style="margin:0;font:500 36px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Character Web</h1>
+  </div>
+  <!-- tool panel -->
+  <div style="position:absolute;left:44px;top:120px;width:112px;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:10px;padding:6px;display:flex;flex-direction:column;gap:2px;box-shadow:0 10px 30px -18px rgba(0,0,0,.3);font-size:12.5px">
+    <div style="padding:4px 8px 6px;font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:oklch(60% 0.012 240)">Add</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:grab" style-hover="background:oklch(94% 0.006 220)"><span style="width:14px;height:11px;border:1.5px solid currentColor;border-radius:2px"></span>Note</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:grab" style-hover="background:oklch(94% 0.006 220)"><span style="width:14px;height:11px;border:1.5px solid currentColor;border-radius:2px;background:repeating-linear-gradient(135deg,transparent 0 2px,currentColor 2px 3px);opacity:.8"></span>Image</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:grab" style-hover="background:oklch(94% 0.006 220)"><span style="width:14px;font:600 12px 'Bricolage Grotesque',sans-serif;text-align:center">T</span>Text</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:grab" style-hover="background:oklch(94% 0.006 220)"><span style="width:14px;height:11px;border:1.5px dashed currentColor;border-radius:2px"></span>Group</div>
+    <div style="height:1px;background:oklch(92% 0.006 220);margin:4px 2px"></div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)"><span style="width:14px;height:1.5px;background:currentColor"></span>Line</div>
+    <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)"><span style="width:14px;height:1.5px;background:currentColor;position:relative"><span style="position:absolute;right:-1px;top:-3px;width:6px;height:6px;border-top:1.5px solid currentColor;border-right:1.5px solid currentColor;transform:rotate(45deg)"></span></span>Arrow</div>
+  </div>
+  <!-- group -->
+  <div onClick="{{ pick.group }}" style="position:absolute;left:250px;top:150px;width:560px;height:330px;border:1.5px dashed oklch(70% 0.012 240);border-radius:12px;background:oklch(96% 0.006 220 / .5);cursor:move" style-hover="border-color:oklch(40% 0.015 240)">
+    <div style="position:absolute;left:14px;top:-11px;padding:2px 8px;background:oklch(98% 0.004 220);font:500 13px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">Royal Court</div>
+  </div>
+  <!-- connections -->
+  <svg style="position:absolute;inset:0;pointer-events:none" width="1280" height="800">
+    <defs><marker id="arr3b" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0 L8 4 L0 8 z" fill="oklch(30% 0.015 240)"/></marker></defs>
+    <line x1="510" y1="270" x2="560" y2="270" stroke="oklch(45% 0.015 240)" stroke-width="1.5"/>
+    <line x1="510" y1="320" x2="860" y2="470" stroke="oklch(45% 0.015 240)" stroke-width="1.5" marker-end="url(#arr3b)"/>
+    <line x1="900" y1="250" x2="900" y2="425" stroke="oklch(45% 0.015 240)" stroke-width="1.5" stroke-dasharray="3 4"/>
+  </svg>
+  <div style="position:absolute;left:535px;top:257px;transform:translateX(-50%);padding:2px 8px;border-radius:4px;background:oklch(98% 0.004 220);border:1px solid oklch(88% 0.008 220);font-size:11.5px;color:oklch(40% 0.015 240)">siblings</div>
+  <div style="position:absolute;left:685px;top:384px;transform:translateX(-50%);padding:2px 8px;border-radius:4px;background:oklch(98% 0.004 220);border:1px solid oklch(88% 0.008 220);font-size:11.5px;color:oklch(40% 0.015 240)">rules</div>
+  <!-- notes -->
+  <div onClick="{{ pick.elara }}" style="position:absolute;left:290px;top:210px;width:220px;height:140px;box-sizing:border-box;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:move;box-shadow:{{ selShadow.elara }}" style-hover="border-color:oklch(40% 0.015 240)">
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:oklch(52% 0.015 240)"><span style="width:7px;height:7px;border-radius:50%;background:#7c5cbf"></span>Character<span style="margin-left:auto">⧉</span></div>
+    <div style="font:500 17px/1.15 'Bricolage Grotesque',system-ui,sans-serif">Queen Elara</div>
+    <div style="font-size:12px;line-height:1.45;color:oklch(45% 0.015 240);overflow:hidden">Crowned at nineteen. Has not spoken since the night of the fire. Rules through written decree.</div>
+  </div>
+  <sc-if value="{{ isSel.elara }}" hint-placeholder-val="{{ true }}">
+    <div style="position:absolute;left:285px;top:205px;width:230px;height:150px;border:1.5px solid oklch(18% 0.015 240);border-radius:10px;pointer-events:none"></div>
+    <span style="position:absolute;left:281px;top:201px;width:8px;height:8px;background:#fff;border:1.5px solid oklch(18% 0.015 240);border-radius:2px"></span><span style="position:absolute;left:507px;top:201px;width:8px;height:8px;background:#fff;border:1.5px solid oklch(18% 0.015 240);border-radius:2px"></span><span style="position:absolute;left:281px;top:347px;width:8px;height:8px;background:#fff;border:1.5px solid oklch(18% 0.015 240);border-radius:2px"></span><span style="position:absolute;left:507px;top:347px;width:8px;height:8px;background:#fff;border:1.5px solid oklch(18% 0.015 240);border-radius:2px"></span>
+    <span style="position:absolute;left:512px;top:274px;width:10px;height:10px;border-radius:50%;background:oklch(18% 0.015 240);border:2px solid #fff;cursor:crosshair" title="Drag to connect"></span>
+    <div style="position:absolute;left:400px;top:166px;transform:translateX(-50%);display:flex;gap:2px;padding:4px;border-radius:8px;background:oklch(17% 0.02 250);color:#fff;font-size:12px;box-shadow:0 10px 24px -12px rgba(0,0,0,.5);white-space:nowrap">
+      <span style="padding:5px 9px;border-radius:5px;cursor:pointer" style-hover="background:oklch(28% 0.02 250)">Open</span><span style="padding:5px 9px;border-radius:5px;cursor:pointer" style-hover="background:oklch(28% 0.02 250)">Edit</span><span style="padding:5px 9px;border-radius:5px;cursor:pointer;display:flex;align-items:center;gap:6px" style-hover="background:oklch(28% 0.02 250)"><span style="width:8px;height:8px;border-radius:50%;background:#7c5cbf"></span>Colour</span><span style="padding:5px 9px;border-radius:5px;cursor:pointer" style-hover="background:oklch(28% 0.02 250)">Connect</span><span style="padding:5px 9px;border-radius:5px;cursor:pointer;color:oklch(72% 0.1 25)" style-hover="background:oklch(28% 0.02 250)">Delete</span>
+    </div>
+  </sc-if>
+  <div onClick="{{ pick.kael }}" style="position:absolute;left:560px;top:225px;width:200px;height:110px;box-sizing:border-box;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:move;box-shadow:{{ selShadow.kael }}" style-hover="border-color:oklch(40% 0.015 240)">
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:oklch(52% 0.015 240)"><span style="width:7px;height:7px;border-radius:50%;background:#7c5cbf"></span>Character</div>
+    <div style="font:500 17px/1.15 'Bricolage Grotesque',system-ui,sans-serif">Kael</div>
+    <div style="font-size:12px;line-height:1.45;color:oklch(45% 0.015 240)">The brother who left. Returns in the second act.</div>
+  </div>
+  <div onClick="{{ pick.img }}" style="position:absolute;left:800px;top:100px;width:200px;height:150px;box-sizing:border-box;border-radius:8px;background:repeating-linear-gradient(135deg,oklch(90% 0.008 220) 0 6px,oklch(86% 0.01 220) 6px 12px);border:1px solid oklch(86% 0.008 220);display:grid;place-items:center;font:10px ui-monospace,monospace;color:oklch(45% 0.015 240);cursor:move;box-shadow:{{ selShadow.img }}" style-hover="border-color:oklch(40% 0.015 240)">image: portrait sketch of the queen</div>
+  <div onClick="{{ pick.north }}" style="position:absolute;left:860px;top:425px;width:220px;height:120px;box-sizing:border-box;background:#fff;border:1px solid oklch(90% 0.006 220);border-radius:8px;padding:14px 16px;display:flex;flex-direction:column;gap:6px;cursor:move;box-shadow:{{ selShadow.north }}" style-hover="border-color:oklch(40% 0.015 240)">
+    <div style="display:flex;align-items:center;gap:6px;font-size:11px;color:oklch(52% 0.015 240)"><span style="width:7px;height:7px;border-radius:50%;background:#3f9a5a"></span>Location</div>
+    <div style="font:500 17px/1.15 'Bricolage Grotesque',system-ui,sans-serif">Northern Kingdom</div>
+    <div style="font-size:12px;line-height:1.45;color:oklch(45% 0.015 240)">Cold, walled, loyal to the crown by treaty rather than love.</div>
+  </div>
+  <div onClick="{{ pick.text }}" style="position:absolute;left:290px;top:560px;font:500 22px 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240);cursor:move;padding:4px 6px;border-radius:4px;border:1px solid transparent" style-hover="border-color:oklch(80% 0.01 240)">The court before the fall</div>
+  <!-- zoom + dock -->
+  <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;width:max-content;display:flex;align-items:center;gap:4px;padding:6px;border-radius:12px;background:oklch(17% 0.02 250);color:oklch(92% 0.006 220);box-shadow:0 16px 40px -12px rgba(0,0,0,.5);font-size:13px">
+    <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:oklch(68% 0.015 230)"><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="opacity:.4">/</span><span style="cursor:pointer" style-hover="color:#fff">The Silent Kingdom</span><span style="opacity:.4">/</span><span style="cursor:pointer" style-hover="color:#fff">Worldbuilding</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">Character Web</span></div>
+    <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+    <span style="padding:8px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;color:oklch(68% 0.015 230)" style-hover="background:oklch(26% 0.02 250);color:#fff"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Search</span>
+    <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+    <span style="width:30px;height:30px;display:grid;place-items:center;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230)" style-hover="background:oklch(26% 0.02 250);color:#fff">−</span><span style="font-size:12px;color:oklch(78% 0.012 230);width:38px;text-align:center">80%</span><span style="width:30px;height:30px;display:grid;place-items:center;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230)" style-hover="background:oklch(26% 0.02 250);color:#fff">+</span>
+    <span style="padding:8px 10px;border-radius:8px;cursor:pointer;color:oklch(78% 0.012 230);font-size:12px" style-hover="background:oklch(26% 0.02 250);color:#fff">Fit</span>
+  </div>
+</div></div>
+
+<!-- ===================== 3c NOTES LIBRARY ===================== -->
+<div class="dv-opt" id="3c"><div class="dv-olabel"><a class="dv-oid" href="#3c">3c</a>Notes — Characters board: folders, sortable list, reading pane with a linked note</div>
+<div class="dv-card" data-screen-label="3c Notes Library" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Figtree,system-ui,sans-serif;position:relative;overflow:hidden;display:grid;grid-template-columns:220px 380px 1fr">
+  <div style="padding:26px 20px 100px 44px;display:flex;flex-direction:column;gap:22px;border-right:1px solid oklch(91% 0.006 220)">
+    <div style="display:flex;flex-direction:column;gap:6px"><div style="font-size:12px;color:oklch(52% 0.015 240)">Worldbuilding · Notes</div><h1 style="margin:0;font:500 30px/1 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Characters</h1></div>
+    <div style="display:flex;flex-direction:column;gap:1px;font-size:13px;margin:0 -8px">
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)">All notes<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">38</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)">Pinned<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">4</span></div>
+      <div style="height:1px;background:oklch(92% 0.006 220);margin:8px 8px"></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;background:oklch(18% 0.015 240);color:#fff"><span style="font-size:9px;width:8px">▾</span><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:oklch(70% 0.012 240)"></span>Main Cast<span style="margin-left:auto;font-size:11px;opacity:.7">12</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px 6px 28px;border-radius:6px;cursor:pointer;color:oklch(40% 0.015 240)" style-hover="background:oklch(94% 0.006 220)"><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:oklch(80% 0.01 240)"></span>The Crown<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">5</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px 6px 28px;border-radius:6px;cursor:pointer;color:oklch(40% 0.015 240)" style-hover="background:oklch(94% 0.006 220)"><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:oklch(80% 0.01 240)"></span>Exiles<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">7</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)"><span style="font-size:9px;width:8px">▸</span><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:oklch(70% 0.012 240)"></span>The Court<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">9</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)"><span style="font-size:9px;width:8px">▸</span><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:oklch(70% 0.012 240)"></span>Rebels<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">7</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220)"><span style="font-size:9px;width:8px">▸</span><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:oklch(70% 0.012 240)"></span>Minor<span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">10</span></div>
+      <div style="display:flex;align-items:center;gap:8px;padding:6px 8px;border-radius:6px;cursor:pointer;color:oklch(52% 0.015 240);margin-top:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">+ Folder</div>
+    </div>
+  </div>
+  <div style="display:flex;flex-direction:column;border-right:1px solid oklch(91% 0.006 220);overflow:hidden;padding-bottom:90px">
+    <div style="display:flex;align-items:center;justify-content:space-between;padding:30px 20px 12px;font-size:12px;color:oklch(52% 0.015 240)"><span>Main Cast · 12 notes</span><span style="display:flex;gap:2px"><span style="padding:4px 8px;border-radius:5px;cursor:pointer" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Modified ▾</span><span style="padding:4px 8px;border-radius:5px;cursor:pointer" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Filter</span></span></div>
+    <div style="margin:0 20px 10px;height:32px;border-radius:7px;border:1px solid oklch(90% 0.006 220);background:#fff;display:flex;align-items:center;padding:0 10px;gap:8px;font-size:12.5px;color:oklch(60% 0.012 240)"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Search in Characters</div>
+    <div style="display:flex;flex-direction:column;overflow:hidden">
+      <sc-for list="{{ notes }}" as="n" hint-placeholder-count="6">
+        <div onClick="{{ n.onClick }}" style="display:flex;flex-direction:column;gap:4px;padding:12px 20px;cursor:pointer;background:{{ n.bg }};border-left:2px solid {{ n.edge }}" style-hover="background:oklch(95% 0.006 220)">
+          <div style="display:flex;align-items:center;gap:6px"><span style="font-weight:500;font-size:14px;letter-spacing:-.01em">{{ n.t }}</span><span style="font-size:11px;color:oklch(52% 0.015 240)">{{ n.badge }}</span><span style="margin-left:auto;font-size:11px;color:oklch(60% 0.012 240)">{{ n.when }}</span></div>
+          <div style="font-size:12px;line-height:1.45;color:oklch(48% 0.015 240);white-space:nowrap;overflow:hidden;text-overflow:ellipsis">{{ n.s }}</div>
+          <div style="display:flex;gap:4px;margin-top:2px"><sc-for list="{{ n.cats }}" as="c" hint-placeholder-count="1"><span style="font-size:11px;padding:1px 7px;border-radius:999px;background:{{ c.bg }};color:{{ c.fg }}">{{ c.name }}</span></sc-for></div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+  <div style="padding:30px 44px 100px 40px;display:flex;flex-direction:column;gap:18px;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;font-size:12px;color:oklch(52% 0.015 240)">
+      <span style="display:flex;align-items:center;gap:8px"><span style="padding:3px 8px;border-radius:5px;background:oklch(94% 0.006 220);color:oklch(35% 0.015 240)">⧉ Also appears in Character Web and Main Plot</span></span>
+      <span style="display:flex;gap:2px"><span style="padding:5px 10px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Pin</span><span style="padding:5px 10px;border-radius:6px;cursor:pointer" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Open</span><span style="padding:5px 12px;border-radius:6px;cursor:pointer;background:oklch(18% 0.015 240);color:#fff" style-hover="background:oklch(28% 0.02 250)">Edit</span></span>
+    </div>
+    <div style="display:flex;gap:6px"><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#7c5cbf22;color:#4a3280">Character</span><span style="font-size:11.5px;padding:2px 9px;border-radius:999px;background:#3b7dd822;color:#1f4d8f">Lore</span></div>
+    <h2 style="margin:0;font:500 34px/1.05 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em">Queen Elara</h2>
+    <div style="font-size:14.5px;line-height:1.65;color:oklch(28% 0.015 240);display:flex;flex-direction:column;gap:12px;max-width:560px;text-wrap:pretty">
+      <p style="margin:0">Crowned at nineteen, three days after the fire. She has not spoken since, and the court has stopped waiting for her to. Decrees arrive in her own hand, sealed in grey wax.</p>
+      <p style="margin:0">Her brother <span style="border-bottom:1px solid oklch(70% 0.012 240);cursor:pointer;color:oklch(18% 0.015 240)" style-hover="border-bottom-color:oklch(18% 0.015 240);background:oklch(94% 0.006 220)">Kael</span> believes the silence is a choice. The <span style="border-bottom:1px solid oklch(70% 0.012 240);cursor:pointer" style-hover="border-bottom-color:oklch(18% 0.015 240);background:oklch(94% 0.006 220)">Northern Kingdom</span> believes it is a weakness.</p>
+      <blockquote style="margin:0;padding:2px 0 2px 16px;border-left:2px solid oklch(80% 0.01 240);font:400 16px/1.5 'Bricolage Grotesque',system-ui,sans-serif;color:oklch(40% 0.015 240)">"A queen who says nothing cannot be misquoted."</blockquote>
+      <ul style="margin:0;padding-left:20px;display:flex;flex-direction:column;gap:4px"><li>Wants: to be understood without explaining</li><li>Fears: that the silence has become who she is</li></ul>
+    </div>
+    <div style="display:flex;gap:8px;margin-top:4px">
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid oklch(90% 0.006 220);border-radius:7px;background:#fff;font-size:12px;cursor:pointer" style-hover="border-color:oklch(40% 0.015 240)"><span style="width:26px;height:32px;border-radius:2px;background:repeating-linear-gradient(135deg,oklch(90% 0.008 220) 0 3px,oklch(86% 0.01 220) 3px 6px)"></span><span style="display:flex;flex-direction:column"><span style="font-weight:500">elara-sketch.png</span><span style="color:oklch(55% 0.012 240)">Image · 1.2 MB</span></span></div>
+      <div style="display:flex;align-items:center;gap:10px;padding:8px 12px;border:1px solid oklch(90% 0.006 220);border-radius:7px;background:#fff;font-size:12px;cursor:pointer" style-hover="border-color:oklch(40% 0.015 240)"><span style="width:26px;height:32px;border-radius:2px;border:1px solid oklch(85% 0.008 220);display:grid;place-items:center;font-size:8px;color:oklch(50% 0.012 240)">PDF</span><span style="display:flex;flex-direction:column"><span style="font-weight:500">court-etiquette.pdf</span><span style="color:oklch(55% 0.012 240)">PDF · 340 KB</span></span></div>
+    </div>
+    <div style="margin-top:auto;font-size:11.5px;color:oklch(60% 0.012 240)">Created 11 Mar 2026 · Modified yesterday, 16:40</div>
+  </div>
+  <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;width:max-content;display:flex;align-items:center;gap:4px;padding:6px;border-radius:12px;background:oklch(17% 0.02 250);color:oklch(92% 0.006 220);box-shadow:0 16px 40px -12px rgba(0,0,0,.5);font-size:13px">
+    <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:oklch(68% 0.015 230)"><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="opacity:.4">/</span><span style="cursor:pointer" style-hover="color:#fff">The Silent Kingdom</span><span style="opacity:.4">/</span><span style="cursor:pointer" style-hover="color:#fff">Worldbuilding</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">Characters</span></div>
+    <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+    <span style="padding:8px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;color:oklch(68% 0.015 230)" style-hover="background:oklch(26% 0.02 250);color:#fff"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Search<span style="font-size:11px;opacity:.6">⌘⇧F</span></span>
+    <span style="padding:8px 12px;border-radius:8px;cursor:pointer" style-hover="background:oklch(26% 0.02 250)">+ Folder</span>
+    <span style="padding:8px 12px;border-radius:8px;cursor:pointer;background:#fff;color:oklch(17% 0.02 250);font-weight:500" style-hover="background:oklch(90% 0.006 220)">+ Note</span>
+  </div>
+</div></div>
+
+</div>
+<p class="dv-next">Try next: "show the note popup read + edit states" · "zoomed-in Plot Line and empty Info Map" · "dark mode of <a class="dv-oid" href="#3a">3a</a>"</p>
+</section>
+<section class="dv-turn" id="t2">
+<div class="dv-thd"><a class="dv-tid" href="#t2">2</a><span class="dv-tname">Tidied <a class="dv-oid" href="#1d">1d</a> with two type pairings</span></div>
+<p class="dv-intro">Same shelves + spine + dock structure. Removed the per-shelf "Open folder →" and the metadata table, cards carry one preview and one line of meta, shelves separated by hairlines. Click a shelf to focus it.</p>
+<div class="dv-opts">
+
+<!-- ===================== 2a INSTRUMENT SERIF + GEIST ===================== -->
+<div class="dv-opt" id="2a"><div class="dv-olabel"><a class="dv-oid" href="#2a">2a</a>Instrument Serif (italic display) + Geist — editorial, dark spine kept</div>
+<div class="dv-card" data-screen-label="2a Shelves editorial" style="width:1280px;height:800px;background:oklch(98% 0.004 220);color:oklch(18% 0.015 240);font-family:Geist,system-ui,sans-serif;display:grid;grid-template-columns:320px 1fr;position:relative;overflow:hidden">
+  <div style="background:oklch(17% 0.02 250);color:oklch(96% 0.006 220);padding:32px 36px;display:flex;flex-direction:column;position:relative">
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:oklch(68% 0.015 230)"><span style="cursor:pointer;padding:3px 6px;margin-left:-6px;border-radius:4px" style-hover="background:oklch(26% 0.02 250);color:#fff">← All projects</span></div>
+    <div style="margin-top:48px;width:160px;height:214px;border-radius:2px;background:repeating-linear-gradient(135deg,oklch(27% 0.02 250) 0 6px,oklch(23% 0.02 250) 6px 12px);box-shadow:0 24px 44px -18px rgba(0,0,0,.7);display:grid;place-items:center;font:10px ui-monospace,monospace;color:oklch(65% 0.015 230)">cover image</div>
+    <h1 style="margin:30px 0 0;font:400 46px/1 'Instrument Serif',Georgia,serif;letter-spacing:-.015em;text-wrap:pretty">The Silent <em style="font-style:italic">Kingdom</em></h1>
+    <p style="margin:14px 0 0;font:400 14px/1.55 Geist,sans-serif;color:oklch(72% 0.015 230);text-wrap:pretty">A queen who cannot speak, a kingdom that has forgotten how to listen.</p>
+    <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;color:oklch(68% 0.015 230)"><span>Fantasy</span><span>First draft</span><span>4 folders · 9 boards</span></div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.12em;color:oklch(60% 0.015 230)">Categories</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:#7c5cbf;color:#fff">Character</span>
+        <span style="font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:#3f9a5a;color:#fff">Location</span>
+        <span style="font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:#c8503f;color:#fff">Conflict</span>
+        <span style="font-size:12px;font-weight:500;padding:3px 10px;border-radius:999px;background:#3b7dd8;color:#fff">Lore</span>
+        <span style="font-size:12px;padding:3px 10px;border-radius:999px;border:1px solid oklch(40% 0.02 250);color:oklch(72% 0.015 230);cursor:pointer" style-hover="border-color:#fff;color:#fff">Edit</span>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 44px 0">
+      <div style="font-size:12px;color:oklch(52% 0.015 240)">Continue — <span style="color:oklch(18% 0.015 240);font-weight:500;cursor:pointer;border-bottom:1px solid oklch(82% 0.01 240)" style-hover="border-bottom-color:oklch(18% 0.015 240)">Main Plot</span>, 2 hours ago</div>
+      <div style="display:flex;gap:2px;font-size:12px;color:oklch(52% 0.015 240)"><span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Trash</span><span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:oklch(94% 0.006 220);color:oklch(18% 0.015 240)">Settings</span></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 0 92px">
+      <sc-for list="{{ shelvesA }}" as="f" hint-placeholder-count="4">
+        <div onClick="{{ f.onClick }}" style="padding:14px 44px 16px;cursor:pointer;transition:opacity .2s;opacity:{{ f.op }};border-top:1px solid oklch(91% 0.006 220)" style-hover="background:oklch(96.5% 0.005 220)">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px"><span style="font:400 30px/1 'Instrument Serif',Georgia,serif;letter-spacing:-.01em">{{ f.name }}</span><span style="font-size:12px;color:oklch(52% 0.015 240)">{{ f.meta }}</span></div>
+          <div style="display:flex;gap:10px">
+            <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+              <div style="box-sizing:border-box;width:208px;height:82px;border-radius:6px;background:#fff;border:1px solid oklch(90% 0.006 220);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s,border-color .15s" style-hover="transform:translateY(-2px);border-color:oklch(40% 0.02 240)">
+                <div style="display:flex;justify-content:space-between;align-items:flex-start"><span style="font-weight:500;font-size:14px;letter-spacing:-.01em">{{ b.name }}</span><span style="display:flex;gap:3px;padding-top:5px"><sc-for list="{{ b.cats }}" as="c" hint-placeholder-count="2"><span style="width:5px;height:5px;border-radius:50%;background:{{ c }}"></span></sc-for></span></div>
+                <span style="font-size:11.5px;color:oklch(52% 0.015 240)">{{ b.type }} · {{ b.meta }}</span>
+              </div>
+            </sc-for>
+            <sc-if value="{{ f.sub }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;width:120px;height:82px;border-radius:6px;background:oklch(94.5% 0.006 220);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s" style-hover="transform:translateY(-2px);background:oklch(91% 0.008 220)"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:oklch(70% 0.015 240);display:inline-block"></span><span><span style="font-weight:500;font-size:14px;display:block">{{ f.sub }}</span><span style="font-size:11.5px;color:oklch(52% 0.015 240)">Folder</span></span></div></sc-if>
+            <sc-if value="{{ f.add }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;width:120px;height:82px;border-radius:6px;border:1px dashed oklch(84% 0.008 220);display:grid;place-items:center;font-size:12px;color:oklch(52% 0.015 240);cursor:pointer" style-hover="border-color:oklch(40% 0.02 240);color:oklch(18% 0.015 240)">+ Board</div></sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;width:max-content;display:flex;align-items:center;gap:4px;padding:6px;border-radius:12px;background:oklch(17% 0.02 250);color:oklch(92% 0.006 220);box-shadow:0 16px 40px -12px rgba(0,0,0,.5);font-size:13px">
+      <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:oklch(68% 0.015 230)"><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">The Silent Kingdom</span></div>
+      <span style="width:1px;height:20px;background:oklch(32% 0.02 250);margin:0 4px"></span>
+      <span style="padding:8px 12px;border-radius:8px;cursor:pointer;display:flex;align-items:center;gap:8px;color:oklch(68% 0.015 230);width:190px" style-hover="background:oklch(26% 0.02 250);color:#fff"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Search<span style="margin-left:auto;font-size:11px;opacity:.6">⌘⇧F</span></span>
+      <span style="padding:8px 12px;border-radius:8px;cursor:pointer" style-hover="background:oklch(26% 0.02 250)">+ Folder</span>
+      <span style="padding:8px 12px;border-radius:8px;cursor:pointer;background:#fff;color:oklch(17% 0.02 250);font-weight:500" style-hover="background:oklch(90% 0.006 220)">+ Board</span>
+    </div>
+  </div>
+</div></div>
+
+<!-- ===================== 2b BRICOLAGE + FIGTREE ===================== -->
+<div class="dv-opt" id="2b"><div class="dv-olabel"><a class="dv-oid" href="#2b">2b</a>Bricolage Grotesque + Figtree — all-grotesk, lighter spine, uppercase shelf labels</div>
+<div class="dv-card" data-screen-label="2b Shelves grotesk" style="width:1280px;height:800px;background:#fbfbfa;color:#141414;font-family:Figtree,system-ui,sans-serif;display:grid;grid-template-columns:320px 1fr;position:relative;overflow:hidden">
+  <div style="background:#f0efec;border-right:1px solid #e4e3df;padding:32px 36px;display:flex;flex-direction:column;position:relative">
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#77756f"><span style="cursor:pointer;padding:3px 6px;margin-left:-6px;border-radius:4px" style-hover="background:#e4e3df;color:#141414">← All projects</span></div>
+    <div style="margin-top:48px;width:160px;height:214px;border-radius:3px;background:repeating-linear-gradient(135deg,#dcdbd6 0 6px,#d2d1cb 6px 12px);box-shadow:0 22px 40px -18px rgba(0,0,0,.35);display:grid;place-items:center;font:10px ui-monospace,monospace;color:#77756f">cover image</div>
+    <h1 style="margin:30px 0 0;font:500 38px/1.02 'Bricolage Grotesque',system-ui,sans-serif;letter-spacing:-.03em;text-wrap:pretty">The Silent Kingdom</h1>
+    <p style="margin:14px 0 0;font-size:14px;line-height:1.55;color:#5d5b56;text-wrap:pretty">A queen who cannot speak, a kingdom that has forgotten how to listen.</p>
+    <div style="margin-top:22px;display:flex;flex-wrap:wrap;gap:6px"><span style="font-size:12px;font-weight:500;padding:3px 9px;border-radius:5px;background:#e4e3df">Fantasy</span><span style="font-size:12px;font-weight:500;padding:3px 9px;border-radius:5px;background:#e4e3df">First draft</span></div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:10px">
+      <div style="font:500 11px 'Bricolage Grotesque',sans-serif;text-transform:uppercase;letter-spacing:.14em;color:#77756f">Categories</div>
+      <div style="display:flex;flex-direction:column;gap:4px;font-size:13px">
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="width:10px;height:10px;border-radius:3px;background:#7c5cbf"></span>Character<span style="margin-left:auto;color:#77756f;font-size:12px">41</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="width:10px;height:10px;border-radius:3px;background:#3f9a5a"></span>Location<span style="margin-left:auto;color:#77756f;font-size:12px">23</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="width:10px;height:10px;border-radius:3px;background:#c8503f"></span>Conflict<span style="margin-left:auto;color:#77756f;font-size:12px">17</span></div>
+        <div style="display:flex;align-items:center;gap:10px;padding:4px 0"><span style="width:10px;height:10px;border-radius:3px;background:#3b7dd8"></span>Lore<span style="margin-left:auto;color:#77756f;font-size:12px">29</span></div>
+      </div>
+    </div>
+  </div>
+  <div style="position:relative;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:22px 44px 0">
+      <div style="font-size:12px;color:#77756f">Continue — <span style="color:#141414;font-weight:500;cursor:pointer;border-bottom:1px solid #d2d1cb" style-hover="border-bottom-color:#141414">Main Plot</span>, 2 hours ago</div>
+      <div style="display:flex;gap:2px;font-size:12px;color:#77756f"><span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:#f0efec;color:#141414">Trash</span><span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:#f0efec;color:#141414">Settings</span></div>
+    </div>
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;padding:0 0 92px">
+      <sc-for list="{{ shelvesB }}" as="f" hint-placeholder-count="4">
+        <div onClick="{{ f.onClick }}" style="padding:16px 44px 18px;cursor:pointer;transition:opacity .2s;opacity:{{ f.op }}" style-hover="background:#f5f5f3">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px"><span style="font:600 13px 'Bricolage Grotesque',sans-serif;text-transform:uppercase;letter-spacing:.14em">{{ f.name }}</span><span style="font-size:12px;color:#77756f">{{ f.meta }}</span></div>
+          <div style="display:flex;gap:10px">
+            <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+              <div style="box-sizing:border-box;width:208px;height:84px;border-radius:10px;background:#fff;border:1px solid #e8e7e3;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s,box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 8px 20px -10px rgba(0,0,0,.25)">
+                <span style="font:500 16px/1.15 'Bricolage Grotesque',sans-serif;letter-spacing:-.02em">{{ b.name }}</span>
+                <div style="display:flex;justify-content:space-between;align-items:center"><span style="font-size:11.5px;color:#77756f">{{ b.type }} · {{ b.meta }}</span><span style="display:flex;gap:3px"><sc-for list="{{ b.cats }}" as="c" hint-placeholder-count="2"><span style="width:6px;height:6px;border-radius:2px;background:{{ c }}"></span></sc-for></span></div>
+              </div>
+            </sc-for>
+            <sc-if value="{{ f.sub }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;width:120px;height:84px;border-radius:10px;background:#f0efec;padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s" style-hover="transform:translateY(-2px);background:#e4e3df"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:#b8b6b0;display:inline-block"></span><span><span style="font:500 15px 'Bricolage Grotesque',sans-serif;display:block;letter-spacing:-.01em">{{ f.sub }}</span><span style="font-size:11.5px;color:#77756f">Folder</span></span></div></sc-if>
+            <sc-if value="{{ f.add }}" hint-placeholder-val="{{ false }}"><div style="box-sizing:border-box;width:120px;height:84px;border-radius:10px;border:1px dashed #d2d1cb;display:grid;place-items:center;font-size:12px;color:#77756f;cursor:pointer" style-hover="border-color:#141414;color:#141414">+ Board</div></sc-if>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+    <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;width:max-content;display:flex;align-items:center;gap:4px;padding:6px;border-radius:14px;background:#141414;color:#e8e7e3;box-shadow:0 16px 40px -12px rgba(0,0,0,.45);font-size:13px">
+      <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:#a09e98"><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">The Silent Kingdom</span></div>
+      <span style="width:1px;height:20px;background:#3a3a3a;margin:0 4px"></span>
+      <span style="padding:8px 12px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:8px;color:#a09e98;width:190px" style-hover="background:#2a2a2a;color:#fff"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Search<span style="margin-left:auto;font-size:11px;opacity:.6">⌘⇧F</span></span>
+      <span style="padding:8px 12px;border-radius:9px;cursor:pointer" style-hover="background:#2a2a2a">+ Folder</span>
+      <span style="padding:8px 12px;border-radius:9px;cursor:pointer;background:#fff;color:#141414;font-weight:500" style-hover="background:#e8e7e3">+ Board</span>
+    </div>
+  </div>
+</div></div>
+
+</div>
+<p class="dv-next">Try next: "carry <a class="dv-oid" href="#2a">2a</a> into the Plot Line and Info Map" · "<a class="dv-oid" href="#2b">2b</a> with the dark spine from <a class="dv-oid" href="#2a">2a</a>" · "dark mode of <a class="dv-oid" href="#2a">2a</a>"</p>
+</section>
+<section class="dv-turn" id="t1">
+<div class="dv-thd"><a class="dv-tid" href="#t1">1</a><span class="dv-tname">Project Dashboard — four directions, light mode, "The Silent Kingdom"</span></div>
+<p class="dv-intro">Assumptions: 1280×800 desktop window, breadcrumb as the persistent nav (no fixed sidebar unless the direction chooses one), same content in every option so the differences are structural. Each option changes navigation placement, top bar, how folders/boards are shown, and density — not just colour. Hover the boards and folders; <a class="dv-oid" href="#1c">1c</a> folders collapse, <a class="dv-oid" href="#1d">1d</a> shelves focus on click.</p>
+<div class="dv-opts">
+
+<!-- ===================== 1a WRITER'S DESK ===================== -->
+<div class="dv-opt" id="1a"><div class="dv-olabel"><a class="dv-oid" href="#1a">1a</a>Writer's Desk — warm, spacious, centred manuscript column; breadcrumb floats above the title</div>
+<div class="dv-card" data-screen-label="1a Writer's Desk" style="width:1280px;height:800px;background:oklch(96.5% 0.012 70);color:oklch(24% 0.02 60);font-family:'Instrument Sans',system-ui,sans-serif;position:relative;display:flex;flex-direction:column">
+  <div style="display:flex;align-items:center;justify-content:space-between;padding:18px 40px 0">
+    <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:oklch(50% 0.02 60)">
+      <span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:oklch(92% 0.015 70);color:oklch(24% 0.02 60)">Projects</span><span style="opacity:.5">/</span>
+      <span style="padding:4px 8px;color:oklch(24% 0.02 60)">The Silent Kingdom</span>
+    </div>
+    <div style="display:flex;align-items:center;gap:6px">
+      <div style="display:flex;align-items:center;gap:8px;padding:7px 12px;border-radius:999px;border:1px solid oklch(86% 0.015 70);color:oklch(50% 0.02 60);font-size:13px;width:200px;cursor:text" style-hover="border-color:oklch(70% 0.03 70)"><span style="width:12px;height:12px;border:1.5px solid currentColor;border-radius:50%;position:relative;display:inline-block"></span>Search project…<span style="margin-left:auto;font-size:11px;opacity:.6">⌘⇧F</span></div>
+      <span style="width:32px;height:32px;display:grid;place-items:center;border-radius:8px;cursor:pointer;color:oklch(50% 0.02 60)" style-hover="background:oklch(92% 0.015 70)">⋯</span>
+    </div>
+  </div>
+  <div style="flex:1;overflow:hidden;padding:30px 0 0;display:flex;justify-content:center">
+    <div style="width:820px;display:flex;flex-direction:column;gap:26px">
+      <div style="display:flex;gap:28px;align-items:flex-end">
+        <div style="width:84px;height:112px;border-radius:4px;background:repeating-linear-gradient(135deg,oklch(88% 0.02 70) 0 6px,oklch(84% 0.025 70) 6px 12px);box-shadow:0 8px 20px -8px oklch(40% 0.03 60 / .5);display:grid;place-items:center;font:10px ui-monospace,monospace;color:oklch(45% 0.03 60);text-align:center;padding:6px;flex:none">cover image</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:10px;padding-bottom:6px">
+          <div style="display:flex;gap:8px;align-items:center;font-size:12px;color:oklch(50% 0.02 60);letter-spacing:.02em"><span style="text-transform:uppercase;font-weight:600;font-size:11px">Fantasy</span><span>·</span><span>First draft</span><span>·</span><span>4 folders, 9 boards</span></div>
+          <h1 style="margin:0;font:500 44px/1.05 Lora,Georgia,serif;letter-spacing:-.01em">The Silent Kingdom</h1>
+          <p style="margin:0;font:italic 400 17px/1.5 Lora,Georgia,serif;color:oklch(42% 0.02 60);max-width:560px;text-wrap:pretty">A queen who cannot speak, a kingdom that has forgotten how to listen, and the brother who returns to break the silence.</p>
+        </div>
+        <div style="display:flex;gap:8px;padding-bottom:8px">
+          <span style="padding:9px 14px;border-radius:8px;border:1px solid oklch(84% 0.02 70);font-size:13px;font-weight:500;cursor:pointer;background:transparent" style-hover="background:oklch(92% 0.015 70)">New folder</span>
+          <span style="padding:9px 14px;border-radius:8px;background:oklch(32% 0.04 60);color:oklch(97% 0.01 70);font-size:13px;font-weight:500;cursor:pointer" style-hover="background:oklch(26% 0.04 60)">New board</span>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:oklch(55% 0.02 60);font-weight:600">Pick up where you left off</div>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:14px">
+          <div style="background:oklch(99% 0.006 80);border:1px solid oklch(90% 0.015 70);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:transform .15s,box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 10px 24px -12px oklch(40% 0.03 60 / .45)">
+            <div style="height:54px;border-radius:6px;background:oklch(96% 0.01 70);position:relative;overflow:hidden"><span style="position:absolute;left:10%;right:10%;top:60%;height:1px;background:oklch(80% 0.02 70)"></span><span style="position:absolute;left:18%;top:52%;width:7px;height:7px;border-radius:50%;background:#7c5cbf"></span><span style="position:absolute;left:38%;top:38%;width:7px;height:7px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:58%;top:22%;width:7px;height:7px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:78%;top:44%;width:7px;height:7px;border-radius:50%;background:#3b7dd8"></span></div>
+            <div><div style="font:500 16px Lora,Georgia,serif">Main Plot</div><div style="font-size:12px;color:oklch(55% 0.02 60);margin-top:3px">Plot Line · Plot · 2 hours ago</div></div>
+          </div>
+          <div style="background:oklch(99% 0.006 80);border:1px solid oklch(90% 0.015 70);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:transform .15s,box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 10px 24px -12px oklch(40% 0.03 60 / .45)">
+            <div style="height:54px;border-radius:6px;background:oklch(96% 0.01 70);position:relative;overflow:hidden"><span style="position:absolute;left:14%;top:22%;width:26%;height:30%;border-radius:3px;background:oklch(99% 0.006 80);border:1px solid #7c5cbf"></span><span style="position:absolute;left:58%;top:48%;width:26%;height:30%;border-radius:3px;background:oklch(99% 0.006 80);border:1px solid #3f9a5a"></span><span style="position:absolute;left:40%;top:37%;width:18%;height:1px;background:oklch(70% 0.02 70);transform:rotate(30deg)"></span></div>
+            <div><div style="font:500 16px Lora,Georgia,serif">Character Web</div><div style="font-size:12px;color:oklch(55% 0.02 60);margin-top:3px">Info Map · Worldbuilding · Yesterday</div></div>
+          </div>
+          <div style="background:oklch(99% 0.006 80);border:1px solid oklch(90% 0.015 70);border-radius:10px;padding:16px 18px;display:flex;flex-direction:column;gap:14px;cursor:pointer;transition:transform .15s,box-shadow .15s" style-hover="transform:translateY(-2px);box-shadow:0 10px 24px -12px oklch(40% 0.03 60 / .45)">
+            <div style="height:54px;border-radius:6px;background:oklch(96% 0.01 70);padding:10px 12px;display:flex;flex-direction:column;gap:5px"><span style="height:4px;width:70%;border-radius:2px;background:oklch(82% 0.02 70)"></span><span style="height:4px;width:55%;border-radius:2px;background:oklch(86% 0.015 70)"></span><span style="height:4px;width:62%;border-radius:2px;background:oklch(86% 0.015 70)"></span></div>
+            <div><div style="font:500 16px Lora,Georgia,serif">Queen Elara</div><div style="font-size:12px;color:oklch(55% 0.02 60);margin-top:3px">Note · Worldbuilding › Characters · Yesterday</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:oklch(55% 0.02 60);font-weight:600">Contents</div>
+        <div style="display:grid;grid-template-columns:1fr 1fr;column-gap:56px;row-gap:6px;border-top:1px solid oklch(88% 0.015 70)">
+          <div style="padding:12px 0 8px;border-bottom:1px solid oklch(90% 0.015 70)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;cursor:pointer;padding:2px 6px;margin:0 -6px;border-radius:6px" style-hover="background:oklch(93% 0.014 70)"><span style="font:500 19px Lora,Georgia,serif">Plot</span><span style="font-size:12px;color:oklch(58% 0.02 60)">3 boards</span></div>
+            <div style="display:flex;flex-direction:column;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Main Plot<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Plot Line</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>The Siege<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Plot Line</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Kael's Return<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Plot Line</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 0 8px;border-bottom:1px solid oklch(90% 0.015 70)">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;cursor:pointer;padding:2px 6px;margin:0 -6px;border-radius:6px" style-hover="background:oklch(93% 0.014 70)"><span style="font:500 19px Lora,Georgia,serif">Worldbuilding</span><span style="font-size:12px;color:oklch(58% 0.02 60)">3 boards</span></div>
+            <div style="display:flex;flex-direction:column;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Characters<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Notes</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><rect x="1" y="1" width="5" height="4" rx="1" fill="currentColor"/><rect x="8" y="9" width="5" height="4" rx="1" fill="currentColor"/><path d="M4 5 L10 9" stroke="currentColor"/></svg>Character Web<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Info Map</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Locations<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Notes</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 0 8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;cursor:pointer;padding:2px 6px;margin:0 -6px;border-radius:6px" style-hover="background:oklch(93% 0.014 70)"><span style="font:500 19px Lora,Georgia,serif">Research</span><span style="font-size:12px;color:oklch(58% 0.02 60)">2 boards</span></div>
+            <div style="display:flex;flex-direction:column;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Inspiration<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Notes</span></div>
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Real World References<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Notes</span></div>
+            </div>
+          </div>
+          <div style="padding:12px 0 8px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;cursor:pointer;padding:2px 6px;margin:0 -6px;border-radius:6px" style-hover="background:oklch(93% 0.014 70)"><span style="font:500 19px Lora,Georgia,serif">Notes</span><span style="font-size:12px;color:oklch(58% 0.02 60)">1 board</span></div>
+            <div style="display:flex;flex-direction:column;margin-top:8px">
+              <div style="display:flex;align-items:center;gap:10px;padding:5px 6px;margin:0 -6px;border-radius:6px;font-size:14px;cursor:pointer" style-hover="background:oklch(93% 0.014 70)"><svg width="14" height="14" viewBox="0 0 14 14" style="color:oklch(50% 0.02 60)"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>General Notes<span style="margin-left:auto;font-size:12px;color:oklch(60% 0.02 60)">Notes</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ===================== 1b CLEAN STUDIO ===================== -->
+<div class="dv-opt" id="1b"><div class="dv-olabel"><a class="dv-oid" href="#1b">1b</a>Clean Studio — neutral, medium density; top bar with breadcrumb + search; folder cards with board tiles, pinned/recent rail on the right</div>
+<div class="dv-card" data-screen-label="1b Clean Studio" style="width:1280px;height:800px;background:#f6f6f7;color:#17181c;font-family:Manrope,system-ui,sans-serif;display:flex;flex-direction:column">
+  <div style="height:52px;background:#fff;border-bottom:1px solid #e6e7ea;display:flex;align-items:center;padding:0 16px;gap:16px">
+    <div style="display:flex;gap:4px"><span style="width:28px;height:28px;display:grid;place-items:center;border-radius:6px;color:#8a8d95;cursor:pointer" style-hover="background:#f0f0f2;color:#17181c">‹</span><span style="width:28px;height:28px;display:grid;place-items:center;border-radius:6px;color:#c5c7cc">›</span></div>
+    <div style="display:flex;align-items:center;gap:4px;font-size:13px;font-weight:500">
+      <span style="padding:5px 8px;border-radius:6px;color:#6c6f78;cursor:pointer" style-hover="background:#f0f0f2;color:#17181c">Projects</span><span style="color:#c5c7cc">/</span>
+      <span style="padding:5px 8px;border-radius:6px;display:flex;align-items:center;gap:6px"><span style="width:8px;height:8px;border-radius:2px;background:oklch(55% 0.12 230)"></span>The Silent Kingdom</span>
+    </div>
+    <div style="flex:1;display:flex;justify-content:center"><div style="width:380px;height:32px;border-radius:8px;background:#f0f0f2;display:flex;align-items:center;padding:0 10px;gap:8px;font-size:13px;color:#8a8d95;cursor:text" style-hover="background:#e9e9ec"><span style="width:12px;height:12px;border:1.5px solid currentColor;border-radius:50%"></span>Search notes, boards, folders<span style="margin-left:auto;font-size:11px;background:#fff;padding:1px 5px;border-radius:4px;border:1px solid #e6e7ea">Ctrl ⇧ F</span></div></div>
+    <div style="display:flex;gap:6px;align-items:center;font-size:13px">
+      <span style="padding:6px 10px;border-radius:6px;color:#6c6f78;cursor:pointer" style-hover="background:#f0f0f2;color:#17181c">Trash</span>
+      <span style="padding:6px 10px;border-radius:6px;color:#6c6f78;cursor:pointer" style-hover="background:#f0f0f2;color:#17181c">Settings</span>
+    </div>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:1fr 300px;overflow:hidden">
+    <div style="padding:32px 36px;display:flex;flex-direction:column;gap:28px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:20px">
+        <div style="width:64px;height:64px;border-radius:12px;background:repeating-linear-gradient(135deg,#e2e3e7 0 5px,#d7d8de 5px 10px);display:grid;place-items:center;font:9px ui-monospace,monospace;color:#6c6f78;text-align:center;flex:none">cover</div>
+        <div style="flex:1;display:flex;flex-direction:column;gap:6px">
+          <div style="display:flex;align-items:center;gap:10px"><h1 style="margin:0;font:700 26px/1.1 Manrope,sans-serif;letter-spacing:-.02em">The Silent Kingdom</h1><span style="font-size:11px;font-weight:600;padding:3px 8px;border-radius:999px;background:oklch(94% 0.03 230);color:oklch(40% 0.12 230)">First draft</span></div>
+          <div style="font-size:13px;color:#6c6f78">Fantasy · 4 folders · 9 boards · 143 notes · Edited 2 hours ago</div>
+        </div>
+        <div style="display:flex;gap:8px">
+          <span style="padding:8px 12px;border-radius:8px;border:1px solid #dcdde1;background:#fff;font-size:13px;font-weight:600;cursor:pointer" style-hover="background:#f0f0f2">New folder</span>
+          <span style="padding:8px 12px;border-radius:8px;background:#17181c;color:#fff;font-size:13px;font-weight:600;cursor:pointer;display:flex;gap:6px;align-items:center" style-hover="background:#2c2e35">New board<span style="opacity:.6;font-size:10px">▾</span></span>
+        </div>
+      </div>
+
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;align-content:start">
+        <div style="background:#fff;border:1px solid #e6e7ea;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;cursor:default" style-hover="border-color:#cfd1d6">
+          <div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:#c5c7cc;display:inline-block"></span>Plot</div><span style="font-size:12px;color:#8a8d95">3 boards</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:oklch(55% 0.12 230)"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Main Plot</div><div style="font-size:11px;color:#8a8d95">Plot Line</div></div>
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:oklch(55% 0.12 230)"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">The Siege</div><div style="font-size:11px;color:#8a8d95">Plot Line</div></div>
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:oklch(55% 0.12 230)"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Kael's Return</div><div style="font-size:11px;color:#8a8d95">Plot Line</div></div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #e6e7ea;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#cfd1d6">
+          <div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:#c5c7cc;display:inline-block"></span>Worldbuilding</div><span style="font-size:12px;color:#8a8d95">3 boards · 1 folder</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:#7c5cbf"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Characters</div><div style="font-size:11px;color:#8a8d95">Notes · 38</div></div>
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:oklch(55% 0.12 230)"><rect x="1" y="1" width="5" height="4" rx="1" fill="currentColor"/><rect x="8" y="9" width="5" height="4" rx="1" fill="currentColor"/><path d="M4 5 L10 9" stroke="currentColor"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Character Web</div><div style="font-size:11px;color:#8a8d95">Info Map</div></div>
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:#3f9a5a"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Locations</div><div style="font-size:11px;color:#8a8d95">Notes · 21</div></div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:#6c6f78;padding:6px 8px;border-radius:6px;cursor:pointer" style-hover="background:#f0f0f2;color:#17181c"><span style="width:12px;height:9px;border-radius:1px 2px 2px 2px;background:#c5c7cc;display:inline-block"></span>Factions<span style="margin-left:auto">1 board</span></div>
+        </div>
+        <div style="background:#fff;border:1px solid #e6e7ea;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#cfd1d6">
+          <div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:#c5c7cc;display:inline-block"></span>Research</div><span style="font-size:12px;color:#8a8d95">2 boards</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:#3b7dd8"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Inspiration</div><div style="font-size:11px;color:#8a8d95">Notes · 12</div></div>
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:#3b7dd8"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">Real World References</div><div style="font-size:11px;color:#8a8d95">Notes · 9</div></div>
+            <div style="border:1px dashed #dcdde1;border-radius:8px;padding:10px;display:grid;place-items:center;font-size:12px;color:#8a8d95;cursor:pointer" style-hover="border-color:#8a8d95;color:#17181c">+ Board</div>
+          </div>
+        </div>
+        <div style="background:#fff;border:1px solid #e6e7ea;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px" style-hover="border-color:#cfd1d6">
+          <div style="display:flex;align-items:center;justify-content:space-between"><div style="display:flex;align-items:center;gap:8px;font-weight:700;font-size:14px"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:#c5c7cc;display:inline-block"></span>Notes</div><span style="font-size:12px;color:#8a8d95">1 board</span></div>
+          <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px">
+            <div style="border:1px solid #eceded;border-radius:8px;padding:10px;display:flex;flex-direction:column;gap:8px;cursor:pointer;background:#fafafa" style-hover="background:#fff;border-color:oklch(55% 0.12 230);box-shadow:0 2px 8px rgba(0,0,0,.06)"><svg width="16" height="16" viewBox="0 0 14 14" style="color:#8a8d95"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg><div style="font-size:13px;font-weight:600;line-height:1.2">General Notes</div><div style="font-size:11px;color:#8a8d95">Notes · 63</div></div>
+            <div style="border:1px dashed #dcdde1;border-radius:8px;padding:10px;display:grid;place-items:center;font-size:12px;color:#8a8d95;cursor:pointer" style-hover="border-color:#8a8d95;color:#17181c">+ Board</div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div style="border-left:1px solid #e6e7ea;background:#fff;padding:28px 22px;display:flex;flex-direction:column;gap:28px;overflow:hidden">
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a8d95">Pinned</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:#f0f0f2"><span style="width:8px;height:8px;border-radius:50%;background:#7c5cbf;flex:none"></span><span style="font-weight:600">Queen Elara</span><span style="margin-left:auto;font-size:11px;color:#8a8d95">Note</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:#f0f0f2"><span style="width:8px;height:8px;border-radius:50%;background:#3b7dd8;flex:none"></span><span style="font-weight:600">The Vow of Silence</span><span style="margin-left:auto;font-size:11px;color:#8a8d95">Note</span></div>
+          <div style="display:flex;align-items:center;gap:10px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer;font-size:13px" style-hover="background:#f0f0f2"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#6c6f78;flex:none"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg><span style="font-weight:600">Main Plot</span><span style="margin-left:auto;font-size:11px;color:#8a8d95">Board</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a8d95">Recent</div>
+        <div style="display:flex;flex-direction:column;gap:2px">
+          <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer" style-hover="background:#f0f0f2"><span style="font-size:13px;font-weight:600">Main Plot</span><span style="font-size:11px;color:#8a8d95">Plot › 2 hours ago</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer" style-hover="background:#f0f0f2"><span style="font-size:13px;font-weight:600">Character Web</span><span style="font-size:11px;color:#8a8d95">Worldbuilding › Yesterday</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer" style-hover="background:#f0f0f2"><span style="font-size:13px;font-weight:600">Elara discovers the betrayal</span><span style="font-size:11px;color:#8a8d95">Plot › Main Plot › Yesterday</span></div>
+          <div style="display:flex;flex-direction:column;gap:2px;padding:8px 10px;margin:0 -10px;border-radius:8px;cursor:pointer" style-hover="background:#f0f0f2"><span style="font-size:13px;font-weight:600">Northern Kingdom</span><span style="font-size:11px;color:#8a8d95">Worldbuilding › Locations › 3 days ago</span></div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        <div style="font-size:11px;font-weight:700;text-transform:uppercase;letter-spacing:.08em;color:#8a8d95">Categories</div>
+        <div style="display:flex;flex-wrap:wrap;gap:6px">
+          <span style="font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#7c5cbf1a;color:#5a3f96;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span>Character</span>
+          <span style="font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#3f9a5a1a;color:#2b6e3f;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#3f9a5a"></span>Location</span>
+          <span style="font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#c8503f1a;color:#9a3a2c;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#c8503f"></span>Conflict</span>
+          <span style="font-size:12px;font-weight:600;padding:3px 9px;border-radius:999px;background:#3b7dd81a;color:#2a5ea6;display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:#3b7dd8"></span>Lore</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div></div>
+
+<!-- ===================== 1c DENSE WORKSPACE ===================== -->
+<div class="dv-opt" id="1c"><div class="dv-olabel"><a class="dv-oid" href="#1c">1c</a>Dense Workspace — compact tree panel, open boards as tabs, table-style board list, inspector on the right, status bar; click folders in the tree to collapse</div>
+<div class="dv-card" data-screen-label="1c Dense Workspace" style="width:1280px;height:800px;background:#eef0ee;color:#151816;font-family:Onest,system-ui,sans-serif;font-size:12px;display:flex;flex-direction:column">
+  <div style="height:36px;background:#fff;border-bottom:1px solid #d9dcd9;display:flex;align-items:stretch;padding:0 8px;gap:8px">
+    <div style="display:flex;align-items:center;gap:2px;padding-right:6px;border-right:1px solid #e3e6e3"><span style="width:24px;height:24px;display:grid;place-items:center;border-radius:4px;color:#6b716c;cursor:pointer" style-hover="background:#eef0ee">‹</span><span style="width:24px;height:24px;display:grid;place-items:center;border-radius:4px;color:#c3c8c3">›</span></div>
+    <div style="display:flex;align-items:stretch">
+      <div style="display:flex;align-items:center;gap:6px;padding:0 12px;border-bottom:2px solid oklch(55% 0.12 150);font-weight:600;cursor:pointer"><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:oklch(55% 0.12 150);display:inline-block"></span>Dashboard</div>
+      <div style="display:flex;align-items:center;gap:6px;padding:0 12px;color:#6b716c;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#151816;background:#f4f5f4"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Main Plot<span style="opacity:.5;margin-left:4px">×</span></div>
+      <div style="display:flex;align-items:center;gap:6px;padding:0 12px;color:#6b716c;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#151816;background:#f4f5f4"><svg width="11" height="11" viewBox="0 0 14 14"><rect x="1" y="1" width="5" height="4" rx="1" fill="currentColor"/><rect x="8" y="9" width="5" height="4" rx="1" fill="currentColor"/><path d="M4 5 L10 9" stroke="currentColor"/></svg>Character Web<span style="opacity:.5;margin-left:4px">×</span></div>
+      <div style="display:flex;align-items:center;gap:6px;padding:0 12px;color:#6b716c;cursor:pointer;border-bottom:2px solid transparent" style-hover="color:#151816;background:#f4f5f4"><svg width="11" height="11" viewBox="0 0 14 14"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Characters<span style="opacity:.5;margin-left:4px">×</span></div>
+      <span style="width:28px;display:grid;place-items:center;color:#8a908b;cursor:pointer" style-hover="color:#151816">+</span>
+    </div>
+    <div style="margin-left:auto;display:flex;align-items:center;gap:8px">
+      <div style="width:260px;height:24px;border-radius:4px;border:1px solid #d9dcd9;background:#f7f8f7;display:flex;align-items:center;padding:0 8px;gap:6px;color:#8a908b;cursor:text" style-hover="border-color:#a9b0aa">Search…<span style="margin-left:auto;font:10px 'JetBrains Mono',monospace">^⇧F</span></div>
+      <span style="padding:0 8px;height:24px;display:grid;place-items:center;border-radius:4px;color:#6b716c;cursor:pointer" style-hover="background:#eef0ee">Trash</span>
+      <span style="padding:0 8px;height:24px;display:grid;place-items:center;border-radius:4px;color:#6b716c;cursor:pointer" style-hover="background:#eef0ee">Settings</span>
+    </div>
+  </div>
+  <div style="flex:1;display:grid;grid-template-columns:232px 1fr 272px;overflow:hidden">
+    <!-- tree -->
+    <div style="background:#f7f8f7;border-right:1px solid #d9dcd9;display:flex;flex-direction:column;overflow:hidden">
+      <div style="display:flex;align-items:center;justify-content:space-between;padding:8px 10px 4px;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#8a908b;text-transform:uppercase">Project<span style="display:flex;gap:2px"><span style="width:18px;height:18px;display:grid;place-items:center;border-radius:3px;cursor:pointer" style-hover="background:#e3e6e3;color:#151816" title="New folder">▭+</span><span style="width:18px;height:18px;display:grid;place-items:center;border-radius:3px;cursor:pointer" style-hover="background:#e3e6e3;color:#151816" title="New board">+</span></span></div>
+      <div style="display:flex;flex-direction:column;padding:2px 6px;user-select:none">
+        <div style="display:flex;align-items:center;gap:6px;height:24px;padding:0 6px;border-radius:4px;background:oklch(55% 0.12 150 / .14);font-weight:600;cursor:pointer"><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:oklch(55% 0.12 150);display:inline-block"></span>The Silent Kingdom</div>
+        <div onClick="{{ toggle.plot }}" style="display:flex;align-items:center;gap:6px;height:24px;padding:0 6px 0 16px;border-radius:4px;cursor:pointer;font-weight:500" style-hover="background:#e9ece9"><span style="font-size:9px;color:#8a908b;width:8px;display:inline-block">{{ caret.plot }}</span><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:#b9c0ba;display:inline-block"></span>Plot<span style="margin-left:auto;font:10px 'JetBrains Mono',monospace;color:#8a908b">3</span></div>
+        <sc-if value="{{ open.plot }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Main Plot</div>
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>The Siege</div>
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Kael's Return</div>
+        </sc-if>
+        <div onClick="{{ toggle.world }}" style="display:flex;align-items:center;gap:6px;height:24px;padding:0 6px 0 16px;border-radius:4px;cursor:pointer;font-weight:500" style-hover="background:#e9ece9"><span style="font-size:9px;color:#8a908b;width:8px;display:inline-block">{{ caret.world }}</span><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:#b9c0ba;display:inline-block"></span>Worldbuilding<span style="margin-left:auto;font:10px 'JetBrains Mono',monospace;color:#8a908b">4</span></div>
+        <sc-if value="{{ open.world }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Characters</div>
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><rect x="1" y="1" width="5" height="4" rx="1" fill="currentColor"/><rect x="8" y="9" width="5" height="4" rx="1" fill="currentColor"/><path d="M4 5 L10 9" stroke="currentColor"/></svg>Character Web</div>
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Locations</div>
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 30px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><span style="font-size:9px;color:#8a908b;width:8px;display:inline-block">▸</span><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:#b9c0ba;display:inline-block"></span>Factions</div>
+        </sc-if>
+        <div onClick="{{ toggle.research }}" style="display:flex;align-items:center;gap:6px;height:24px;padding:0 6px 0 16px;border-radius:4px;cursor:pointer;font-weight:500" style-hover="background:#e9ece9"><span style="font-size:9px;color:#8a908b;width:8px;display:inline-block">{{ caret.research }}</span><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:#b9c0ba;display:inline-block"></span>Research<span style="margin-left:auto;font:10px 'JetBrains Mono',monospace;color:#8a908b">2</span></div>
+        <sc-if value="{{ open.research }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Inspiration</div>
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Real World References</div>
+        </sc-if>
+        <div onClick="{{ toggle.notes }}" style="display:flex;align-items:center;gap:6px;height:24px;padding:0 6px 0 16px;border-radius:4px;cursor:pointer;font-weight:500" style-hover="background:#e9ece9"><span style="font-size:9px;color:#8a908b;width:8px;display:inline-block">{{ caret.notes }}</span><span style="width:10px;height:8px;border-radius:1px 2px 2px 2px;background:#b9c0ba;display:inline-block"></span>Notes<span style="margin-left:auto;font:10px 'JetBrains Mono',monospace;color:#8a908b">1</span></div>
+        <sc-if value="{{ open.notes }}" hint-placeholder-val="{{ true }}">
+          <div style="display:flex;align-items:center;gap:6px;height:22px;padding:0 6px 0 38px;border-radius:4px;cursor:pointer;color:#3a3f3b" style-hover="background:#e9ece9;color:#151816"><svg width="11" height="11" viewBox="0 0 14 14" style="color:#6b716c"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>General Notes</div>
+        </sc-if>
+      </div>
+      <div style="margin-top:auto;border-top:1px solid #e3e6e3;padding:8px 10px;display:flex;flex-direction:column;gap:6px">
+        <div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em;color:#8a908b;text-transform:uppercase">Categories</div>
+        <div style="display:flex;flex-wrap:wrap;gap:4px">
+          <span style="font-size:11px;padding:1px 6px;border-radius:3px;border:1px solid #7c5cbf66;color:#5a3f96;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span>Character 41</span>
+          <span style="font-size:11px;padding:1px 6px;border-radius:3px;border:1px solid #3f9a5a66;color:#2b6e3f;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#3f9a5a"></span>Location 23</span>
+          <span style="font-size:11px;padding:1px 6px;border-radius:3px;border:1px solid #c8503f66;color:#9a3a2c;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#c8503f"></span>Conflict 17</span>
+          <span style="font-size:11px;padding:1px 6px;border-radius:3px;border:1px solid #3b7dd866;color:#2a5ea6;display:flex;align-items:center;gap:4px"><span style="width:6px;height:6px;border-radius:50%;background:#3b7dd8"></span>Lore 29</span>
+        </div>
+      </div>
+    </div>
+    <!-- main -->
+    <div style="display:flex;flex-direction:column;overflow:hidden">
+      <div style="height:34px;border-bottom:1px solid #d9dcd9;background:#fff;display:flex;align-items:center;padding:0 14px;gap:6px;color:#6b716c">
+        <span style="padding:3px 6px;border-radius:3px;cursor:pointer" style-hover="background:#eef0ee;color:#151816">Projects</span><span style="color:#b9c0ba">›</span><span style="padding:3px 6px;border-radius:3px;color:#151816;font-weight:600">The Silent Kingdom</span>
+        <div style="margin-left:auto;display:flex;gap:4px;align-items:center">
+          <span style="font:10px 'JetBrains Mono',monospace;color:#8a908b;padding-right:8px">~/Writing/The Silent Kingdom.writerproject</span>
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;border:1px solid #d9dcd9;background:#fff;font-weight:500;cursor:pointer" style-hover="background:#eef0ee">New folder</span>
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;background:oklch(40% 0.1 150);color:#fff;font-weight:500;cursor:pointer" style-hover="background:oklch(34% 0.1 150)">New board ▾</span>
+        </div>
+      </div>
+      <div style="padding:14px 14px 0;display:flex;align-items:center;gap:14px">
+        <div style="width:40px;height:52px;border-radius:2px;background:repeating-linear-gradient(135deg,#d3d7d3 0 4px,#c6cbc6 4px 8px);flex:none"></div>
+        <div style="display:flex;flex-direction:column;gap:3px"><div style="font-size:18px;font-weight:600;letter-spacing:-.01em">The Silent Kingdom</div><div style="color:#6b716c">Fantasy · First draft · 4 folders · 9 boards · 143 notes · 12 images · 3.4 MB</div></div>
+        <div style="margin-left:auto;display:flex;gap:2px;border:1px solid #d9dcd9;border-radius:4px;padding:2px;background:#fff">
+          <span style="padding:2px 8px;border-radius:3px;background:#eef0ee;font-weight:500">All</span><span style="padding:2px 8px;border-radius:3px;color:#6b716c;cursor:pointer" style-hover="background:#f4f5f4">Boards</span><span style="padding:2px 8px;border-radius:3px;color:#6b716c;cursor:pointer" style-hover="background:#f4f5f4">Recent</span><span style="padding:2px 8px;border-radius:3px;color:#6b716c;cursor:pointer" style-hover="background:#f4f5f4">Pinned</span>
+        </div>
+      </div>
+      <div style="margin:12px 14px 0;background:#fff;border:1px solid #d9dcd9;border-radius:6px;overflow:hidden;display:flex;flex-direction:column">
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:6px 12px;border-bottom:1px solid #e3e6e3;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#8a908b"><span>Name</span><span>Type</span><span>Location</span><span style="text-align:right">Items</span><span style="text-align:right">Modified ▾</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer;background:oklch(55% 0.12 150 / .1)"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Main Plot<span style="font-size:10px;color:oklch(45% 0.12 150)">★</span></span><span style="color:#6b716c">Plot Line</span><span style="color:#6b716c">Plot</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">42</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">14:02 today</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><rect x="1" y="1" width="5" height="4" rx="1" fill="currentColor"/><rect x="8" y="9" width="5" height="4" rx="1" fill="currentColor"/><path d="M4 5 L10 9" stroke="currentColor"/></svg>Character Web</span><span style="color:#6b716c">Info Map</span><span style="color:#6b716c">Worldbuilding</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">27</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">Yesterday</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Characters<span style="font-size:10px;color:oklch(45% 0.12 150)">★</span></span><span style="color:#6b716c">Notes</span><span style="color:#6b716c">Worldbuilding</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">38</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">Yesterday</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Locations</span><span style="color:#6b716c">Notes</span><span style="color:#6b716c">Worldbuilding</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">21</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">3 days ago</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>The Siege</span><span style="color:#6b716c">Plot Line</span><span style="color:#6b716c">Plot</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">11</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">4 days ago</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><rect x="1" y="1" width="5" height="4" rx="1" fill="currentColor"/><rect x="8" y="9" width="5" height="4" rx="1" fill="currentColor"/><path d="M4 5 L10 9" stroke="currentColor"/></svg>Faction Web</span><span style="color:#6b716c">Info Map</span><span style="color:#6b716c">Worldbuilding › Factions</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">9</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">1 week ago</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>General Notes</span><span style="color:#6b716c">Notes</span><span style="color:#6b716c">Notes</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">63</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">1 week ago</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;border-bottom:1px solid #eef0ee;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M2 3h10M2 7h10M2 11h6" stroke="currentColor" stroke-width="1.5"/></svg>Inspiration</span><span style="color:#6b716c">Notes</span><span style="color:#6b716c">Research</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">12</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">2 weeks ago</span></div>
+        <div style="display:grid;grid-template-columns:1fr 100px 170px 80px 110px;padding:0 12px;height:30px;align-items:center;cursor:pointer" style-hover="background:#f4f5f4"><span style="display:flex;align-items:center;gap:8px;font-weight:500"><svg width="12" height="12" viewBox="0 0 14 14" style="color:#3a3f3b"><path d="M1 10 L13 4" stroke="currentColor" fill="none"/><circle cx="3" cy="9" r="1.8" fill="currentColor"/><circle cx="7" cy="7" r="1.8" fill="currentColor"/><circle cx="11" cy="5" r="1.8" fill="currentColor"/></svg>Kael's Return</span><span style="color:#6b716c">Plot Line</span><span style="color:#6b716c">Plot</span><span style="text-align:right;font-family:'JetBrains Mono',monospace;font-size:11px">6</span><span style="text-align:right;color:#6b716c;font-family:'JetBrains Mono',monospace;font-size:11px">3 weeks ago</span></div>
+      </div>
+      <div style="padding:14px 14px 0;display:flex;flex-direction:column;gap:6px">
+        <div style="font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#8a908b">Recent notes</div>
+        <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+          <div style="background:#fff;border:1px solid #d9dcd9;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;cursor:pointer;border-left:3px solid #7c5cbf" style-hover="border-color:#a9b0aa;border-left-color:#7c5cbf"><span style="font-weight:600">Queen Elara</span><span style="color:#6b716c;font-size:11px">Worldbuilding › Characters</span><span style="font:10px 'JetBrains Mono',monospace;color:#8a908b;margin-top:2px">⧉ linked ×3 · yesterday</span></div>
+          <div style="background:#fff;border:1px solid #d9dcd9;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;cursor:pointer;border-left:3px solid #c8503f" style-hover="border-color:#a9b0aa;border-left-color:#c8503f"><span style="font-weight:600">Elara discovers the betrayal</span><span style="color:#6b716c;font-size:11px">Plot › Main Plot</span><span style="font:10px 'JetBrains Mono',monospace;color:#8a908b;margin-top:2px">yesterday</span></div>
+          <div style="background:#fff;border:1px solid #d9dcd9;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;cursor:pointer;border-left:3px solid #3f9a5a" style-hover="border-color:#a9b0aa;border-left-color:#3f9a5a"><span style="font-weight:600">Northern Kingdom</span><span style="color:#6b716c;font-size:11px">Worldbuilding › Locations</span><span style="font:10px 'JetBrains Mono',monospace;color:#8a908b;margin-top:2px">3 days ago</span></div>
+          <div style="background:#fff;border:1px solid #d9dcd9;border-radius:4px;padding:8px 10px;display:flex;flex-direction:column;gap:4px;cursor:pointer;border-left:3px solid #3b7dd8" style-hover="border-color:#a9b0aa;border-left-color:#3b7dd8"><span style="font-weight:600">The Vow of Silence</span><span style="color:#6b716c;font-size:11px">Notes › General Notes</span><span style="font:10px 'JetBrains Mono',monospace;color:#8a908b;margin-top:2px">4 days ago</span></div>
+        </div>
+      </div>
+    </div>
+    <!-- inspector -->
+    <div style="background:#f7f8f7;border-left:1px solid #d9dcd9;display:flex;flex-direction:column;overflow:hidden">
+      <div style="padding:8px 12px;border-bottom:1px solid #e3e6e3;font:600 10px 'JetBrains Mono',monospace;letter-spacing:.06em;text-transform:uppercase;color:#8a908b;display:flex;justify-content:space-between">Inspector<span style="color:#151816">Main Plot</span></div>
+      <div style="padding:12px;display:flex;flex-direction:column;gap:14px">
+        <div style="height:90px;border-radius:4px;background:#fff;border:1px solid #d9dcd9;position:relative;overflow:hidden">
+          <span style="position:absolute;left:0;right:0;top:33%;height:1px;background:#eef0ee"></span><span style="position:absolute;left:0;right:0;top:66%;height:1px;background:#eef0ee"></span>
+          <span style="position:absolute;left:8%;top:70%;width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span><span style="position:absolute;left:22%;top:58%;width:6px;height:6px;border-radius:50%;background:#3b7dd8"></span><span style="position:absolute;left:36%;top:44%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:50%;top:60%;width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span><span style="position:absolute;left:64%;top:30%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:78%;top:14%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:90%;top:50%;width:6px;height:6px;border-radius:50%;background:#3f9a5a"></span>
+        </div>
+        <div style="display:grid;grid-template-columns:auto 1fr;gap:6px 12px;font-size:11px">
+          <span style="color:#8a908b">Type</span><span>Plot Line</span>
+          <span style="color:#8a908b">Location</span><span>Plot</span>
+          <span style="color:#8a908b">Points</span><span style="font-family:'JetBrains Mono',monospace">42</span>
+          <span style="color:#8a908b">Sections</span><span>Beginning · Journey · Siege · Aftermath</span>
+          <span style="color:#8a908b">Created</span><span style="font-family:'JetBrains Mono',monospace">2026-03-11</span>
+          <span style="color:#8a908b">Modified</span><span style="font-family:'JetBrains Mono',monospace">2026-09-17 14:02</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:4px">
+          <span style="color:#8a908b;font-size:11px">Description</span>
+          <div style="background:#fff;border:1px solid #d9dcd9;border-radius:4px;padding:8px;min-height:44px;color:#3a3f3b;line-height:1.45">The queen's arc from coronation to the breaking of the silence.</div>
+        </div>
+        <div style="display:flex;gap:4px;flex-wrap:wrap">
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;border:1px solid #d9dcd9;background:#fff;cursor:pointer" style-hover="background:#eef0ee">Open</span>
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;border:1px solid #d9dcd9;background:#fff;cursor:pointer" style-hover="background:#eef0ee">Rename</span>
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;border:1px solid #d9dcd9;background:#fff;cursor:pointer" style-hover="background:#eef0ee">Move…</span>
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;border:1px solid #d9dcd9;background:#fff;cursor:pointer" style-hover="background:#eef0ee">Unpin</span>
+          <span style="height:24px;padding:0 10px;display:grid;place-items:center;border-radius:4px;border:1px solid transparent;color:#9a3a2c;cursor:pointer" style-hover="background:#c8503f14">Delete</span>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div style="height:24px;background:#fff;border-top:1px solid #d9dcd9;display:flex;align-items:center;padding:0 10px;gap:16px;font:11px 'JetBrains Mono',monospace;color:#6b716c">
+    <span style="display:flex;align-items:center;gap:6px"><span style="width:6px;height:6px;border-radius:50%;background:oklch(60% 0.14 150)"></span>Autosave on · saved 14:02</span><span>143 notes · 9 boards</span><span style="margin-left:auto">Ctrl+N new · Ctrl+Shift+F search · Ctrl+Z undo</span>
+  </div>
+</div></div>
+
+<!-- ===================== 1d EXPERIMENTAL SHELVES ===================== -->
+<div class="dv-opt" id="1d"><div class="dv-olabel"><a class="dv-oid" href="#1d">1d</a>Shelves — project spine on the left, folders as horizontal shelves with board previews, floating dock replaces the top bar; click a shelf to bring it into focus</div>
+<div class="dv-card" data-screen-label="1d Shelves" style="width:1280px;height:800px;background:oklch(98% 0.005 200);color:oklch(18% 0.02 220);font-family:'Schibsted Grotesk',system-ui,sans-serif;display:grid;grid-template-columns:300px 1fr;position:relative;overflow:hidden">
+  <div style="background:oklch(22% 0.03 220);color:oklch(96% 0.01 200);padding:36px 32px;display:flex;flex-direction:column;gap:0;position:relative">
+    <div style="display:flex;align-items:center;gap:8px;font-size:12px;color:oklch(75% 0.02 200)"><span style="cursor:pointer;padding:3px 6px;margin-left:-6px;border-radius:4px" style-hover="background:oklch(30% 0.03 220);color:#fff">← All projects</span></div>
+    <div style="margin-top:42px;width:150px;height:200px;border-radius:3px;background:repeating-linear-gradient(135deg,oklch(32% 0.03 220) 0 6px,oklch(28% 0.03 220) 6px 12px);box-shadow:0 20px 40px -16px rgba(0,0,0,.6);display:grid;place-items:center;font:10px ui-monospace,monospace;color:oklch(70% 0.02 200)">cover image</div>
+    <h1 style="margin:28px 0 0;font:400 34px/1.05 Newsreader,Georgia,serif;letter-spacing:-.01em;text-wrap:pretty">The Silent Kingdom</h1>
+    <p style="margin:12px 0 0;font:italic 300 15px/1.5 Newsreader,Georgia,serif;color:oklch(78% 0.02 200);text-wrap:pretty">A queen who cannot speak, a kingdom that has forgotten how to listen.</p>
+    <div style="margin-top:26px;display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:12px;color:oklch(70% 0.02 200)">
+      <span>Genre</span><span style="color:#fff">Fantasy</span>
+      <span>Status</span><span style="color:#fff">First draft</span>
+      <span>Contents</span><span style="color:#fff">4 folders · 9 boards</span>
+      <span>Last edit</span><span style="color:#fff">Today, 14:02</span>
+    </div>
+    <div style="margin-top:auto;display:flex;flex-direction:column;gap:8px">
+      <div style="font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:oklch(65% 0.02 200)">Categories</div>
+      <div style="display:flex;flex-wrap:wrap;gap:6px">
+        <span style="font-size:12px;padding:3px 9px;border-radius:999px;background:#7c5cbf;color:#fff">Character</span>
+        <span style="font-size:12px;padding:3px 9px;border-radius:999px;background:#3f9a5a;color:#fff">Location</span>
+        <span style="font-size:12px;padding:3px 9px;border-radius:999px;background:#c8503f;color:#fff">Conflict</span>
+        <span style="font-size:12px;padding:3px 9px;border-radius:999px;background:#3b7dd8;color:#fff">Lore</span>
+        <span style="font-size:12px;padding:3px 9px;border-radius:999px;border:1px dashed oklch(55% 0.02 200);color:oklch(75% 0.02 200);cursor:pointer" style-hover="border-color:#fff;color:#fff">Manage</span>
+      </div>
+    </div>
+  </div>
+
+  <div style="position:relative;display:flex;flex-direction:column;overflow:hidden">
+    <div style="display:flex;justify-content:space-between;align-items:center;padding:24px 40px 0">
+      <div style="font-size:12px;color:oklch(50% 0.02 220)">Continue · <span style="color:oklch(18% 0.02 220);font-weight:500;cursor:pointer;border-bottom:1px solid oklch(80% 0.02 220)" style-hover="border-bottom-color:oklch(18% 0.02 220)">Main Plot</span> · 2 hours ago</div>
+      <div style="display:flex;gap:6px;align-items:center;font-size:12px;color:oklch(50% 0.02 220)"><span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:oklch(94% 0.008 200);color:oklch(18% 0.02 220)">Trash</span><span style="cursor:pointer;padding:4px 8px;border-radius:6px" style-hover="background:oklch(94% 0.008 200);color:oklch(18% 0.02 220)">Settings</span></div>
+    </div>
+
+    <div style="flex:1;display:flex;flex-direction:column;justify-content:center;gap:0;padding:0 0 96px">
+      <div onClick="{{ focus.plot }}" style="padding:12px 40px;cursor:pointer;transition:opacity .2s;opacity:{{ op.plot }}" style-hover="background:oklch(96.5% 0.006 200)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:12px"><span style="font:400 26px Newsreader,Georgia,serif">Plot</span><span style="font-size:12px;color:oklch(50% 0.02 220)">3 boards</span><span style="margin-left:auto;font-size:12px;color:oklch(50% 0.02 220)">Open folder →</span></div>
+        <div style="display:flex;gap:12px">
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;left:14px;right:14px;top:56%;height:1px;background:oklch(90% 0.01 200)"></span><span style="position:absolute;left:18%;top:52%;width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span><span style="position:absolute;left:36%;top:44%;width:6px;height:6px;border-radius:50%;background:#3b7dd8"></span><span style="position:absolute;left:54%;top:30%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:72%;top:20%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:88%;top:48%;width:6px;height:6px;border-radius:50%;background:#3f9a5a"></span><span style="font-weight:600;font-size:14px">Main Plot</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Plot Line · 42 points</span></div>
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;left:14px;right:14px;top:56%;height:1px;background:oklch(90% 0.01 200)"></span><span style="position:absolute;left:30%;top:50%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:55%;top:26%;width:6px;height:6px;border-radius:50%;background:#c8503f"></span><span style="position:absolute;left:78%;top:40%;width:6px;height:6px;border-radius:50%;background:#3f9a5a"></span><span style="font-weight:600;font-size:14px">The Siege</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Plot Line · 11 points</span></div>
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;left:14px;right:14px;top:56%;height:1px;background:oklch(90% 0.01 200)"></span><span style="position:absolute;left:24%;top:56%;width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span><span style="position:absolute;left:60%;top:34%;width:6px;height:6px;border-radius:50%;background:#7c5cbf"></span><span style="font-weight:600;font-size:14px">Kael's Return</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Plot Line · 6 points</span></div>
+        </div>
+      </div>
+      <div onClick="{{ focus.world }}" style="padding:12px 40px;cursor:pointer;transition:opacity .2s;opacity:{{ op.world }}" style-hover="background:oklch(96.5% 0.006 200)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:12px"><span style="font:400 26px Newsreader,Georgia,serif">Worldbuilding</span><span style="font-size:12px;color:oklch(50% 0.02 220)">3 boards · 1 folder</span><span style="margin-left:auto;font-size:12px;color:oklch(50% 0.02 220)">Open folder →</span></div>
+        <div style="display:flex;gap:12px">
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;right:14px;top:12px;display:flex;flex-direction:column;gap:3px"><span style="width:44px;height:3px;border-radius:2px;background:#7c5cbf55"></span><span style="width:34px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span><span style="width:40px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span></span><span style="font-weight:600;font-size:14px">Characters</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Notes · 38 notes</span></div>
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;right:22px;top:12px;width:34px;height:16px;border-radius:3px;border:1px solid #7c5cbf"></span><span style="position:absolute;right:46px;top:36px;width:34px;height:16px;border-radius:3px;border:1px solid #3f9a5a"></span><span style="position:absolute;right:50px;top:28px;width:22px;height:1px;background:oklch(70% 0.02 200);transform:rotate(-40deg)"></span><span style="font-weight:600;font-size:14px">Character Web</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Info Map · 27 items</span></div>
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;right:14px;top:12px;display:flex;flex-direction:column;gap:3px"><span style="width:44px;height:3px;border-radius:2px;background:#3f9a5a55"></span><span style="width:34px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span><span style="width:40px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span></span><span style="font-weight:600;font-size:14px">Locations</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Notes · 21 notes</span></div>
+          <div style="box-sizing:border-box;width:120px;height:88px;border-radius:8px;background:oklch(95% 0.008 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;transition:transform .15s" style-hover="transform:translateY(-3px);background:oklch(92% 0.01 200)"><span style="width:16px;height:12px;border-radius:2px 3px 3px 3px;background:oklch(70% 0.02 220);display:inline-block"></span><span><span style="font-weight:600;font-size:14px;display:block">Factions</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Folder · 1 board</span></span></div>
+        </div>
+      </div>
+      <div onClick="{{ focus.research }}" style="padding:12px 40px;cursor:pointer;transition:opacity .2s;opacity:{{ op.research }}" style-hover="background:oklch(96.5% 0.006 200)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:12px"><span style="font:400 26px Newsreader,Georgia,serif">Research</span><span style="font-size:12px;color:oklch(50% 0.02 220)">2 boards</span><span style="margin-left:auto;font-size:12px;color:oklch(50% 0.02 220)">Open folder →</span></div>
+        <div style="display:flex;gap:12px">
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;right:14px;top:12px;display:flex;flex-direction:column;gap:3px"><span style="width:44px;height:3px;border-radius:2px;background:#3b7dd855"></span><span style="width:34px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span></span><span style="font-weight:600;font-size:14px">Inspiration</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Notes · 12 notes</span></div>
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;right:14px;top:12px;display:flex;flex-direction:column;gap:3px"><span style="width:44px;height:3px;border-radius:2px;background:#3b7dd855"></span><span style="width:34px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span></span><span style="font-weight:600;font-size:14px">Real World References</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Notes · 9 notes</span></div>
+        </div>
+      </div>
+      <div onClick="{{ focus.notes }}" style="padding:12px 40px;cursor:pointer;transition:opacity .2s;opacity:{{ op.notes }}" style-hover="background:oklch(96.5% 0.006 200)">
+        <div style="display:flex;align-items:baseline;gap:14px;margin-bottom:12px"><span style="font:400 26px Newsreader,Georgia,serif">Notes</span><span style="font-size:12px;color:oklch(50% 0.02 220)">1 board</span><span style="margin-left:auto;font-size:12px;color:oklch(50% 0.02 220)">Open folder →</span></div>
+        <div style="display:flex;gap:12px">
+          <div style="box-sizing:border-box;width:210px;height:88px;border-radius:8px;background:#fff;border:1px solid oklch(90% 0.01 200);padding:12px 14px;display:flex;flex-direction:column;justify-content:space-between;cursor:pointer;position:relative;overflow:hidden;transition:transform .15s" style-hover="transform:translateY(-3px);border-color:oklch(50% 0.11 200)"><span style="position:absolute;right:14px;top:12px;display:flex;flex-direction:column;gap:3px"><span style="width:44px;height:3px;border-radius:2px;background:oklch(85% 0.01 200)"></span><span style="width:34px;height:3px;border-radius:2px;background:oklch(90% 0.01 200)"></span></span><span style="font-weight:600;font-size:14px">General Notes</span><span style="font-size:11px;color:oklch(50% 0.02 220)">Notes · 63 notes</span></div>
+          <div style="box-sizing:border-box;width:120px;height:88px;border-radius:8px;border:1px dashed oklch(82% 0.01 200);display:grid;place-items:center;font-size:12px;color:oklch(50% 0.02 220);cursor:pointer" style-hover="border-color:oklch(40% 0.02 220);color:oklch(18% 0.02 220)">+ Board</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- floating dock -->
+    <div style="position:absolute;left:50%;bottom:22px;transform:translateX(-50%);white-space:nowrap;width:max-content;display:flex;align-items:center;gap:4px;padding:6px;border-radius:14px;background:oklch(22% 0.03 220);color:oklch(92% 0.01 200);box-shadow:0 16px 40px -12px rgba(0,0,0,.45);font-size:13px">
+      <div style="display:flex;align-items:center;gap:6px;padding:0 6px 0 10px;font-size:12px;color:oklch(72% 0.02 200)"><span style="cursor:pointer" style-hover="color:#fff">Projects</span><span style="opacity:.4">/</span><span style="color:#fff;font-weight:500">The Silent Kingdom</span></div>
+      <span style="width:1px;height:20px;background:oklch(38% 0.03 220);margin:0 4px"></span>
+      <span style="padding:8px 12px;border-radius:9px;cursor:pointer;display:flex;align-items:center;gap:8px;color:oklch(72% 0.02 200);width:200px" style-hover="background:oklch(30% 0.03 220);color:#fff"><span style="width:11px;height:11px;border:1.5px solid currentColor;border-radius:50%"></span>Search<span style="margin-left:auto;font-size:11px;opacity:.6">⌘⇧F</span></span>
+      <span style="padding:8px 12px;border-radius:9px;cursor:pointer" style-hover="background:oklch(30% 0.03 220)">+ Folder</span>
+      <span style="padding:8px 12px;border-radius:9px;cursor:pointer;background:oklch(50% 0.11 200);color:#fff;font-weight:500" style-hover="background:oklch(56% 0.11 200)">+ Board</span>
+    </div>
+  </div>
+</div></div>
+
+</div>
+<p class="dv-next">Try next: "take <a class="dv-oid" href="#1b">1b</a> into the Plot Line and Info Map screens" · "merge the dock from <a class="dv-oid" href="#1d">1d</a> into <a class="dv-oid" href="#1a">1a</a>" · "dark mode of <a class="dv-oid" href="#1c">1c</a>"</p>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { open: { plot: true, world: true, research: true, notes: true }, focus: null, focusA: null, focusB: null };
+  shelves() {
+    const C = '#7c5cbf', L = '#3f9a5a', X = '#c8503f', R = '#3b7dd8';
+    return [
+      { key: 'plot', name: 'Plot', meta: '3 boards', boards: [
+        { name: 'Main Plot', type: 'Plot Line', meta: '42 points', cats: [C, X, R] },
+        { name: 'The Siege', type: 'Plot Line', meta: '11 points', cats: [X, L] },
+        { name: "Kael's Return", type: 'Plot Line', meta: '6 points', cats: [C] } ] },
+      { key: 'world', name: 'Worldbuilding', meta: '3 boards · 1 folder', sub: 'Factions', boards: [
+        { name: 'Characters', type: 'Notes', meta: '38 notes', cats: [C] },
+        { name: 'Character Web', type: 'Info Map', meta: '27 items', cats: [C, L] },
+        { name: 'Locations', type: 'Notes', meta: '21 notes', cats: [L] } ] },
+      { key: 'research', name: 'Research', meta: '2 boards', boards: [
+        { name: 'Inspiration', type: 'Notes', meta: '12 notes', cats: [R] },
+        { name: 'Real World References', type: 'Notes', meta: '9 notes', cats: [R] } ] },
+      { key: 'notes', name: 'Notes', meta: '1 board', add: true, boards: [
+        { name: 'General Notes', type: 'Notes', meta: '63 notes', cats: [R, L] } ] } ];
+  }
+  shelvesFor(stateKey) {
+    const cur = this.state[stateKey];
+    return this.shelves().map(f => ({ ...f,
+      op: cur && cur !== f.key ? 0.35 : 1,
+      onClick: () => this.setState(s => ({ [stateKey]: s[stateKey] === f.key ? null : f.key })) }));
+  }
+  boardVals() {
+    const C = '#7c5cbf', L = '#3f9a5a', X = '#c8503f', R = '#3b7dd8';
+    const catName = { [C]: 'Character', [L]: 'Location', [X]: 'Conflict', [R]: 'Lore' };
+    const raw = [
+      [4, 78, C, 'Coronation in silence', 'Elara is crowned three days after the fire; the court realises she will not speak.'],
+      [11, 66, R, 'The Vow explained', 'Old law: a monarch may take a vow of silence in mourning.'],
+      [18, 58, X, 'First council dissent', 'Lord Maren questions written decrees.'],
+      [27, 70, C, 'Kael returns', 'The brother comes back from the north with news.'],
+      [35, 48, X, 'Elara discovers the betrayal', 'The grey wax seal has been copied. Someone has been issuing decrees in her name.'],
+      [43, 40, L, 'Flight to the Northern Kingdom', 'Elara and Kael leave the capital by night.'],
+      [56, 32, X, 'Siege begins', 'Maren\u2019s army reaches the walls.'],
+      [64, 22, X, 'The wall falls', 'Three days of bombardment.'],
+      [71, 12, C, 'Elara speaks', 'One word, to the whole city.'],
+      [83, 44, L, 'Rebuilding the court', 'New seals, spoken decrees.'],
+      [92, 62, R, 'A new vow', 'Elara chooses when to be silent.']];
+    const sel = this.state.plotSel ?? 4;
+    const points = raw.map(([x, y, c, t, s], i) => ({
+      left: x + '%', top: y + '%', c, t, s, cat: catName[c],
+      size: i === sel ? '16px' : '12px',
+      ring: i === sel ? '0 0 0 4px oklch(18% 0.015 240 / .18)' : 'none',
+      onClick: () => this.setState({ plotSel: i }) }));
+    const sp = points[sel];
+    const selPoint = sp ? { ...sp, lineH: '34px', lineTop: '-34px', cardShift: 'calc(-100% - 34px)' } : null;
+    const mapSel = this.state.mapSel ?? 'elara';
+    const pick = {}, isSel = {}, selShadow = {};
+    ['elara', 'kael', 'img', 'north', 'text', 'group'].forEach(k => {
+      pick[k] = e => { e.stopPropagation(); this.setState({ mapSel: k }); };
+      isSel[k] = mapSel === k;
+      selShadow[k] = mapSel === k ? '0 12px 30px -14px rgba(0,0,0,.35)' : 'none';
+    });
+    const chip = c => ({ name: catName[c], bg: c + '22', fg: { [C]: '#4a3280', [L]: '#265c36', [X]: '#8a3225', [R]: '#1f4d8f' }[c] });
+    const rawNotes = [
+      ['Queen Elara', '⧉', 'Yesterday', 'Crowned at nineteen, three days after the fire. She has not spoken since…', [C, R]],
+      ['Kael', '', 'Yesterday', 'The brother who left. Returns in the second act with news from the north.', [C]],
+      ['Lord Maren', '', '3 days ago', 'Head of the council. Believes a silent queen is a vacant throne.', [C, X]],
+      ['Ilse, the scribe', '★', '1 week ago', 'Writes what the queen writes. Knows the seal better than anyone.', [C]],
+      ['The Northern Regent', '', '2 weeks ago', 'Loyal by treaty. Tests that loyalty when the siege starts.', [C, L]],
+      ['Captain Vey', '', '3 weeks ago', 'Commands the wall. Deaf in one ear since the fire.', [C]]];
+    const nsel = this.state.noteSel ?? 0;
+    const notes = rawNotes.map(([t, badge, when, s, cats], i) => ({ t, badge, when, s, cats: cats.map(chip),
+      bg: i === nsel ? 'oklch(93% 0.008 220)' : 'transparent', edge: i === nsel ? 'oklch(18% 0.015 240)' : 'transparent',
+      onClick: () => this.setState({ noteSel: i }) }));
+    return { points, selPoint, pick, isSel, selShadow, notes };
+  }
+  extraVals() {
+    const C = '#7c5cbf', L = '#3f9a5a', X = '#c8503f', R = '#3b7dd8', ink = 'oklch(45% 0.015 240)';
+    const projects = [
+      ['The Silent Kingdom', 'Fantasy · edited 2 hours ago', 'repeating-linear-gradient(135deg,oklch(27% 0.02 250) 0 6px,oklch(23% 0.02 250) 6px 12px)', 'cover image'],
+      ['Saltwater', 'Literary · 4 days ago', 'repeating-linear-gradient(135deg,oklch(88% 0.01 220) 0 6px,oklch(84% 0.012 220) 6px 12px)', 'cover image'],
+      ['Notes on Grief', 'Essays · 2 weeks ago', 'repeating-linear-gradient(135deg,oklch(80% 0.015 60) 0 6px,oklch(76% 0.018 60) 6px 12px)', 'cover image'],
+      ['Untitled', 'Started yesterday', 'oklch(94% 0.006 220)', 'no cover yet']
+    ].map(([name, meta, bg, cover], i) => ({ name, meta, bg, cover, delay: (i * 60) + 'ms' }));
+    const mode = this.state.noteMode ?? 'read';
+    const isRead = mode === 'read';
+    const q = (this.state.searchQ ?? 'ela').toLowerCase();
+    const filter = this.state.searchFilter ?? 'All';
+    const all = [
+      ['Notes', 'Queen Elara', 'Crowned at nineteen, three days after the fire…', 'Worldbuilding › Characters', C],
+      ['Notes', 'Elara discovers the betrayal', 'The grey wax seal has been copied.', 'Plot › Main Plot', X],
+      ['Notes', 'Elara speaks', 'One word, to the whole city.', 'Plot › Main Plot', C],
+      ['Notes', 'Kael', 'The brother who left. Returns in the second act.', 'Worldbuilding › Characters', C],
+      ['Notes', 'Northern Kingdom', 'Cold, walled, loyal by treaty.', 'Worldbuilding › Locations', L],
+      ['Notes', 'The Vow of Silence', 'Old law: a monarch may take a vow in mourning.', 'Notes › General Notes', R],
+      ['Boards', 'Main Plot', 'Plot Line · 11 points', 'Plot', ink],
+      ['Boards', 'Character Web', 'Info Map · 27 items', 'Worldbuilding', ink],
+      ['Boards', 'Characters', 'Notes · 38 notes', 'Worldbuilding', ink],
+      ['Boards', 'Real World References', 'Notes · 9 notes', 'Research', ink],
+      ['Folders', 'Plot', '3 boards', 'The Silent Kingdom', ink],
+      ['Folders', 'Factions', '1 board', 'Worldbuilding', ink]
+    ].map(([kind, t, s, path, c]) => ({ kind, t, s, path, c }));
+    const hit = r => !q || (r.t + ' ' + r.s).toLowerCase().includes(q);
+    const count = k => all.filter(r => (k === 'All' || r.kind === k) && hit(r)).length;
+    const filters = ['All', 'Notes', 'Boards', 'Folders'].map(name => ({ name, n: count(name),
+      bg: filter === name ? 'oklch(17% 0.02 250)' : 'transparent', fg: filter === name ? '#fff' : 'oklch(45% 0.015 240)', w: filter === name ? 500 : 400,
+      onClick: () => this.setState({ searchFilter: name }) }));
+    let idx = 0;
+    const results = ['Notes', 'Boards', 'Folders'].filter(k => filter === 'All' || filter === k).map(kind => {
+      const items = all.filter(r => r.kind === kind && hit(r)).slice(0, 4).map(r => { const i = idx++; return { ...r, first: i === 0, bg: i === 0 ? 'oklch(94% 0.006 220)' : 'transparent', delay: (i * 30) + 'ms' }; });
+      return { kind, items };
+    }).filter(g => g.items.length);
+    return { projects, isRead, isEdit: !isRead,
+      segX: isRead ? '0px' : '56px', readColor: isRead ? '#fff' : 'oklch(45% 0.015 240)', editColor: isRead ? 'oklch(45% 0.015 240)' : '#fff',
+      setRead: () => this.setState({ noteMode: 'read' }), setEdit: () => this.setState({ noteMode: 'edit' }),
+      searchQ: this.state.searchQ ?? 'ela', onSearch: e => this.setState({ searchQ: e.target.value }),
+      filters, results, noResults: results.length === 0 };
+  }
+  renderVals() {
+    const shelvesA = this.shelvesFor('focusA'), shelvesB = this.shelvesFor('focusB');
+    const board = this.boardVals();
+    const keys = ['plot', 'world', 'research', 'notes'];
+    const toggle = {}, caret = {}, focus = {}, op = {};
+    keys.forEach(k => {
+      toggle[k] = e => { e.stopPropagation(); this.setState(s => ({ open: { ...s.open, [k]: !s.open[k] } })); };
+      caret[k] = this.state.open[k] ? '▾' : '▸';
+      focus[k] = () => this.setState(s => ({ focus: s.focus === k ? null : k }));
+      op[k] = this.state.focus && this.state.focus !== k ? 0.35 : 1;
+    });
+    return { open: this.state.open, toggle, caret, focus, op, shelvesA, shelvesB, ...board, ...this.extraVals() };
+  }
+}
+</script>
+</body>
+</html>

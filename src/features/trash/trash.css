@@ -1,0 +1,22 @@
+.trashlist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+}
+
+.trashrow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--sp-6);
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  padding: var(--sp-5) var(--sp-6);
+  animation: row-stagger 240ms var(--ease);
+}
+
+.trashrow__name {
+  font-size: var(--fs-label);
+  font-weight: 500;
+}

@@ -43,6 +43,9 @@ export function Breadcrumb() {
   if (screen.name === "appSettings") {
     crumbs.push({ label: "App Settings", screen: null });
   }
+  if (screen.name === "connectors") {
+    crumbs.push({ label: "Connectors", screen: null });
+  }
 
   return (
     <nav className="crumbs" aria-label="Breadcrumb">

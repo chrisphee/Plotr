@@ -22,6 +22,13 @@ pub fn run() {
             commands::archive::import_zip,
             commands::archive::write_export_files,
             commands::update::launch_update,
+            commands::pinterest::pinterest_configure,
+            commands::pinterest::pinterest_status,
+            commands::pinterest::pinterest_connect,
+            commands::pinterest::pinterest_disconnect,
+            commands::pinterest::pinterest_list_boards,
+            commands::pinterest::pinterest_list_pins,
+            commands::pinterest::pinterest_import_pin,
         ])
         .run(tauri::generate_context!())
         .expect("error while running tauri application");

@@ -1,9 +1,12 @@
+import { useState } from "react";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { openPath } from "@tauri-apps/plugin-opener";
-import { FileText, Paperclip, X } from "lucide-react";
+import { FileText, Paperclip, Plug, X } from "lucide-react";
 import { useNotes } from "../../stores/notesStore";
 import { useProject } from "../../stores/projectStore";
-import { importAttachment } from "../../tauri/commands";
+import { useConnectors } from "../connectors/connectorStore";
+import { PinterestPicker } from "../connectors/PinterestPicker";
+import { importAttachment, type AttachmentMeta } from "../../tauri/commands";
 import { makeId } from "../../lib/ids";
 import { IconButton } from "../../components/ui/Button";
 import type { Note } from "../../lib/schema";
@@ -15,6 +18,21 @@ import "./notePopup.css";
 export function AttachmentList({ note, editable }: { note: Note; editable: boolean }) {
   const updateNote = useNotes((s) => s.updateNote);
   const projectPath = useProject((s) => s.projectPath);
+  const pinterestConnected = useConnectors((s) => s.pinterest.connected);
+  const [pickerOpen, setPickerOpen] = useState(false);
+
+  const appendMetas = (metas: AttachmentMeta[]) => {
+    const current = useNotes.getState().notes[note.id];
+    if (!current) return;
+    const added = metas.map((m) => ({
+      id: makeId("att"),
+      path: m.rel_path,
+      fileName: m.file_name,
+      size: m.size,
+      mime: m.mime,
+    }));
+    updateNote(note.id, { attachments: [...current.attachments, ...added] });
+  };
 
   const attach = async () => {
     if (!projectPath) return;
@@ -69,9 +87,19 @@ export function AttachmentList({ note, editable }: { note: Note; editable: boole
         </div>
       ))}
       {editable && (
-        <button className="notepopup__addcat" onClick={() => void attach()}>
-          <Paperclip size={11} style={{ verticalAlign: "-1px" }} /> Attach file
-        </button>
+        <div style={{ display: "flex", gap: "var(--sp-3)" }}>
+          <button className="notepopup__addcat" onClick={() => void attach()}>
+            <Paperclip size={11} style={{ verticalAlign: "-1px" }} /> Attach file
+          </button>
+          {pinterestConnected && (
+            <button className="notepopup__addcat" onClick={() => setPickerOpen(true)}>
+              <Plug size={11} style={{ verticalAlign: "-1px" }} /> From Pinterest
+            </button>
+          )}
+        </div>
+      )}
+      {pickerOpen && (
+        <PinterestPicker onImported={appendMetas} onClose={() => setPickerOpen(false)} />
       )}
     </div>
   );

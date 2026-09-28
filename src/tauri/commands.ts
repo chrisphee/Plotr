@@ -80,6 +80,62 @@ export function launchUpdate(): Promise<void> {
   return invoke("launch_update");
 }
 
+export interface ConnectorStatus {
+  configured: boolean;
+  connected: boolean;
+  username: string | null;
+}
+
+export interface PinterestBoard {
+  id: string;
+  name: string;
+  pin_count: number;
+}
+
+export interface PinterestPin {
+  id: string;
+  title: string;
+  thumb_url: string;
+  image_url: string;
+}
+
+export interface PinPage {
+  items: PinterestPin[];
+  bookmark: string | null;
+}
+
+export function pinterestConfigure(appId: string, appSecret: string): Promise<void> {
+  return invoke("pinterest_configure", { appId, appSecret });
+}
+
+export function pinterestStatus(): Promise<ConnectorStatus> {
+  return invoke("pinterest_status");
+}
+
+export function pinterestConnect(): Promise<ConnectorStatus> {
+  return invoke("pinterest_connect");
+}
+
+export function pinterestDisconnect(): Promise<void> {
+  return invoke("pinterest_disconnect");
+}
+
+export function pinterestListBoards(): Promise<PinterestBoard[]> {
+  return invoke("pinterest_list_boards");
+}
+
+export function pinterestListPins(boardId: string, bookmark?: string | null): Promise<PinPage> {
+  return invoke("pinterest_list_pins", { boardId, bookmark: bookmark ?? null });
+}
+
+export function pinterestImportPin(
+  projectPath: string,
+  imageUrl: string,
+  pinId: string,
+): Promise<AttachmentMeta> {
+  return invoke("pinterest_import_pin", { projectPath, imageUrl, pinId });
+}
+
 export function listProjectFiles(
   projectPath: string,
   subdir: "notes" | "boards" | "assets",

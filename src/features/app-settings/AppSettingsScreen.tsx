@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { ArrowLeft, RefreshCw } from "lucide-react";
+import { ArrowLeft, Plug, RefreshCw } from "lucide-react";
 import { useNav } from "../../app/navStore";
 import { useSettings } from "../../stores/settingsStore";
 import { saveQueue } from "../../lib/saveQueue";
@@ -75,6 +75,19 @@ export function AppSettingsScreen() {
                 {autosave ? "Autosave is on" : "Autosave is off"}
               </span>
             </label>
+          )}
+        </Field>
+
+        <Field label="Connectors" hint="Connect Pinterest and other services to import images.">
+          {() => (
+            <div>
+              <Button
+                variant="secondary"
+                onClick={() => useNav.getState().navigate({ name: "connectors" })}
+              >
+                <Plug size={14} /> Open Connectors
+              </Button>
+            </div>
           )}
         </Field>
 

@@ -16,6 +16,8 @@ import { TrashScreen } from "./features/trash/TrashScreen";
 import { NotePopupHost } from "./features/note-editor/NotePopup";
 import { SearchOverlayHost } from "./features/search/SearchOverlay";
 import { SearchResultsScreen } from "./features/search/SearchResultsScreen";
+import { ConnectorsScreen } from "./features/connectors/ConnectorsScreen";
+import { useConnectors } from "./features/connectors/connectorStore";
 import { useGlobalShortcuts } from "./app/shortcuts";
 
 export default function App() {
@@ -28,6 +30,7 @@ export default function App() {
 
   useEffect(() => {
     void init();
+    void useConnectors.getState().refresh();
   }, [init]);
 
   // Flush pending saves if the webview is torn down mid-debounce.
@@ -148,6 +151,8 @@ function ScreenSwitch() {
       return <BoardScreen boardId={screen.boardId} />;
     case "appSettings":
       return <AppSettingsScreen />;
+    case "connectors":
+      return <ConnectorsScreen />;
     case "projectSettings":
       return <ProjectSettingsScreen />;
     case "trash":

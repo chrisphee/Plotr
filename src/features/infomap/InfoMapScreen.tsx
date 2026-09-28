@@ -36,7 +36,10 @@ import { infomap, ITEM_SIZES } from "./infomapActions";
 import { Dock } from "../../components/shell/Dock";
 import { IconButton } from "../../components/ui/Button";
 import { ConfirmDialog } from "../../components/ui/Modal";
+import { Menu, MenuItem, type MenuPosition } from "../../components/ui/Menu";
 import { EmptyState } from "../../components/ui/EmptyState";
+import { useConnectors } from "../connectors/connectorStore";
+import { PinterestPicker } from "../connectors/PinterestPicker";
 import { NoteNode, ImageNode, TextNode, GroupNode } from "./nodes";
 import { ConnEdge } from "./ConnEdge";
 import "./infomap.css";
@@ -58,6 +61,9 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
   const [sel, setSel] = useState<Set<string>>(new Set());
   const [connectKind, setConnectKind] = useState<"arrow" | "line">("arrow");
   const [confirmDelete, setConfirmDelete] = useState(false);
+  const [imageMenu, setImageMenu] = useState<MenuPosition | null>(null);
+  const [pinPickerOpen, setPinPickerOpen] = useState(false);
+  const pinterestConnected = useConnectors((s) => s.pinterest.connected);
   const dragStart = useRef(new Map<string, { x: number; y: number; parentId: string | null }>());
   const ghostRefs = useRef<Record<string, HTMLDivElement | null>>({});
 
@@ -372,12 +378,36 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
                   e.dataTransfer.setDragImage(ghost, s.w / 2, s.h / 2);
                 }
               }}
-              onClick={() => createAt(kind, centerWorld())}
+              onClick={(e) => {
+                if (kind === "image" && pinterestConnected) {
+                  setImageMenu({ x: e.clientX, y: e.clientY });
+                } else {
+                  createAt(kind, centerWorld());
+                }
+              }}
               title={`Click to add, or drag onto the canvas`}
             >
               {icon} {label}
             </button>
           ))}
+
+          {imageMenu && (
+            <Menu position={imageMenu} onClose={() => setImageMenu(null)}>
+              <MenuItem onSelect={() => createAt("image", centerWorld())}>From file…</MenuItem>
+              <MenuItem onSelect={() => setPinPickerOpen(true)}>From Pinterest…</MenuItem>
+            </Menu>
+          )}
+          {pinPickerOpen && (
+            <PinterestPicker
+              onImported={(metas) => {
+                const c = centerWorld();
+                metas.forEach((m, i) =>
+                  infomap.addImage(boardId, m.rel_path, c.x - 120 + i * 28, c.y - 90 + i * 28),
+                );
+              }}
+              onClose={() => setPinPickerOpen(false)}
+            />
+          )}
 
           {/* Off-screen replicas of each item type, used as drag previews. */}
           <div className="im__ghosts" aria-hidden>

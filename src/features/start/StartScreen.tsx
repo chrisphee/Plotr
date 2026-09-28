@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
-import { Archive, BookOpen, FolderOpen, Plus, Settings, X } from "lucide-react";
+import { Archive, BookOpen, FolderOpen, Plug, Plus, Settings, X } from "lucide-react";
 import { importZip } from "../../tauri/commands";
 import { useSettings, type RecentProject } from "../../stores/settingsStore";
 import { useProject } from "../../stores/projectStore";
@@ -88,6 +88,9 @@ export function StartScreen() {
         <nav className="spine__nav">
           <button className="spine__navitem" onClick={() => void importBackup()}>
             <Archive size={15} /> Import Backup…
+          </button>
+          <button className="spine__navitem" onClick={() => navigate({ name: "connectors" })}>
+            <Plug size={15} /> Connectors
           </button>
           <button
             className="spine__navitem"

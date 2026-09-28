@@ -1,0 +1,97 @@
+.connector-card {
+  background: var(--surface);
+  border: 1px solid var(--hairline);
+  border-radius: var(--r-card);
+  padding: var(--sp-7);
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-5);
+  max-width: 560px;
+}
+
+.connector-card__head {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+}
+
+.connector-card__name {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 600;
+}
+
+.connector-card__status {
+  margin-left: auto;
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+}
+
+.connector-card__status--on {
+  color: var(--cat-location);
+  font-weight: 600;
+}
+
+/* ── Pinterest picker ── */
+
+.pin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: var(--sp-4);
+}
+
+.pin-tile {
+  position: relative;
+  border-radius: var(--r-card);
+  overflow: hidden;
+  border: 2px solid transparent;
+  aspect-ratio: 3 / 4;
+  background: var(--hover-wash);
+  cursor: pointer;
+  padding: 0;
+}
+
+.pin-tile img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.pin-tile--selected {
+  border-color: var(--cat-character);
+}
+
+.pin-tile__check {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  width: 22px;
+  height: 22px;
+  border-radius: 50%;
+  background: var(--cat-character);
+  color: #fff;
+  display: grid;
+  place-items: center;
+}
+
+.board-row {
+  display: flex;
+  align-items: center;
+  gap: var(--sp-4);
+  width: 100%;
+  text-align: left;
+  padding: var(--sp-4) var(--sp-5);
+  border-radius: var(--r-dock-item);
+  transition: background var(--t-hover) var(--ease);
+}
+
+.board-row:hover {
+  background: var(--hover-wash);
+}
+
+.board-row__count {
+  margin-left: auto;
+  font-size: var(--fs-meta);
+  color: var(--text-muted);
+}

@@ -1,7 +1,9 @@
 import { useState } from "react";
-import { Archive, FileDown, ImagePlus, Plus, Trash2, X } from "lucide-react";
+import { Archive, FileDown, ImagePlus, Plug, Plus, Trash2, X } from "lucide-react";
 import { open as openDialog, save as saveDialog } from "@tauri-apps/plugin-dialog";
 import { useProject } from "../../stores/projectStore";
+import { useConnectors } from "../connectors/connectorStore";
+import { PinterestPicker } from "../connectors/PinterestPicker";
 import { importAttachment, assetUrl } from "../../tauri/commands";
 import { exportProjectBackup, exportProjectMarkdown } from "./exportProject";
 import { Dock } from "../../components/shell/Dock";
@@ -129,6 +131,8 @@ function AppearanceSection() {
   const meta = useProject((s) => s.meta);
   const projectPath = useProject((s) => s.projectPath);
   const updateMeta = useProject((s) => s.updateMeta);
+  const pinterestConnected = useConnectors((s) => s.pinterest.connected);
+  const [pickerOpen, setPickerOpen] = useState(false);
   if (!meta || !projectPath) return null;
 
   const pickCover = async () => {
@@ -182,6 +186,11 @@ function AppearanceSection() {
           <Button variant="secondary" onClick={() => void pickCover()}>
             <ImagePlus size={14} /> {meta.coverImage ? "Change Image…" : "Choose Image…"}
           </Button>
+          {pinterestConnected && (
+            <Button variant="secondary" onClick={() => setPickerOpen(true)}>
+              <Plug size={14} /> From Pinterest
+            </Button>
+          )}
           {meta.coverImage && (
             <Button variant="ghost" onClick={() => updateMeta({ coverImage: null })}>
               <X size={14} /> Remove image
@@ -189,6 +198,16 @@ function AppearanceSection() {
           )}
         </div>
       </div>
+
+      {pickerOpen && (
+        <PinterestPicker
+          multiple={false}
+          onImported={(metas) => {
+            if (metas[0]) updateMeta({ coverImage: metas[0].rel_path });
+          }}
+          onClose={() => setPickerOpen(false)}
+        />
+      )}
 
       <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-5)" }}>
         <ColorPicker

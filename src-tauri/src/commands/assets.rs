@@ -30,7 +30,7 @@ fn mime_for(ext: &str) -> &'static str {
     }
 }
 
-fn store_bytes(project_path: &str, file_name: &str, bytes: &[u8]) -> AppResult<AttachmentMeta> {
+pub fn store_bytes(project_path: &str, file_name: &str, bytes: &[u8]) -> AppResult<AttachmentMeta> {
     let ext = Path::new(file_name)
         .extension()
         .map(|e| e.to_string_lossy().to_ascii_lowercase())

@@ -8,7 +8,8 @@ export type Screen =
   | { name: "search"; query: string }
   | { name: "trash" }
   | { name: "projectSettings" }
-  | { name: "appSettings" };
+  | { name: "appSettings" }
+  | { name: "connectors" };
 
 interface NavState {
   screen: Screen;

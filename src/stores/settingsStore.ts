@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { LazyStore } from "@tauri-apps/plugin-store";
+import { documentDir, join } from "@tauri-apps/api/path";
 import { setTheme, type ThemePref } from "../app/theme";
 import { saveQueue } from "../lib/saveQueue";
 
@@ -61,7 +62,7 @@ export const useSettings = create<SettingsState>((set, get) => ({
       loaded: true,
       theme: t,
       autosave: autosave ?? true,
-      defaultProjectDir: defaultProjectDir ?? null,
+      defaultProjectDir: defaultProjectDir ?? (await join(await documentDir(), "Plotr")),
       recents: recents ?? [],
     });
   },

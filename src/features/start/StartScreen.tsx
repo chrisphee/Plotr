@@ -81,7 +81,7 @@ export function StartScreen() {
     >
       <div className="page start">
         <div className="page__head">
-          <h1 className="page__title">Your projects</h1>
+          <h1 className="page__title page__title--settings">Your projects</h1>
           <p className="page__lede">
             A quiet workspace for stories — plot lines, maps of ideas, and every note in its place.
           </p>
@@ -115,15 +115,18 @@ export function StartScreen() {
                 className="lrow start__row"
                 role="button"
                 tabIndex={0}
+                title={r.path}
                 onClick={() => void tryOpen(r.path)}
                 onKeyDown={(e) => e.key === "Enter" && void tryOpen(r.path)}
               >
                 <ProjectCover recent={r} />
                 <div className="start__text">
-                  <span className="lrow__name">{r.name}</span>
-                  <span className="lrow__mono start__path" title={r.path}>
-                    {r.path}
-                  </span>
+                  <span className="lrow__name start__name">{r.name}</span>
+                  {r.description ? (
+                    <span className="lrow__sub">{r.description}</span>
+                  ) : (
+                    <span className="lrow__mono start__path">{folderName(r.path)}</span>
+                  )}
                 </div>
                 <span className="start__when">
                   <span className="lrow__mono">{shortDate(r.openedAt)}</span>
@@ -165,6 +168,12 @@ export function StartScreen() {
       )}
     </AppShell>
   );
+}
+
+/** "…\Plotr Notes\THERMITE.plotr" → "Plotr Notes". */
+function folderName(path: string): string {
+  const parts = path.split(/[\\/]/).filter(Boolean);
+  return parts.length > 1 ? parts[parts.length - 2] : path;
 }
 
 function ProjectCover({ recent }: { recent: RecentProject }) {

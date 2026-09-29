@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
-import { Pencil, Trash2 } from "lucide-react";
+import { Minus, Pencil, Plus, Trash2 } from "lucide-react";
 import clsx from "clsx";
 import { useProject } from "../../stores/projectStore";
 import { useNotes } from "../../stores/notesStore";
@@ -8,22 +8,43 @@ import { undoStackFor } from "../../lib/undoStack";
 import { isOverlayOpen, isTypingTarget } from "../../app/shortcuts";
 import type { PlotLineBoard, PlotPoint, TreeBoard } from "../../lib/schema";
 import { plotline } from "./plotActions";
-import { usePlotViewport } from "./usePlotViewport";
+import { PAD_X, usePlotViewport } from "./usePlotViewport";
 import { AppShell, PrimaryAction } from "../../components/shell/TopBar";
 import { Button } from "../../components/ui/Button";
+import { SegmentedControl } from "../../components/ui/SegmentedControl";
 import { Menu, MenuItem, MenuSeparator, type MenuPosition } from "../../components/ui/Menu";
 import { ConfirmDialog } from "../../components/ui/Modal";
 import { extractPreview } from "../notes-board/preview";
 import { SectionManagerModal } from "./SectionManager";
 import "./plotline.css";
 
-/* Intensity 1 sits PLOT_TOP below the canvas top; intensity 0 sits PLOT_GAP
-   above the story baseline, which is BASELINE px above the canvas bottom. */
-const PLOT_TOP = 120;
+/* Intensity 1 sits `top` below the canvas top; intensity 0 sits PLOT_GAP
+   above the story baseline, which is BASELINE px above the canvas bottom.
+   Denser label modes push the top down so labels above peaks stay clear. */
 const BASELINE = 64;
 const PLOT_GAP = 60;
-const CARD_W = 240;
+const CARD_W = 248;
 const CARD_H = 150;
+const LEAD_X = 34;
+const LEAD_Y = 26;
+const INTENSITY_STEP = 0.05;
+
+type Density = "dots" | "titles" | "cards";
+const DENSITY_KEY = "plotr.plotDensity";
+const COMPACT_H = 30;
+const LABEL = {
+  titles: { w: 230, h: 22, top: 150 },
+  cards: { w: 184, h: 70, top: 196 },
+};
+
+function readDensity(): Density {
+  try {
+    const v = localStorage.getItem(DENSITY_KEY);
+    return v === "dots" || v === "cards" ? v : "titles";
+  } catch {
+    return "titles";
+  }
+}
 
 export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
   const board = useProject((s) => s.boards[treeItem.id]) as PlotLineBoard | undefined;
@@ -31,7 +52,7 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
 
   const wrapRef = useRef<HTMLDivElement>(null);
   const [size, setSize] = useState({ w: 0, h: 0 });
-  const { vp, setVp, setWidth, toScreenX, toWorldX, zoomAt, panBy } = usePlotViewport(
+  const { vp, setVp, setWidth, toScreenX, toWorldX, zoomAt, panBy, fitToView } = usePlotViewport(
     board?.view ?? { zoom: 1, panX: 0 },
   );
   setWidth(size.w);
@@ -46,6 +67,16 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
   const [sectionsOpen, setSectionsOpen] = useState(false);
   const [dotMenu, setDotMenu] = useState<{ pos: MenuPosition; pointId: string } | null>(null);
   const [confirmDeleteId, setConfirmDeleteId] = useState<string | null>(null);
+  const [density, setDensityState] = useState<Density>(readDensity);
+
+  const setDensity = (d: Density) => {
+    setDensityState(d);
+    try {
+      localStorage.setItem(DENSITY_KEY, d);
+    } catch {
+      /* per-viewer convenience only */
+    }
+  };
 
   // Track canvas size.
   useEffect(() => {
@@ -64,7 +95,7 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
   }, [vp, board?.id]);
 
   const baselineY = size.h - BASELINE;
-  const yTop = PLOT_TOP;
+  const yTop = density === "dots" ? 120 : LABEL[density].top;
   const yBottom = Math.max(baselineY - PLOT_GAP, yTop + 100);
   const toScreenY = useCallback(
     (y: number) => yTop + (1 - y) * (yBottom - yTop),
@@ -80,22 +111,56 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
     if (p) useNoteModal.getState().open(p.noteId, mode);
   };
 
-  // Keyboard: open, delete, undo/redo — unless typing or a dialog is open.
+  /** Selects a moment and pans just enough to keep it on screen. */
+  const selectAndReveal = useCallback(
+    (p: PlotPoint) => {
+      setSelectedId(p.id);
+      const cx = toScreenX(p.x);
+      if (cx < PAD_X) panBy(cx - PAD_X);
+      else if (cx > size.w - PAD_X - CARD_W) panBy(cx - (size.w - PAD_X - CARD_W));
+    },
+    [toScreenX, panBy, size.w],
+  );
+
+  // Keyboard: step between moments, nudge intensity, open, delete, undo/redo.
   useEffect(() => {
     if (!board) return;
+    const boardId = board.id;
     const onKey = (e: KeyboardEvent) => {
       if (isTypingTarget(document.activeElement) || isOverlayOpen()) return;
-      if (e.key === "Enter" && selectedId) {
+      const fresh = useProject.getState().boards[boardId] as PlotLineBoard | undefined;
+      if (!fresh) return;
+      const order = [...fresh.points].sort((a, b) => a.x - b.x);
+      const idx = order.findIndex((p) => p.id === selectedId);
+      const sel = idx >= 0 ? order[idx] : null;
+
+      if (e.key === "ArrowRight" || e.key === "ArrowLeft") {
+        if (order.length === 0) return;
         e.preventDefault();
-        openNote(selectedId);
-      } else if ((e.key === "Delete" || e.key === "Backspace") && selectedId) {
-        setConfirmDeleteId(selectedId);
+        const step = e.key === "ArrowRight" ? 1 : -1;
+        const next =
+          idx < 0 ? order[step > 0 ? 0 : order.length - 1] : order[Math.min(order.length - 1, Math.max(0, idx + step))];
+        selectAndReveal(next);
+      } else if ((e.key === "Home" || e.key === "End") && order.length > 0) {
+        e.preventDefault();
+        selectAndReveal(order[e.key === "Home" ? 0 : order.length - 1]);
+      } else if ((e.key === "ArrowUp" || e.key === "ArrowDown") && sel) {
+        e.preventDefault();
+        const delta = (e.key === "ArrowUp" ? 1 : -1) * (e.shiftKey ? INTENSITY_STEP / 5 : INTENSITY_STEP);
+        const y = Math.min(1, Math.max(0, sel.y + delta));
+        plotline.movePoint(boardId, sel.id, sel.x, y);
+        plotline.recordMove(boardId, sel.id, { x: sel.x, y: sel.y }, { x: sel.x, y });
+      } else if (e.key === "Enter" && sel) {
+        e.preventDefault();
+        useNoteModal.getState().open(sel.noteId, "read");
+      } else if ((e.key === "Delete" || e.key === "Backspace") && sel) {
+        setConfirmDeleteId(sel.id);
       } else if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === "z") {
         e.preventDefault();
-        undoStackFor(board.id).undo();
+        undoStackFor(boardId).undo();
       } else if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "z") {
         e.preventDefault();
-        undoStackFor(board.id).redo();
+        undoStackFor(boardId).redo();
       } else if (e.key === "Escape") {
         setSelectedId(null);
         setListOpen(false);
@@ -103,7 +168,7 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [board?.id, selectedId]);
+  }, [board?.id, selectedId, selectAndReveal]);
 
   const dragState = useRef<{
     kind: "pan" | "dot" | "boundary";
@@ -118,6 +183,7 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
 
   const sortedSections = [...board.sections].sort((a, b) => a.start - b.start);
   const storyOrder = [...board.points].sort((a, b) => a.x - b.x);
+  const sectionOf = (p: PlotPoint) => sortedSections.find((s) => p.x >= s.start && p.x <= s.end);
 
   const onCanvasPointerDown = (e: React.PointerEvent<SVGSVGElement>) => {
     if (e.button !== 0) return;
@@ -186,11 +252,57 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
   const storyRight = Math.min(size.w, toScreenX(1));
   const curve = storyOrder.map((p) => `${toScreenX(p.x)},${toScreenY(p.y)}`).join(" ");
 
+  const curvePts = storyOrder.map((p) => ({ x: toScreenX(p.x), y: toScreenY(p.y) }));
+  // Text that labels and the query card must never cover.
+  const fixedText: Rect[] = [
+    { x: 24, y: 18, w: 320, h: 84 },
+    { x: 20, y: yTop - 12, w: 52, h: 20 },
+    { x: 20, y: yBottom - 12, w: 52, h: 20 },
+    ...sortedSections.map((sec) => ({
+      x: toScreenX(sec.start) + 10,
+      y: yTop - 50,
+      w: sec.name.length * 7.6 + 12,
+      h: 22,
+    })),
+  ];
+
+  const labels =
+    density === "dots"
+      ? []
+      : placeLabels(
+          storyOrder,
+          curvePts,
+          { minTop: 88, maxBottom: baselineY - 22, width: size.w },
+          storyOrder.map((p) => {
+            if (density === "cards") return { w: LABEL.cards.w, h: LABEL.cards.h };
+            const est = 24 + (notes[p.noteId]?.title || "Untitled note").length * 7.3;
+            return est <= LABEL.titles.w ? { w: est, h: LABEL.titles.h } : { w: LABEL.titles.w, h: 40 };
+          }),
+          density === "cards" ? 22 : 11,
+          fixedText,
+        );
+  const cardAvoid = (id: string): Rect[] =>
+    labels.filter((l) => l.id !== id).map((l) => ({ x: l.left, y: l.top, w: l.width, h: l.height }));
+
+  const selected = board.points.find((p) => p.id === selectedId) ?? null;
+  const selectedNote = selected ? notes[selected.noteId] : undefined;
+  const selectedIndex = selected ? storyOrder.indexOf(selected) : -1;
+
   return (
     <AppShell
       canvas
       actions={
         <>
+          <SegmentedControl
+            label="Moment detail"
+            value={density}
+            onChange={setDensity}
+            segments={[
+              { value: "dots", label: "Dots" },
+              { value: "titles", label: "Titles" },
+              { value: "cards", label: "Cards" },
+            ]}
+          />
           <Button variant="ghost" onClick={() => setSectionsOpen(true)}>
             Sections
           </Button>
@@ -201,7 +313,12 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
         </>
       }
     >
-      <div className="pl" ref={wrapRef}>
+      <div
+        className="pl"
+        ref={wrapRef}
+        role="region"
+        aria-label="Plot line. Arrow keys move between moments, Up and Down change intensity, Enter opens the moment."
+      >
         <svg
           className={clsx("pl__canvas", panning && "pl__canvas--panning")}
           width={size.w}
@@ -232,7 +349,7 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
                   width={Math.max(0, x2 - x1)}
                   height={bandBottom}
                 />
-                <text className="pl__section-title" x={x1 + 16} y={104}>
+                <text className="pl__section-title" x={x1 + 14} y={yTop - 34}>
                   {sec.name}
                 </text>
               </g>
@@ -274,38 +391,52 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
 
           {/* Axes */}
           <line className="pl__axis" x1={storyLeft} y1={baselineY} x2={storyRight} y2={baselineY} />
-          <text className="pl__axislabel" x={Math.max(16, toScreenX(0))} y={baselineY + 28}>
-            BEGINNING
+          <text className="pl__axislabel" x={Math.max(16, toScreenX(0))} y={baselineY + 24}>
+            Beginning
           </text>
           <text
             className="pl__axislabel"
             x={Math.min(size.w - 16, toScreenX(1))}
-            y={baselineY + 28}
+            y={baselineY - 10}
             textAnchor="end"
           >
-            END →
+            End
           </text>
-          <text className="pl__axislabel" x={32} y={yTop + 31}>
-            HIGH
+          <text className="pl__axislabel" x={28} y={yTop + 4}>
+            High
           </text>
-          <text className="pl__axislabel" x={32} y={baselineY - 3}>
-            LOW
+          <text className="pl__axislabel" x={28} y={yBottom + 4}>
+            Low
+          </text>
+          <text
+            className="pl__axislabel pl__axislabel--name"
+            transform={`translate(22, ${(yTop + yBottom) / 2}) rotate(-90)`}
+            textAnchor="middle"
+          >
+            Intensity
           </text>
 
           {/* The curve, in story order */}
           {storyOrder.length > 1 && <polyline className="pl__curve" points={curve} />}
+
+          {/* Label stems (Cards) and the selected moment's leader line */}
+          {labels.map((l) =>
+            l.stem && l.id !== selectedId ? (
+              <line key={`stem-${l.id}`} className="pl__stem" {...l.stem} />
+            ) : null,
+          )}
 
           {/* Moments */}
           {board.points.map((p) => {
             const cx = toScreenX(p.x);
             const cy = toScreenY(p.y);
             if (cx < -40 || cx > size.w + 40) return null;
-            const selected = selectedId === p.id;
+            const isSel = selectedId === p.id;
             return (
               <g
                 key={p.id}
                 data-dot
-                className={clsx("pl-dot", selected && "pl-dot--selected")}
+                className={clsx("pl-dot", isSel && "pl-dot--selected")}
                 onPointerDown={(e) => startDotDrag(e, p)}
                 onClick={(e) => {
                   e.stopPropagation();
@@ -323,14 +454,53 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
                 }}
               >
                 <title>{notes[p.noteId]?.title || "Untitled note"}</title>
-                <circle className="pl-dot__halo" cx={cx} cy={cy} r={12} />
-                {selected && <circle className="pl-dot__outer" cx={cx} cy={cy} r={9} />}
+                <circle className="pl-dot__halo" cx={cx} cy={cy} r={13} />
+                {isSel && <circle className="pl-dot__outer" cx={cx} cy={cy} r={10.5} />}
                 <circle className="pl-dot__ring" cx={cx} cy={cy} r={8} />
-                <circle className="pl-dot__fill" cx={cx} cy={cy} r={6} />
+                <circle className="pl-dot__fill" cx={cx} cy={cy} r={isSel ? 6.5 : 5.5} />
               </g>
             );
           })}
+
+          {selected && selectedNote && (() => {
+            const pos = cardPosition(toScreenX(selected.x), toScreenY(selected.y), size, curvePts, cardAvoid(selected.id), fixedText);
+            return pos ? (
+              <g className="pl__leader">
+                <line x1={pos.from.x} y1={pos.from.y} x2={pos.to.x} y2={pos.to.y} />
+                <circle cx={pos.to.x} cy={pos.to.y} r={2.5} />
+              </g>
+            ) : null;
+          })()}
         </svg>
+
+        {/* Titles or cards beside each moment */}
+        {labels.length > 0 && (
+          <div className="pl__labels">
+            {labels.map((l) => {
+              if (l.id === selectedId) return null;
+              const p = storyOrder[l.index];
+              const note = notes[p.noteId];
+              return (
+                <button
+                  key={l.id}
+                  className={clsx("pl-label", `pl-label--${density}`, l.compact && "pl-label--compact")}
+                  style={{ left: l.left, top: l.top, width: l.width, height: l.height }}
+                  tabIndex={-1}
+                  onClick={() => setSelectedId(p.id)}
+                  onDoubleClick={() => openNote(p.id)}
+                >
+                  <span className="pl-label__head">
+                    <span className="pl-label__num">{l.index + 1}</span>
+                    <span className="pl-label__title">{note?.title || "Untitled note"}</span>
+                  </span>
+                  {density === "cards" && !l.compact && note && extractPreview(note.doc) && (
+                    <span className="pl-label__preview">{extractPreview(note.doc)}</span>
+                  )}
+                </button>
+              );
+            })}
+          </div>
+        )}
 
         <div className="boardtitle">
           <h1 className="boardtitle__name">{treeItem.name}</h1>
@@ -344,56 +514,69 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
           <div className="pl__hint">Double-click anywhere to add a moment, or press N.</div>
         )}
 
-        {(() => {
-          const p = board.points.find((pp) => pp.id === selectedId);
-          const note = p && notes[p.noteId];
-          if (!p || !note) return null;
-          const cx = toScreenX(p.x);
-          const cy = toScreenY(p.y);
-          if (cx < 0 || cx > size.w) return null;
-          const flipX = cx + 18 + CARD_W > size.w - 12;
-          const flipY = cy + 14 + CARD_H > size.h - 8;
-          const section = sortedSections.find((s) => p.x >= s.start && p.x <= s.end);
+        {selected && selectedNote && (() => {
+          const pos = cardPosition(toScreenX(selected.x), toScreenY(selected.y), size, curvePts, cardAvoid(selected.id), fixedText);
+          if (!pos) return null;
+          const section = sectionOf(selected);
+          const preview = extractPreview(selectedNote.doc);
           return (
-            <div
-              className="pl-cardpos"
-              style={{
-                left: flipX ? cx - 18 : cx + 18,
-                top: flipY ? cy - 14 : cy + 14,
-                transform: `translate(${flipX ? "-100%" : "0"}, ${flipY ? "-100%" : "0"})`,
-              }}
-            >
-              <button key={p.id} className="pl-card" onClick={() => openNote(p.id)}>
-                <span className="pl-card__top">
-                  <span>{section?.name.toUpperCase() ?? ""}</span>
-                  <span>
-                    {storyOrder.indexOf(p) + 1} / {storyOrder.length}
-                  </span>
+            <div className="pl-cardpos" style={{ left: pos.left, top: pos.top }}>
+              <button key={selected.id} className="pl-card" onClick={() => openNote(selected.id)}>
+                <span className="pl-card__title">{selectedNote.title || "Untitled note"}</span>
+                <span className="pl-card__where">
+                  {section ? `${section.name} · ` : ""}
+                  {selectedIndex + 1} of {storyOrder.length}
                 </span>
-                <span className="pl-card__title">{note.title || "Untitled note"}</span>
-                {extractPreview(note.doc) && (
-                  <span className="pl-card__preview">{extractPreview(note.doc)}</span>
-                )}
-                <span className="pl-card__open">Open note ↵</span>
+                {preview && <span className="pl-card__preview">{preview}</span>}
+                <span className="pl-card__open">
+                  Open note <span className="kbd">Enter</span>
+                </span>
               </button>
             </div>
           );
         })()}
+
+        <div className="sr-only" aria-live="polite">
+          {selected && selectedNote
+            ? `Moment ${selectedIndex + 1} of ${storyOrder.length}: ${selectedNote.title || "Untitled note"}${
+                sectionOf(selected) ? `, ${sectionOf(selected)!.name}` : ""
+              }, intensity ${Math.round(selected.y * 100)}%`
+            : ""}
+        </div>
+
+        <div className="zoompill">
+          <button className="zoompill__btn" aria-label="Zoom out" onClick={() => zoomAt(size.w / 2, 1 / 1.25)}>
+            <Minus size={14} />
+          </button>
+          <span className="zoompill__val">{Math.round(vp.zoom * 100)}%</span>
+          <button className="zoompill__btn" aria-label="Zoom in" onClick={() => zoomAt(size.w / 2, 1.25)}>
+            <Plus size={14} />
+          </button>
+          <span className="zoompill__sep" />
+          <button
+            className="zoompill__btn"
+            onClick={() => fitToView(board.points.map((p) => p.x))}
+            title="Fit all moments in view"
+          >
+            Fit
+          </button>
+        </div>
 
         {listOpen && (
           <div className="pl__listpanel">
             <div className="pl__listhead">
               {board.points.length} {board.points.length === 1 ? "moment" : "moments"}
             </div>
-            {storyOrder.map((p) => (
+            {storyOrder.map((p, i) => (
               <button
                 key={p.id}
                 className={clsx("pl__listrow", selectedId === p.id && "pl__listrow--on")}
                 onClick={() => {
-                  setSelectedId(p.id);
+                  selectAndReveal(p);
                   openNote(p.id);
                 }}
               >
+                <span className="pl__listrow-num">{i + 1}</span>
                 <span className="pl__listrow-title">{notes[p.noteId]?.title || "Untitled note"}</span>
                 <span className="pl__listrow-pos">{Math.round(p.x * 100)}%</span>
               </button>
@@ -443,4 +626,164 @@ export function PlotLineScreen({ treeItem }: { treeItem: TreeBoard }) {
       )}
     </AppShell>
   );
+}
+
+interface Rect {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+}
+
+type Pt = { x: number; y: number };
+
+function overlapArea(r: Rect, others: Rect[]) {
+  let sum = 0;
+  for (const q of others) {
+    sum +=
+      Math.max(0, Math.min(r.x + r.w, q.x + q.w) - Math.max(r.x, q.x)) *
+      Math.max(0, Math.min(r.y + r.h, q.y + q.h) - Math.max(r.y, q.y));
+  }
+  return sum;
+}
+
+function curveHits(r: Rect, pts: Pt[]) {
+  let n = 0;
+  for (let i = 0; i < pts.length - 1; i++) {
+    const a = pts[i];
+    const b = pts[i + 1];
+    if (Math.max(a.x, b.x) < r.x || Math.min(a.x, b.x) > r.x + r.w) continue;
+    for (let t = 0; t <= 1; t += 1 / 48) {
+      const x = a.x + (b.x - a.x) * t;
+      const y = a.y + (b.y - a.y) * t;
+      if (x >= r.x && x <= r.x + r.w && y >= r.y && y <= r.y + r.h) n++;
+    }
+  }
+  return n;
+}
+
+function dotHits(r: Rect, pts: Pt[]) {
+  return pts.filter((d) => d.x >= r.x - 9 && d.x <= r.x + r.w + 9 && d.y >= r.y - 9 && d.y <= r.y + r.h + 9)
+    .length;
+}
+
+/** Where the selected moment's query card sits: the corner with the most free
+   space, slid toward the dot when that clears fixed text. */
+function cardPosition(
+  cx: number,
+  cy: number,
+  size: { w: number; h: number },
+  pts: Pt[],
+  avoid: Rect[],
+  fixed: Rect[],
+) {
+  if (cx < 0 || cx > size.w) return null;
+  const others = pts.filter((p) => p.x !== cx || p.y !== cy);
+  let best: { left: number; top: number; dx: number; dy: number; cost: number } | null = null;
+  for (const dx of [1, -1]) {
+    for (const dy of [1, -1]) {
+      for (const slide of [0, 16, 32]) {
+        const left = dx > 0 ? cx + LEAD_X : cx - LEAD_X - CARD_W;
+        const top = dy > 0 ? cy + LEAD_Y - slide : cy - LEAD_Y - CARD_H + slide;
+        const r = { x: left, y: top, w: CARD_W, h: CARD_H };
+        const outside = left < 8 || top < 8 || left + CARD_W > size.w - 8 || top + CARD_H > size.h - 8;
+        const cost =
+          overlapArea(r, avoid) + overlapArea(r, fixed) * 20 + curveHits(r, pts) * 400 +
+          dotHits(r, others) * 900 + (outside ? 1e6 : 0) + (dx < 0 ? 5 : 0) + (dy < 0 ? 5 : 0) + slide;
+        if (!best || cost < best.cost) best = { left, top, dx, dy, cost };
+      }
+    }
+  }
+  const { left, top, dx, dy } = best!;
+  const to = { x: dx > 0 ? left : left + CARD_W, y: dy > 0 ? top : top + CARD_H };
+  const len = Math.hypot(to.x - cx, to.y - cy) || 1;
+  const from = { x: cx + ((to.x - cx) / len) * 12, y: cy + ((to.y - cy) / len) * 12 };
+  return { left, top, from, to };
+}
+
+interface Placed {
+  id: string;
+  index: number;
+  left: number;
+  top: number;
+  width: number;
+  height: number;
+  /** Cards that could not fit whole show their title only. */
+  compact: boolean;
+  stem: { x1: number; y1: number; x2: number; y2: number } | null;
+}
+
+/* Greedy label placement in story order. Each label tries eight spots (above
+   or below its dot, centred or shifted; or level with it on either side) and
+   takes the one that covers the fewest earlier labels, fixed text and dots.
+   Touching another label costs most, then crossing the curve. A card with no
+   clear spot may shrink to its title line. */
+function placeLabels(
+  order: PlotPoint[],
+  pts: Pt[],
+  bounds: { minTop: number; maxBottom: number; width: number },
+  sizes: { w: number; h: number }[],
+  gap: number,
+  fixed: Rect[],
+): Placed[] {
+  const placed: Rect[] = [...fixed];
+  const out: Placed[] = [];
+  const withStems = gap > 15;
+
+  order.forEach((p, i) => {
+    const { x: cx, y: cy } = pts[i];
+    const { w, h } = sizes[i];
+    if (cx < -w || cx > bounds.width + w) return;
+
+    type Spot = { r: Rect; side: "above" | "below" | "left" | "right"; bias: number; compact: boolean };
+    const spots: Spot[] = [];
+    // Fallback shapes: a card shrinks to its title line; a one-line title wraps onto two short lines.
+    const shapes = withStems
+      ? [{ w, h, compact: false, extra: 0 }, { w, h: COMPACT_H, compact: true, extra: 600 }]
+      : h < 30
+        ? [{ w, h, compact: false, extra: 0 }, { w: Math.max(96, Math.ceil(w / 2) + 20), h: 40, compact: false, extra: 250 }]
+        : [{ w, h, compact: false, extra: 0 }];
+    for (const { w, h: lh, compact, extra } of shapes) {
+      for (const side of ["above", "below"] as const) {
+        const y = side === "above" ? cy - gap - lh : cy + gap;
+        for (const anchor of [0.5, 0.15, 0.85]) {
+          const x = Math.min(Math.max(8, cx - w * anchor), bounds.width - w - 8);
+          spots.push({ r: { x, y, w, h: lh }, side, bias: Math.abs(anchor - 0.5) * 40 + extra, compact });
+        }
+      }
+      spots.push({ r: { x: cx + gap + 4, y: cy - lh / 2, w, h: lh }, side: "right", bias: 30 + extra, compact });
+      spots.push({ r: { x: cx - gap - 4 - w, y: cy - lh / 2, w, h: lh }, side: "left", bias: 40 + extra, compact });
+    }
+
+    let best: Spot | null = null;
+    let bestCost = Infinity;
+    for (const spot of spots) {
+      const { r } = spot;
+      const outOfBounds =
+        r.y < bounds.minTop || r.y + r.h > bounds.maxBottom || r.x < 8 || r.x + r.w > bounds.width - 8;
+      const halo = { x: r.x - 6, y: r.y - 5, w: r.w + 12, h: r.h + 10 };
+      const spaced = { x: r.x - 8, y: r.y - 4, w: r.w + 16, h: r.h + 8 };
+      const cost =
+        overlapArea(spaced, placed) * 10 + curveHits(halo, pts) * 400 + dotHits(r, pts) * 900 +
+        spot.bias + (outOfBounds ? 1e6 : 0);
+      if (cost < bestCost) {
+        bestCost = cost;
+        best = spot;
+      }
+    }
+    const { r, side, compact } = best!;
+    const lw = r.w;
+    placed.push(r);
+    const stem = !withStems
+      ? null
+      : side === "above"
+        ? { x1: cx, y1: cy - 9, x2: cx, y2: r.y + r.h }
+        : side === "below"
+          ? { x1: cx, y1: cy + 9, x2: cx, y2: r.y }
+          : side === "right"
+            ? { x1: cx + 9, y1: cy, x2: r.x, y2: cy }
+            : { x1: cx - 9, y1: cy, x2: r.x + lw, y2: cy };
+    out.push({ id: p.id, index: i, left: r.x, top: r.y, width: lw, height: r.h, compact, stem });
+  });
+  return out;
 }

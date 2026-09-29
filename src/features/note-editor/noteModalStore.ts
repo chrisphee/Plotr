@@ -11,7 +11,6 @@ interface NoteModalState {
   contextRefId: string | null;
   contextBoardId: string | null;
   open: (noteId: string, mode?: "read" | "edit", context?: { boardId: string; refId: string }) => void;
-  setMode: (mode: "read" | "edit") => void;
   close: () => void;
 }
 
@@ -27,6 +26,5 @@ export const useNoteModal = create<NoteModalState>((set) => ({
       contextBoardId: context?.boardId ?? null,
       contextRefId: context?.refId ?? null,
     }),
-  setMode: (mode) => set({ mode }),
   close: () => set({ noteId: null, contextBoardId: null, contextRefId: null }),
 }));

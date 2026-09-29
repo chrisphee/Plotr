@@ -14,7 +14,7 @@ import {
   type Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Image as ImageIcon } from "lucide-react";
+import { Image as ImageIcon, Minus, Plus } from "lucide-react";
 import clsx from "clsx";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { useProject } from "../../stores/projectStore";
@@ -348,13 +348,8 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
           maxZoom={2.5}
           proOptions={{ hideAttribution: true }}
         >
-          <Background
-            variant={BackgroundVariant.Dots}
-            gap={22}
-            size={1}
-            offset={11}
-            color="var(--grid-dot)"
-          />
+          <Background id="minor" variant={BackgroundVariant.Lines} gap={24} lineWidth={1} color="var(--grid-line)" />
+          <Background id="major" variant={BackgroundVariant.Lines} gap={120} lineWidth={1} color="var(--grid-line)" />
         </ReactFlow>
 
         <div className="boardtitle">
@@ -531,13 +526,13 @@ function ZoomControl() {
   const rf = useReactFlow();
   const zoom = useStore((s) => s.transform[2]);
   return (
-    <div className="im__zoom">
-      <button className="im__zoombtn" aria-label="Zoom out" onClick={() => void rf.zoomOut()}>
-        −
+    <div className="zoompill">
+      <button className="zoompill__btn" aria-label="Zoom out" onClick={() => void rf.zoomOut()}>
+        <Minus size={14} />
       </button>
-      <span className="im__zoomval">{Math.round(zoom * 100)}%</span>
-      <button className="im__zoombtn" aria-label="Zoom in" onClick={() => void rf.zoomIn()}>
-        +
+      <span className="zoompill__val">{Math.round(zoom * 100)}%</span>
+      <button className="zoompill__btn" aria-label="Zoom in" onClick={() => void rf.zoomIn()}>
+        <Plus size={14} />
       </button>
     </div>
   );

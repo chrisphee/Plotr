@@ -24,7 +24,7 @@ export function SearchResultsScreen({ initialQuery }: { initialQuery: string }) 
     <AppShell>
       <div className="page">
         <div className="page__head">
-          <h1 className="page__title">Search</h1>
+          <h1 className="page__title page__title--settings">Search</h1>
         </div>
         <TextInput
           autoFocus

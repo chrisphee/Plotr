@@ -15,7 +15,7 @@
   cursor: grabbing;
 }
 
-/* Sections */
+/* Sections: bands on the galley, named in the writer's type */
 .pl__band {
   fill: var(--paper-band);
 }
@@ -25,36 +25,57 @@
 .pl__boundary {
   stroke: var(--hairline-strong);
   stroke-width: 1;
-  stroke-dasharray: 4 3;
+  stroke-dasharray: 3 4;
 }
 .pl__boundary-handle {
   cursor: ew-resize;
   fill: transparent;
 }
 .pl__section-title {
-  font-family: var(--font-ui);
-  font-size: 12px;
-  font-weight: 500;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-style: italic;
   fill: var(--text-muted);
 }
 
-/* Axes */
+/* Axes, typed in the margin */
 .pl__axis {
   stroke: var(--hairline-strong);
   stroke-width: 1;
 }
 .pl__axislabel {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
+  fill: var(--text-muted);
+}
+.pl__axislabel--name {
   fill: var(--text-muted);
 }
 
 .pl__curve {
   fill: none;
   stroke: var(--accent);
-  stroke-width: 2;
+  stroke-width: 1.75;
   stroke-linejoin: round;
   stroke-linecap: round;
+  pointer-events: none;
+}
+
+.pl__stem {
+  stroke: var(--hairline-strong);
+  stroke-width: 1;
+  pointer-events: none;
+}
+
+/* The selected moment's leader line to its query card */
+.pl__leader line {
+  stroke: var(--accent);
+  stroke-width: 1.25;
+}
+.pl__leader circle {
+  fill: var(--accent);
+}
+.pl__leader {
   pointer-events: none;
 }
 
@@ -75,52 +96,124 @@
 .pl-dot__fill {
   fill: var(--accent);
 }
-.pl-dot--selected .pl-dot__fill {
-  fill: var(--text);
-}
 .pl-dot__outer {
   fill: none;
-  stroke: var(--text);
-  stroke-width: 2;
+  stroke: var(--accent);
+  stroke-width: 1.5;
 }
 
-/* Moment card beside the selected dot */
+/* Titles and cards beside each moment */
+.pl__labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 3;
+}
+.pl-label {
+  position: absolute;
+  pointer-events: auto;
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.pl-label__head {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  min-width: 0;
+}
+.pl-label__num {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  color: var(--text-muted);
+  flex: none;
+}
+.pl-label__title {
+  text-wrap: balance;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.3;
+  color: var(--text);
+  overflow: hidden;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  transition: color var(--t-hover) var(--ease);
+}
+.pl-label:hover .pl-label__title {
+  color: var(--accent);
+}
+.pl-label--titles {
+  justify-content: center;
+}
+.pl-label--cards {
+  height: 70px;
+  padding: 8px 10px;
+  background: var(--surface);
+  box-shadow: 0 0 0 1px var(--hairline);
+  border-radius: var(--r-btn);
+  transition: box-shadow var(--t-hover) var(--ease);
+}
+.pl-label--cards.pl-label--compact {
+  height: 30px;
+  padding: 5px 10px;
+  justify-content: center;
+}
+.pl-label--cards:hover {
+  box-shadow: 0 0 0 1px var(--hairline-strong), var(--shadow-card);
+}
+.pl-label--cards .pl-label__title {
+  font-weight: 600;
+  font-size: 13.5px;
+  -webkit-line-clamp: 1;
+}
+.pl-label__preview {
+  font-family: var(--font-serif);
+  font-size: 12.5px;
+  line-height: 1.35;
+  color: var(--text-muted);
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* The query card: hangs from the selected moment on a leader line */
 .pl-cardpos {
   position: absolute;
   z-index: 5;
 }
 .pl-card {
-  width: 240px;
+  width: 248px;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
-  padding: 12px 14px;
-  border-radius: var(--r-row);
+  gap: 5px;
+  padding: 12px 14px 12px;
+  border-radius: var(--r-panel);
   background: var(--surface);
-  box-shadow: var(--shadow-pop);
+  box-shadow: 0 0 0 1px var(--accent), var(--shadow-card);
   text-align: left;
   animation: popup-enter var(--t-enter) var(--ease);
 }
-.pl-card__top {
-  display: flex;
-  justify-content: space-between;
-  gap: var(--sp-4);
+.pl-card__where {
   font-family: var(--font-mono);
-  font-size: 11px;
+  font-size: var(--fs-mono-sm);
   color: var(--text-muted);
-}
-.pl-card__top span:first-child {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .pl-card__title {
-  font-size: 14.5px;
+  font-family: var(--font-serif);
+  font-size: 17px;
   font-weight: 600;
+  line-height: 1.25;
 }
 .pl-card__preview {
-  font-size: 12.5px;
-  line-height: 1.5;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  line-height: 1.45;
   color: var(--text-muted);
   display: -webkit-box;
   -webkit-line-clamp: 3;
@@ -128,6 +221,10 @@
   overflow: hidden;
 }
 .pl-card__open {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-top: 2px;
   font-size: var(--fs-meta);
   font-weight: 500;
   color: var(--accent);
@@ -138,7 +235,9 @@
   left: 50%;
   top: 50%;
   transform: translate(-50%, -50%);
-  font-size: var(--fs-ui);
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 16px;
   color: var(--text-muted);
   pointer-events: none;
 }
@@ -148,8 +247,8 @@
   position: absolute;
   top: var(--sp-6);
   right: var(--sp-6);
-  width: 280px;
-  max-height: calc(100% - 32px);
+  width: 300px;
+  max-height: calc(100% - 96px);
   overflow-y: auto;
   background: var(--surface);
   border-radius: var(--r-panel);
@@ -160,24 +259,35 @@
 }
 .pl__listhead {
   padding: 8px 10px 6px;
-  font-size: var(--fs-meta);
-  font-weight: 500;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
   color: var(--text-muted);
 }
 .pl__listrow {
   display: flex;
-  align-items: center;
+  align-items: baseline;
   gap: var(--sp-4);
   width: 100%;
   text-align: left;
   padding: 7px 10px;
   border-radius: var(--r-btn);
-  font-size: var(--fs-ui);
+  font-family: var(--font-serif);
+  font-size: 14.5px;
   transition: background var(--t-hover) var(--ease);
 }
-.pl__listrow:hover,
-.pl__listrow--on {
+.pl__listrow:hover {
   background: var(--hover-wash);
+}
+.pl__listrow--on {
+  background: var(--accent-soft);
+}
+.pl__listrow-num {
+  width: 18px;
+  flex: none;
+  text-align: right;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono-sm);
+  color: var(--text-muted);
 }
 .pl__listrow-title {
   flex: 1;
@@ -188,7 +298,7 @@
 }
 .pl__listrow-pos {
   font-family: var(--font-mono);
-  font-size: var(--fs-mono);
+  font-size: var(--fs-mono-sm);
   color: var(--text-muted);
 }
 

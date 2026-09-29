@@ -71,7 +71,7 @@
   background: rgba(255, 255, 255, 0.7);
 }
 .cover__preview[data-tone="dark"] .cover__rule {
-  background: #06070e;
+  background: #141414;
 }
 
 .cover__controls {

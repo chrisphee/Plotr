@@ -47,11 +47,9 @@ interface NoteEditorProps {
   editable: boolean;
   onDocChange?: (doc: unknown) => void;
   onEditor?: (editor: Editor | null) => void;
-  /** Fires when the user double-clicks a read-only editor (open edit mode). */
-  onRequestEdit?: () => void;
 }
 
-export function NoteEditor({ doc, editable, onDocChange, onEditor, onRequestEdit }: NoteEditorProps) {
+export function NoteEditor({ doc, editable, onDocChange, onEditor }: NoteEditorProps) {
   const editorRef = useRef<Editor | null>(null);
   const editor = useEditor(
     {
@@ -92,10 +90,7 @@ export function NoteEditor({ doc, editable, onDocChange, onEditor, onRequestEdit
   }, [editor, onEditor]);
 
   return (
-    <div
-      className={`note-editor ${editable ? "note-editor--edit" : "note-editor--read"}`}
-      onDoubleClick={() => !editable && onRequestEdit?.()}
-    >
+    <div className="note-editor">
       <EditorContent editor={editor} />
     </div>
   );

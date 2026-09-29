@@ -48,16 +48,20 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
         </>
       }
     >
-      <div className="typegrid">
+      <div className="typelist" role="radiogroup" aria-label="Board type">
         {BOARD_TYPES.map((t) => (
           <button
             key={t.type}
-            className={clsx("typecard", type === t.type && "typecard--active")}
+            role="radio"
+            aria-checked={type === t.type}
+            className={clsx("typeopt", type === t.type && "typeopt--on")}
             onClick={() => setType(t.type)}
           >
-            {t.icon(20)}
-            <span className="typecard__name">{t.name}</span>
-            <span className="typecard__desc">{t.description}</span>
+            <span className="typeopt__icon">{t.icon(18)}</span>
+            <span className="typeopt__text">
+              <span className="typeopt__name">{t.name}</span>
+              <span className="typeopt__desc">{t.description}</span>
+            </span>
           </button>
         ))}
       </div>

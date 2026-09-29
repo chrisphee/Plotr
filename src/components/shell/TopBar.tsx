@@ -1,5 +1,6 @@
 import { type ReactNode } from "react";
 import clsx from "clsx";
+import { Search } from "lucide-react";
 import { useProject } from "../../stores/projectStore";
 import { useSettings } from "../../stores/settingsStore";
 import { saveQueue, useSaveState } from "../../lib/saveQueue";
@@ -39,9 +40,10 @@ function TopBar({ actions, saveStatus }: { actions?: ReactNode; saveStatus: "aut
         <LogoMark />
         <Breadcrumb />
       </div>
-      <button className="cmdfield" onClick={openSearch}>
+      <button className="cmdfield" onClick={openSearch} aria-label="Search (Ctrl+K)">
+        <Search size={14} strokeWidth={1.75} />
         <span className="cmdfield__text">
-          {hasProject ? "Search notes, boards, or run a command" : "Search projects"}
+          {hasProject ? "Search notes and boards" : "Search projects"}
         </span>
         <span className="cmdfield__keys">
           <Kbd>Ctrl</Kbd>

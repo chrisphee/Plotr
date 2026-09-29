@@ -64,6 +64,7 @@ export function Breadcrumb() {
               className={clsx("crumbs__item", isLast && "crumbs__item--current")}
               onClick={() => !isLast && c.onClick?.()}
               disabled={isLast || !c.onClick}
+              aria-current={isLast ? "page" : undefined}
               title={c.label}
             >
               {c.label}

@@ -1,7 +1,8 @@
-import { useEffect, type ReactNode } from "react";
+import { useEffect, useRef, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X } from "lucide-react";
 import { IconButton } from "./Button";
+import { useFocusTrap } from "./focusTrap";
 import "./ui.css";
 
 interface ModalProps {
@@ -13,6 +14,8 @@ interface ModalProps {
 }
 
 export function Modal({ title, onClose, footer, children, width }: ModalProps) {
+  const ref = useRef<HTMLDivElement>(null);
+  useFocusTrap(ref);
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (e.key === "Escape") {
@@ -32,9 +35,12 @@ export function Modal({ title, onClose, footer, children, width }: ModalProps) {
       }}
     >
       <div
+        ref={ref}
         className="modal"
         role="dialog"
+        aria-modal="true"
         aria-label={title}
+        tabIndex={-1}
         style={width ? { width: `min(${width}px, calc(100vw - 88px))` } : undefined}
       >
         <div className="modal__header">
@@ -75,20 +81,20 @@ export function ConfirmDialog({
       width={420}
       footer={
         <>
-          <button className="btn btn--ghost" onClick={onCancel}>
+          <button className="btn btn--ghost" onClick={onCancel} data-autofocus={destructive ? "" : undefined}>
             Cancel
           </button>
           <button
             className={`btn ${destructive ? "btn--destructive" : "btn--primary"}`}
             onClick={onConfirm}
-            autoFocus
+            data-autofocus={destructive ? undefined : ""}
           >
             {confirmLabel}
           </button>
         </>
       }
     >
-      <p style={{ color: "var(--text-muted)", lineHeight: 1.6 }}>{message}</p>
+      <p className="modal__message">{message}</p>
     </Modal>
   );
 }

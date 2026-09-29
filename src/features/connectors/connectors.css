@@ -5,9 +5,8 @@
 }
 
 .connector-card {
-  border-radius: var(--r-panel);
-  box-shadow: var(--ring);
-  padding: 20px 24px;
+  border-top: 1px solid var(--hairline);
+  padding: 18px 0 4px;
   display: flex;
   flex-direction: column;
   gap: 14px;
@@ -20,9 +19,9 @@
 }
 
 .connector-card__name {
-  font-size: 17px;
+  font-family: var(--font-serif);
+  font-size: 18px;
   font-weight: 600;
-  letter-spacing: -0.02em;
 }
 
 .connector-card__status {
@@ -74,7 +73,7 @@
   height: 22px;
   border-radius: 50%;
   background: var(--accent);
-  color: #fff;
+  color: var(--on-accent);
   display: grid;
   place-items: center;
 }

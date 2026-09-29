@@ -362,8 +362,8 @@ function NoteListPane({
         />
       ) : (
         <div className="nb__rows">
-          {refs.map((r) => (
-            <NoteRow key={r.id} board={board} noteRef={r} />
+          {refs.map((r, i) => (
+            <NoteRow key={r.id} board={board} noteRef={r} number={i + 1} />
           ))}
         </div>
       )}
@@ -400,7 +400,7 @@ function NoteListPane({
 
 /* ── Note row ── */
 
-function NoteRow({ board, noteRef }: { board: NotesBoard; noteRef: NoteRef }) {
+function NoteRow({ board, noteRef, number }: { board: NotesBoard; noteRef: NoteRef; number: number }) {
   const note = useNotes((s) => s.notes[noteRef.noteId]);
   const boards = useProject((s) => s.boards);
   const categories = useProject((s) => s.meta?.categories ?? []);
@@ -449,17 +449,26 @@ function NoteRow({ board, noteRef }: { board: NotesBoard; noteRef: NoteRef }) {
         style={note.color ? ({ "--row-tint": note.color } as React.CSSProperties) : undefined}
         onClick={onRowClick}
         onDoubleClick={onRowDoubleClick}
+        onKeyDown={(e) => {
+          if (e.target !== e.currentTarget) return;
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            openNote(e.shiftKey ? "edit" : "read");
+          }
+        }}
         onContextMenu={(e) => {
           e.preventDefault();
-          setMenu({ x: e.clientX, y: e.clientY });
+          const r = e.currentTarget.getBoundingClientRect();
+          setMenu(e.clientX || e.clientY ? { x: e.clientX, y: e.clientY } : { x: r.left + 24, y: r.bottom });
         }}
         role="button"
         tabIndex={0}
       >
+        <span className="lrow__num">{number}</span>
         <div className="noterow__main">
           <div className="noterow__title">
             <span className="lrow__name">{note.title || "Untitled note"}</span>
-            {noteRef.pinned && <span className="pill pill--accent noterow__pill">Pinned</span>}
+            {noteRef.pinned && <span className="noterow__pinned">Pinned</span>}
             {refcount > 1 && (
               <Link2 size={13} className="noterow__linked" aria-label={`Linked in ${refcount} places`} />
             )}
@@ -467,7 +476,7 @@ function NoteRow({ board, noteRef }: { board: NotesBoard; noteRef: NoteRef }) {
           {preview && <div className="noterow__preview">{preview}</div>}
         </div>
         <div className="noterow__side">
-          <span className="lrow__mono">{shortDate(note.modifiedAt, true)}</span>
+          <span className="lrow__mono">{shortDate(note.modifiedAt)}</span>
           {cats[0] && (
             <span className="noterow__cat">
               <CategoryDot color={cats[0].color} />

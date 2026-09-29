@@ -1,26 +1,16 @@
-.dash__chips {
-  display: flex;
-  gap: var(--sp-3);
-}
-
-.dash__filter {
-  align-self: center;
-}
-
 .boardlist {
   display: flex;
   flex-direction: column;
-  gap: 22px;
+  gap: 36px;
 }
 
 .boardlist__foot {
   display: flex;
   gap: var(--sp-7);
-  padding: 0 12px;
 }
 
 .boardlist__none {
-  padding: 4px 12px 8px;
+  padding: 8px 0;
   font-size: var(--fs-ui);
   color: var(--text-muted);
 }
@@ -40,37 +30,60 @@
   opacity: 1;
 }
 
+/* Contents line: preview · name ........ type · count   date  ⋯ */
 .boardrow {
-  grid-template-columns: 72px minmax(0, 1fr) auto 76px;
-  gap: 20px;
+  grid-template-columns: 56px minmax(0, 1fr) 72px 30px;
+  gap: 16px;
+  padding: 7px 0;
+}
+
+.boardrow__line {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  min-width: 0;
+}
+.boardrow__line .lrow__name {
+  flex: 0 1 auto;
+}
+.boardrow__line .tag {
+  flex: none;
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
 }
 
 .boardrow__edited {
   text-align: right;
 }
 
-/* ── Board preview tile ── */
+.boardrow__more {
+  width: 28px;
+  height: 28px;
+}
+
+/* ── Board preview: a small figure drawn from the board's own data ── */
 
 .bprev {
   position: relative;
-  height: 36px;
-  border-radius: var(--r-segment);
-  background: var(--hover-wash);
+  height: 30px;
+  border-radius: var(--r-btn);
+  background: var(--desk);
+  box-shadow: inset 0 0 0 1px var(--hairline);
   overflow: hidden;
 }
 
 .bprev__inset {
   position: absolute;
-  left: 8px;
-  top: 7px;
-  width: calc(100% - 16px);
-  height: calc(100% - 14px);
+  left: 7px;
+  top: 6px;
+  width: calc(100% - 14px);
+  height: calc(100% - 12px);
 }
 
 .bprev__dot {
   position: absolute;
-  width: 5px;
-  height: 5px;
+  width: 4px;
+  height: 4px;
   border-radius: 50%;
   background: var(--text);
   transform: translate(-50%, -50%);
@@ -78,59 +91,73 @@
 
 .bprev__bars {
   position: absolute;
-  left: 9px;
-  right: 9px;
-  top: 10px;
+  left: 8px;
+  right: 8px;
+  top: 8px;
   display: flex;
   flex-direction: column;
   gap: 4px;
 }
 .bprev__bars span {
-  height: 2px;
-  border-radius: 1px;
+  height: 1.5px;
   background: var(--text-faint);
 }
 
-/* ── Board type chooser (creation modal) ── */
+/* ── Board type chooser (creation modal): a ruled list ── */
 
-.typegrid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: var(--sp-4);
-}
-
-.typecard {
-  border-radius: var(--r-row);
-  box-shadow: var(--ring);
-  padding: 14px;
+.typelist {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-4);
-  text-align: left;
-  color: var(--text-muted);
-  transition:
-    box-shadow var(--t-hover) var(--ease),
-    background var(--t-hover) var(--ease);
-}
-.typecard:hover {
-  background: var(--hover-wash);
-}
-.typecard--active {
-  box-shadow: 0 0 0 2px var(--accent);
-  color: var(--accent);
-}
-.typecard--active:hover {
-  background: transparent;
+  border-top: 1px solid var(--hairline);
 }
 
-.typecard__name {
-  font-size: 14.5px;
+.typeopt {
+  position: relative;
+  display: grid;
+  grid-template-columns: 22px minmax(0, 1fr);
+  gap: 14px;
+  align-items: start;
+  padding: 11px 0 11px 18px;
+  border-bottom: 1px solid var(--hairline);
+  text-align: left;
+  color: var(--text-muted);
+}
+.typeopt::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  top: 12px;
+  bottom: 12px;
+  width: 2px;
+  background: transparent;
+  transition: background var(--t-hover) var(--ease);
+}
+.typeopt:hover::before {
+  background: var(--hairline-strong);
+}
+.typeopt--on::before,
+.typeopt--on:hover::before {
+  background: var(--accent);
+}
+.typeopt__icon {
+  padding-top: 2px;
+}
+.typeopt--on .typeopt__icon {
+  color: var(--accent);
+}
+.typeopt__text {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.typeopt__name {
+  font-family: var(--font-serif);
+  font-size: 16px;
   font-weight: 600;
   color: var(--text);
 }
-
-.typecard__desc {
-  font-size: var(--fs-meta);
-  color: var(--text-muted);
+.typeopt__desc {
+  font-size: 12.5px;
   line-height: 1.5;
+  color: var(--text-muted);
 }

@@ -1,50 +1,42 @@
 /* ── Editor body ── */
 
+/* Prose is set like the book: serif, 18px, a 66-character measure. */
 .note-editor {
+  font-family: var(--font-serif);
   font-size: var(--fs-body);
-  line-height: 1.7;
-  max-width: 600px;
+  font-variation-settings: "opsz" 18;
+  line-height: 1.65;
+  max-width: 66ch;
   user-select: text;
-}
-
-.note-editor--edit {
-  border-radius: var(--r-btn);
-  box-shadow: var(--ring);
-  padding: 10px 12px;
-  transition: box-shadow var(--t-focus) var(--ease);
-}
-.note-editor--edit:focus-within {
-  box-shadow: 0 0 0 1px var(--hairline-strong);
+  color: var(--text);
 }
 
 .note-editor .tiptap {
   outline: none;
-  min-height: 120px;
+  min-height: 240px;
 }
 
-.note-editor--read .tiptap {
-  cursor: default;
-}
+
 
 .note-editor .tiptap > * + * {
-  margin-top: 0.6em;
+  margin-top: 0.75em;
 }
 
 .note-editor h1,
 .note-editor h2,
 .note-editor h3 {
   line-height: 1.25;
-  letter-spacing: -0.02em;
-  margin-top: 1em;
+  letter-spacing: -0.01em;
+  margin-top: 1.4em;
 }
-.note-editor h1 { font-size: 22px; }
-.note-editor h2 { font-size: 18px; }
-.note-editor h3 { font-size: 16px; }
+.note-editor h1 { font-size: 26px; }
+.note-editor h2 { font-size: 21px; }
+.note-editor h3 { font-size: 18px; font-style: italic; font-weight: 600; }
 
 .note-editor blockquote {
-  border-left: 2px solid var(--accent);
-  margin: 0.6em 0;
-  padding: 2px 0 2px var(--sp-6);
+  margin: 0.8em 0;
+  padding: 0 0 0 1.6em;
+  font-style: italic;
   color: var(--text-muted);
 }
 
@@ -99,12 +91,12 @@
 .note-editor a {
   color: var(--accent);
   text-decoration: underline;
-  text-underline-offset: 2px;
+  text-underline-offset: 3px;
 }
 
 .note-editor img {
   max-width: 100%;
-  border-radius: var(--r-btn);
+  border-radius: var(--r-kbd);
 }
 
 .note-editor code {
@@ -130,7 +122,7 @@
 
 .wikilink {
   color: var(--accent);
-  border-bottom: 1px solid var(--accent);
+  border-bottom: 1px dotted var(--accent);
   cursor: pointer;
   transition: color var(--t-hover) var(--ease);
 }
@@ -142,7 +134,7 @@
   position: fixed;
   z-index: 300;
   background: var(--surface);
-  border-radius: var(--r-row);
+  border-radius: var(--r-panel);
   box-shadow: var(--shadow-pop);
   padding: var(--sp-2);
   min-width: 200px;
@@ -174,14 +166,11 @@
 /* ── Toolbar ── */
 
 .rt-toolbar {
-  align-self: flex-start;
   display: flex;
   align-items: center;
   gap: var(--sp-1);
   flex-wrap: wrap;
-  padding: var(--sp-2);
-  border-radius: var(--r-input);
-  box-shadow: var(--ring);
+  min-width: 0;
 }
 
 .rt-toolbar__btn {

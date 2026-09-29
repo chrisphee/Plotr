@@ -1,6 +1,6 @@
 import { Fragment, useEffect, useMemo, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
-import { BookOpen, Folder, StickyNote, Tag } from "lucide-react";
+import { BookOpen, Folder, Search as SearchIcon, StickyNote, Tag } from "lucide-react";
 import clsx from "clsx";
 import { useSearch, type SearchResult } from "./searchStore";
 import { useNav } from "../../app/navStore";
@@ -140,7 +140,7 @@ function ProjectSearchOverlay() {
             <span className="result-row__title">{r.name}</span>
             <span className="result-row__loc">{r.path}</span>
           </span>
-          <span className="result-row__hint">{i === active ? "↵" : ""}</span>
+          <span className="result-row__hint">{i === active && <span className="kbd">Enter</span>}</span>
         </button>
       ))}
     </OverlayFrame>
@@ -190,7 +190,7 @@ function OverlayFrame({
     >
       <div className="searchoverlay" role="dialog" aria-label="Search">
         <div className="searchoverlay__inputrow">
-          <span className="searchoverlay__glyph" aria-hidden />
+          <SearchIcon className="searchoverlay__glyph" size={16} strokeWidth={1.75} aria-hidden />
           <input
             autoFocus
             className="searchoverlay__input"
@@ -219,7 +219,10 @@ function OverlayFrame({
             ) : (
               <span />
             )}
-            <span>↑↓ to move · Enter to open</span>
+            <span className="searchoverlay__keys">
+              <span className="kbd">Up</span>
+              <span className="kbd">Down</span> to move · <span className="kbd">Enter</span> to open
+            </span>
           </div>
         )}
       </div>
@@ -272,7 +275,7 @@ export function ResultRow({
         {cats.map((c) => (
           <CategoryDot key={c.id} color={c.color} title={c.name} />
         ))}
-        {active && <span>↵</span>}
+        {active && <span className="kbd">Enter</span>}
       </span>
     </button>
   );

@@ -13,6 +13,7 @@ export interface RecentProject {
   /** Snapshot of the project's card appearance, refreshed on open/edit. */
   coverImage?: string | null;
   color?: string | null;
+  description?: string;
 }
 
 interface SettingsState {
@@ -28,7 +29,7 @@ interface SettingsState {
   touchRecent: (
     path: string,
     name: string,
-    appearance?: { coverImage: string | null; color: string | null },
+    appearance?: { coverImage: string | null; color: string | null; description: string },
   ) => void;
   removeRecent: (path: string) => void;
 }
@@ -95,6 +96,7 @@ export const useSettings = create<SettingsState>((set, get) => ({
           openedAt: new Date().toISOString(),
           coverImage: appearance ? appearance.coverImage : prev?.coverImage ?? null,
           color: appearance ? appearance.color : prev?.color ?? null,
+          description: appearance ? appearance.description : prev?.description ?? "",
         },
         ...rest,
       ].slice(0, 12),

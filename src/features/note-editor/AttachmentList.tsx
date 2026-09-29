@@ -94,11 +94,11 @@ export function AttachmentList({ note, editable }: { note: Note; editable: boole
       ))}
       {editable && (
         <div className="attachments__add">
-          <button className="notepopup__addcat" onClick={() => void attach()}>
+          <button className="notepage__add" onClick={() => void attach()}>
             + Attach file
           </button>
           {pinterestConnected && (
-            <button className="notepopup__addcat" onClick={() => setPickerOpen(true)}>
+            <button className="notepage__add" onClick={() => setPickerOpen(true)}>
               + From Pinterest
             </button>
           )}

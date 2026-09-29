@@ -50,7 +50,7 @@ export function TrashScreen() {
     >
       <div className="page">
         <div className="page__head trash__head">
-          <h1 className="page__title">Trash</h1>
+          <h1 className="page__title page__title--settings">Trash</h1>
           <p className="page__sub">
             {trash.entries.length === 0 && "Trash is empty. "}
             Deleted boards, folders and notes wait here until you restore or remove them.
@@ -63,7 +63,7 @@ export function TrashScreen() {
               <div key={e.id} className="lrow trashrow">
                 <div className="trashrow__text">
                   <span className="lrow__name">{e.displayName}</span>
-                  <span className="lrow__sub">
+                  <span className="lrow__mono trashrow__from">
                     {e.originPath.length > 0 ? e.originPath.join(" › ") : "Project root"} · deleted{" "}
                     {deletedWhen(e.deletedAt)}
                   </span>

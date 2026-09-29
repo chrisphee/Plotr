@@ -1,4 +1,5 @@
-import { useState, type ReactNode } from "react";
+import { useState } from "react";
+import clsx from "clsx";
 import { useNav } from "../../app/navStore";
 import { useProject } from "../../stores/projectStore";
 import { useNotes } from "../../stores/notesStore";
@@ -8,7 +9,6 @@ import { agoLong } from "../../lib/time";
 import type { TreeBoard, TreeItem } from "../../lib/schema";
 import { AppShell, PrimaryAction } from "../../components/shell/TopBar";
 import { Button } from "../../components/ui/Button";
-import { SegmentedControl } from "../../components/ui/SegmentedControl";
 import { BoardList, type TypeFilter } from "./BoardList";
 import { CreateBoardModal } from "./CreateBoardModal";
 import "./dashboard.css";
@@ -20,14 +20,8 @@ export function DashboardScreen() {
     <FolderLayout
       parentId={null}
       title={meta.name}
-      chips={
-        (meta.status || meta.genre) && (
-          <div className="dash__chips">
-            {meta.status && <span className="pill pill--accent">{meta.status}</span>}
-            {meta.genre && <span className="pill pill--ring">{meta.genre}</span>}
-          </div>
-        )
-      }
+      slug={[meta.status, meta.genre].filter(Boolean).join(" · ")}
+      lede={meta.description}
     />
   );
 }
@@ -36,11 +30,14 @@ export function DashboardScreen() {
 export function FolderLayout({
   parentId,
   title,
-  chips,
+  slug,
+  lede,
 }: {
   parentId: string | null;
   title: string;
-  chips?: ReactNode;
+  /** Typewritten line above the title, e.g. "Drafting · Literary mystery". */
+  slug?: string;
+  lede?: string;
 }) {
   const navigate = useNav((s) => s.navigate);
   const treeItems = useProject((s) => s.treeItems);
@@ -64,35 +61,50 @@ export function FolderLayout({
         </>
       }
     >
-      <div className="page">
-        <div className="page__head">
-          {chips}
-          <h1 className="page__title">{title}</h1>
-          <MetaLine boardCount={boards.length} />
+      <div className="page page--margin">
+        <div className="page__main">
+          <div className="page__head">
+            <h1 className="page__title">{title}</h1>
+            {lede && <p className="page__lede">{lede}</p>}
+            <MetaLine slug={slug} boardCount={boards.length} />
+          </div>
+
+          <BoardList parentId={parentId} filter={filter} />
         </div>
 
         {boards.length > 0 && (
-          <SegmentedControl
-            className="dash__filter"
-            label="Board type"
-            value={filter}
-            onChange={setFilter}
-            segments={[
-              { value: "all", label: "All", count: count("all") },
-              { value: "plotline", label: "Plot Line", count: count("plotline") },
-              { value: "infomap", label: "Info Map", count: count("infomap") },
-              { value: "notes", label: "Notes", count: count("notes") },
-            ]}
-          />
+          <aside className="page__side" aria-label="Show boards by type">
+            <h2 className="page__sidelabel">Show</h2>
+            <div className="sidefilter" role="radiogroup" aria-label="Board type">
+              {FILTERS.map(([value, label]) => (
+                <button
+                  key={value}
+                  role="radio"
+                  aria-checked={filter === value}
+                  className={clsx("sidefilter__item", filter === value && "sidefilter__item--on")}
+                  onClick={() => setFilter(value)}
+                  disabled={value !== "all" && count(value) === 0}
+                >
+                  <span>{label}</span>
+                  <span className="sidefilter__count">{count(value)}</span>
+                </button>
+              ))}
+            </div>
+          </aside>
         )}
-
-        <BoardList parentId={parentId} filter={filter} />
       </div>
 
       {creating && <CreateBoardModal parentId={parentId} onClose={() => setCreating(false)} />}
     </AppShell>
   );
 }
+
+const FILTERS: [TypeFilter, string][] = [
+  ["all", "All boards"],
+  ["plotline", "Plot Lines"],
+  ["infomap", "Info Maps"],
+  ["notes", "Notes"],
+];
 
 function subtreeBoards(items: TreeItem[], rootId: string | null): TreeBoard[] {
   const inside = new Set<string | null>([rootId]);
@@ -109,7 +121,7 @@ function subtreeBoards(items: TreeItem[], rootId: string | null): TreeBoard[] {
   return items.filter((it): it is TreeBoard => it.kind === "board" && inside.has(it.parentId));
 }
 
-function MetaLine({ boardCount }: { boardCount: number }) {
+function MetaLine({ slug, boardCount }: { slug?: string; boardCount: number }) {
   const meta = useProject((s) => s.meta);
   const notes = useNotes((s) => s.notes);
   const autosave = useSettings((s) => s.autosave);
@@ -122,6 +134,7 @@ function MetaLine({ boardCount }: { boardCount: number }) {
   const state = unsaved ? "Unsaved changes" : autosave ? "Autosaved" : "Saved";
   return (
     <div className="page__metaline">
+      {slug && <span>{slug} ·</span>}
       <span className={unsaved ? "statusdot statusdot--pending" : "statusdot"} />
       {state} · {boardCount} {boardCount === 1 ? "board" : "boards"}
       {edited && ` · edited ${agoLong(edited)}`}

@@ -158,6 +158,7 @@ export const useProject = create<ProjectState>((set, get) => {
       useSettings.getState().touchRecent(bundle.project_path, meta.name, {
         coverImage: meta.coverImage,
         color: meta.color,
+        description: meta.description,
       });
       useNav.getState().reset({ name: "dashboard" });
     },
@@ -250,6 +251,7 @@ export const useProject = create<ProjectState>((set, get) => {
         useSettings.getState().touchRecent(projectPath, next.name, {
           coverImage: next.coverImage,
           color: next.color,
+          description: next.description,
         });
       }
     },

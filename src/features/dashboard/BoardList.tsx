@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { createContext, useContext, useState } from "react";
 import { FolderPlus, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
 import { useNav } from "../../app/navStore";
 import { useProject } from "../../stores/projectStore";
@@ -16,6 +16,9 @@ import { boardEditedAt, boardItemCount, boardTypeInfo } from "./boardTypes";
 import "./dashboard.css";
 
 export type TypeFilter = "all" | BoardType;
+
+/** Contents numbers, counted across every group in display order. */
+const RowNumbers = createContext<Map<string, number>>(new Map());
 
 /* The children of `parentId` as grouped list rows: one group per child
    folder, plus a "Boards" group for loose boards. */
@@ -36,7 +39,18 @@ export function BoardList({ parentId, filter }: { parentId: string | null; filte
   const visibleFolders = folders.filter((f) => filter === "all" || hasMatch(f.id, filter, childrenOf));
   const isEmpty = children.length === 0;
 
+  const numbers = new Map<string, number>();
+  for (const b of looseBoards) numbers.set(b.id, numbers.size + 1);
+  for (const f of visibleFolders) {
+    for (const c of childrenOf(f.id)) {
+      if (c.kind === "board" ? matches(c, filter) : filter === "all" || hasMatch(c.id, filter, childrenOf)) {
+        numbers.set(c.id, numbers.size + 1);
+      }
+    }
+  }
+
   return (
+    <RowNumbers.Provider value={numbers}>
     <div className="boardlist">
       {isEmpty && (
         <EmptyState
@@ -86,6 +100,7 @@ export function BoardList({ parentId, filter }: { parentId: string | null; filte
         <CreateBoardModal parentId={newBoardIn.parentId} onClose={() => setNewBoardIn(null)} />
       )}
     </div>
+    </RowNumbers.Provider>
   );
 }
 
@@ -196,6 +211,7 @@ function BoardRow({ board }: { board: TreeBoard }) {
   const [menu, setMenu] = useState<MenuPosition | null>(null);
   const [renaming, setRenaming] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const number = useContext(RowNumbers).get(board.id);
 
   const open = () => navigate({ name: "board", boardId: board.id });
 
@@ -206,18 +222,33 @@ function BoardRow({ board }: { board: TreeBoard }) {
         role="button"
         tabIndex={0}
         onClick={open}
-        onKeyDown={(e) => e.key === "Enter" && open()}
+        onKeyDown={(e) => e.key === "Enter" && e.target === e.currentTarget && open()}
         onContextMenu={(e) => {
           e.preventDefault();
           setMenu({ x: e.clientX, y: e.clientY });
         }}
       >
+        <span className="lrow__num">{number}</span>
         <BoardPreview board={data} />
-        <span className="lrow__name">{board.name}</span>
-        <span className="tag">
-          {boardTypeInfo(board.boardType).name} · {boardItemCount(data)}
+        <span className="boardrow__line">
+          <span className="lrow__name">{board.name}</span>
+          <span className="leader" />
+          <span className="tag">
+            {boardTypeInfo(board.boardType).name} · {boardItemCount(data)}
+          </span>
         </span>
         <span className="lrow__mono boardrow__edited">{shortDate(boardEditedAt(data, notes))}</span>
+        <IconButton
+          label="Board options"
+          className="lrow__reveal boardrow__more"
+          onClick={(e) => {
+            e.stopPropagation();
+            const r = e.currentTarget.getBoundingClientRect();
+            setMenu({ x: r.left, y: r.bottom + 4 });
+          }}
+        >
+          <MoreHorizontal size={15} strokeWidth={1.75} />
+        </IconButton>
       </div>
 
       {menu && (
@@ -253,6 +284,7 @@ function BoardRow({ board }: { board: TreeBoard }) {
 function SubfolderRow({ folder }: { folder: TreeFolder }) {
   const navigate = useNav((s) => s.navigate);
   const childrenOf = useProject((s) => s.childrenOf);
+  const number = useContext(RowNumbers).get(folder.id);
   const count = childrenOf(folder.id).length;
   const open = () => navigate({ name: "folder", folderId: folder.id });
   return (
@@ -263,9 +295,16 @@ function SubfolderRow({ folder }: { folder: TreeFolder }) {
       onClick={open}
       onKeyDown={(e) => e.key === "Enter" && open()}
     >
+      <span className="lrow__num">{number}</span>
       <BoardPreview board="folder" />
-      <span className="lrow__name">{folder.name}</span>
-      <span className="tag">Folder · {count}</span>
+      <span className="boardrow__line">
+        <span className="lrow__name">{folder.name}</span>
+        <span className="leader" />
+        <span className="tag">
+          Folder · {count} {count === 1 ? "item" : "items"}
+        </span>
+      </span>
+      <span />
       <span />
     </div>
   );

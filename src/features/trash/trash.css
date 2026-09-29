@@ -2,15 +2,20 @@
   gap: var(--sp-4);
 }
 
-.trash__list {
-  gap: var(--sp-1);
-}
-
 .trashrow {
   grid-template-columns: minmax(0, 1fr) auto auto;
   gap: 10px;
-  padding: 12px;
+  padding: 12px 0;
+  border-bottom: 1px solid var(--hairline);
   cursor: default;
+}
+.trashrow::before {
+  display: none;
+}
+
+.trashrow__from {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .trashrow__text {

@@ -10,7 +10,7 @@ import { useCallback, useRef, useState } from "react";
    screenX = PAD_X + x * usable * zoom - panX
    zoom ∈ [1, 8] · panX ∈ [0, usable * (zoom - 1)]                        */
 
-export const PAD_X = 56;
+export const PAD_X = 80;
 const MAX_ZOOM = 8;
 
 export interface PlotViewport {

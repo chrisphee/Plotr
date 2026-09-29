@@ -3,7 +3,18 @@
 .note-editor {
   font-size: var(--fs-body);
   line-height: 1.7;
+  max-width: 600px;
   user-select: text;
+}
+
+.note-editor--edit {
+  border-radius: var(--r-btn);
+  box-shadow: var(--ring);
+  padding: 10px 12px;
+  transition: box-shadow var(--t-focus) var(--ease);
+}
+.note-editor--edit:focus-within {
+  box-shadow: 0 0 0 1px var(--hairline-strong);
 }
 
 .note-editor .tiptap {
@@ -22,16 +33,16 @@
 .note-editor h1,
 .note-editor h2,
 .note-editor h3 {
-  font-family: var(--font-display);
   line-height: 1.25;
+  letter-spacing: -0.02em;
   margin-top: 1em;
 }
-.note-editor h1 { font-size: 24px; }
-.note-editor h2 { font-size: 20px; }
-.note-editor h3 { font-size: 17px; }
+.note-editor h1 { font-size: 22px; }
+.note-editor h2 { font-size: 18px; }
+.note-editor h3 { font-size: 16px; }
 
 .note-editor blockquote {
-  border-left: 2px solid var(--hairline-strong);
+  border-left: 2px solid var(--accent);
   margin: 0.6em 0;
   padding: 2px 0 2px var(--sp-6);
   color: var(--text-muted);
@@ -43,20 +54,42 @@
   margin: 0.4em 0;
 }
 
+/* Checklist */
 .note-editor ul[data-type="taskList"] {
   list-style: none;
-  padding-left: 0.2em;
+  padding-left: 0;
 }
 .note-editor ul[data-type="taskList"] li {
   display: flex;
-  gap: var(--sp-4);
-  align-items: baseline;
+  gap: 10px;
+  align-items: flex-start;
 }
 .note-editor ul[data-type="taskList"] li > label {
   flex: none;
+  display: flex;
+  align-items: center;
+  height: 1.7em;
 }
 .note-editor ul[data-type="taskList"] li > div {
   flex: 1;
+}
+.note-editor ul[data-type="taskList"] input[type="checkbox"] {
+  appearance: none;
+  width: 15px;
+  height: 15px;
+  margin: 0;
+  border-radius: var(--r-kbd);
+  box-shadow: inset 0 0 0 1.5px var(--text-faint);
+  cursor: pointer;
+  transition:
+    background var(--t-hover) var(--ease),
+    box-shadow var(--t-hover) var(--ease);
+}
+.note-editor ul[data-type="taskList"] input[type="checkbox"]:checked {
+  background: var(--accent)
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.5L12 5.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 11px no-repeat;
+  box-shadow: none;
 }
 .note-editor li[data-checked="true"] > div {
   color: var(--text-muted);
@@ -64,14 +97,14 @@
 }
 
 .note-editor a {
-  color: var(--cat-lore);
+  color: var(--accent);
   text-decoration: underline;
   text-underline-offset: 2px;
 }
 
 .note-editor img {
   max-width: 100%;
-  border-radius: var(--r-card);
+  border-radius: var(--r-btn);
 }
 
 .note-editor code {
@@ -79,12 +112,12 @@
   font-size: 0.85em;
   background: var(--hover-wash);
   padding: 1px 5px;
-  border-radius: var(--r-chip);
+  border-radius: var(--r-kbd);
 }
 
 .note-editor pre {
   background: var(--hover-wash);
-  border-radius: var(--r-card);
+  border-radius: var(--r-btn);
   padding: var(--sp-5) var(--sp-6);
   overflow-x: auto;
 }
@@ -96,24 +129,21 @@
 /* ── Wiki links ── */
 
 .wikilink {
-  color: var(--cat-character);
-  background: color-mix(in srgb, var(--cat-character) 10%, transparent);
-  border-radius: var(--r-chip);
-  padding: 0 4px;
+  color: var(--accent);
+  border-bottom: 1px solid var(--accent);
   cursor: pointer;
-  transition: background var(--t-hover) var(--ease);
+  transition: color var(--t-hover) var(--ease);
 }
 .wikilink:hover {
-  background: color-mix(in srgb, var(--cat-character) 20%, transparent);
+  color: var(--text);
 }
 
 .wikilink-menu {
   position: fixed;
   z-index: 300;
   background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-dock-item);
-  box-shadow: var(--shadow-lift);
+  border-radius: var(--r-row);
+  box-shadow: var(--shadow-pop);
   padding: var(--sp-2);
   min-width: 200px;
   max-width: 280px;
@@ -123,7 +153,7 @@
   display: block;
   width: 100%;
   text-align: left;
-  padding: 6px 10px;
+  padding: 7px 10px;
   border-radius: var(--r-btn);
   font-size: var(--fs-ui);
   color: var(--text);
@@ -136,7 +166,7 @@
   background: var(--hover-wash);
 }
 .wikilink-menu__empty {
-  padding: 6px 10px;
+  padding: 7px 10px;
   font-size: var(--fs-meta);
   color: var(--text-muted);
 }
@@ -144,23 +174,23 @@
 /* ── Toolbar ── */
 
 .rt-toolbar {
+  align-self: flex-start;
   display: flex;
   align-items: center;
   gap: var(--sp-1);
   flex-wrap: wrap;
   padding: var(--sp-2);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-dock-item);
-  background: var(--paper);
+  border-radius: var(--r-input);
+  box-shadow: var(--ring);
 }
 
 .rt-toolbar__btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: 28px;
+  width: 30px;
   height: 28px;
-  border-radius: var(--r-btn);
+  border-radius: var(--r-tag);
   color: var(--text-muted);
   transition:
     background var(--t-hover) var(--ease),
@@ -170,18 +200,15 @@
   background: var(--hover-wash);
   color: var(--text);
 }
-.rt-toolbar__btn--active {
-  background: var(--ink);
-  color: var(--ink-text);
-}
+.rt-toolbar__btn--active,
 .rt-toolbar__btn--active:hover {
-  background: var(--ink-hover);
-  color: var(--ink-text);
+  background: var(--accent-soft);
+  color: var(--accent-strong-text);
 }
 
 .rt-toolbar__sep {
   width: 1px;
-  height: 18px;
+  height: 16px;
   background: var(--hairline);
   margin: 0 var(--sp-2);
 }

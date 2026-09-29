@@ -47,7 +47,7 @@ export function CategoryPicker({ position, selectedIds, onToggle, onClose }: Cat
       }}
     >
       {categories.length === 0 && (
-        <div className="wikilink-menu__empty">No categories yet — add them in Project Settings.</div>
+        <div className="catpicker__empty">No categories yet — add them in Project Settings.</div>
       )}
       {categories.map((c) => (
         <button key={c.id} className="catpicker__row" onClick={() => onToggle(c.id)}>

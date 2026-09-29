@@ -46,7 +46,7 @@ export function CreateProjectModal({ onClose, onError }: Props) {
 
   return (
     <Modal
-      title="New Project"
+      title="New project"
       onClose={onClose}
       footer={
         <>
@@ -54,7 +54,7 @@ export function CreateProjectModal({ onClose, onError }: Props) {
             Cancel
           </Button>
           <Button variant="primary" disabled={!canCreate} onClick={() => void create()}>
-            {busy ? "Creating…" : "Create Project"}
+            {busy ? "Creating…" : "Create project"}
           </Button>
         </>
       }

@@ -31,7 +31,7 @@ function nextZ(boardId: string): number {
 export const ITEM_SIZES = {
   note: { w: 260, h: 160 },
   image: { w: 240, h: 180 },
-  text: { w: 160, h: 44 },
+  text: { w: 240, h: 44 },
   group: { w: 420, h: 300 },
 } as const;
 
@@ -78,8 +78,8 @@ export const infomap = {
 
   addText(boardId: string, x: number, y: number): string {
     const item: InfoMapItem = {
-      id: makeId("it"), kind: "text", text: "Label", fontSize: 18,
-      x, y, w: 160, h: 44, parentId: null, z: nextZ(boardId),
+      id: makeId("it"), kind: "text", text: "Label", fontSize: 20,
+      x, y, w: ITEM_SIZES.text.w, h: ITEM_SIZES.text.h, parentId: null, z: nextZ(boardId),
     };
     mutate(boardId, (b) => ({ ...b, items: [...b.items, item] }));
     pushAddUndo(boardId, item);

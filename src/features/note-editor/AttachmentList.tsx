@@ -1,12 +1,12 @@
 import { useState } from "react";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { openPath } from "@tauri-apps/plugin-opener";
-import { FileText, Paperclip, Plug, X } from "lucide-react";
+import { FileText, X } from "lucide-react";
 import { useNotes } from "../../stores/notesStore";
 import { useProject } from "../../stores/projectStore";
 import { useConnectors } from "../connectors/connectorStore";
 import { PinterestPicker } from "../connectors/PinterestPicker";
-import { importAttachment, type AttachmentMeta } from "../../tauri/commands";
+import { assetUrl, importAttachment, type AttachmentMeta } from "../../tauri/commands";
 import { makeId } from "../../lib/ids";
 import { IconButton } from "../../components/ui/Button";
 import type { Note } from "../../lib/schema";
@@ -72,28 +72,34 @@ export function AttachmentList({ note, editable }: { note: Note; editable: boole
     <div className="attachments">
       {note.attachments.map((a) => (
         <div key={a.id} className="attachrow">
-          <FileText size={15} className="attachrow__icon" />
-          <button className="attachrow__name" onClick={() => openFile(a.path)} title="Open file">
-            {a.fileName}
-          </button>
-          <span className="attachrow__meta">
-            {a.mime.split("/")[1] ?? a.mime} · {formatSize(a.size)}
+          <span className="attachrow__thumb">
+            {a.mime.startsWith("image/") && projectPath ? (
+              <img src={assetUrl(projectPath, a.path)} alt="" />
+            ) : (
+              <FileText size={15} strokeWidth={1.75} />
+            )}
+          </span>
+          <span className="attachrow__text">
+            <button className="attachrow__name" onClick={() => openFile(a.path)} title="Open file">
+              {a.fileName}
+            </button>
+            <span className="attachrow__meta">{formatSize(a.size)}</span>
           </span>
           {editable && (
             <IconButton label="Remove attachment" onClick={() => remove(a.id)}>
-              <X size={13} />
+              <X size={15} strokeWidth={1.75} />
             </IconButton>
           )}
         </div>
       ))}
       {editable && (
-        <div style={{ display: "flex", gap: "var(--sp-3)" }}>
+        <div className="attachments__add">
           <button className="notepopup__addcat" onClick={() => void attach()}>
-            <Paperclip size={11} style={{ verticalAlign: "-1px" }} /> Attach file
+            + Attach file
           </button>
           {pinterestConnected && (
             <button className="notepopup__addcat" onClick={() => setPickerOpen(true)}>
-              <Plug size={11} style={{ verticalAlign: "-1px" }} /> From Pinterest
+              + From Pinterest
             </button>
           )}
         </div>

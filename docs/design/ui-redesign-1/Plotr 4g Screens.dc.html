@@ -1,0 +1,495 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;background:#ecebe7;font-family:Geist,system-ui,sans-serif}a{color:#29524A;text-decoration:none}a:hover{color:#06070E}input{font:inherit;color:inherit}</style></helmet>
+
+<section id="t1" style="padding:40px 44px 56px;display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:780px">
+    <div style="display:flex;gap:10px;align-items:baseline"><a href="#t1" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px">1</a><span style="font:600 13px system-ui,sans-serif;color:#1a1a1a">Pine (4g) carried through the app</span></div>
+    <p style="margin:0;font:13px/1.55 system-ui,sans-serif;color:rgba(0,0,0,.62);text-wrap:pretty">Three colours: white #FFFFFF, black #06070E, pine teal #29524A. Lines and muted text are mixed from black and white. Every screen shares the same top bar, which replaces the floating dock: breadcrumb on the left, a search / command field in the middle, and actions for the current screen on the right. Clickable: the Dashboard filter, the Plot Line moments, Read / Edit in the note popup, and typing in Search.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+<!-- 1a START -->
+<div id="1a" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1a" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1a</a>Start: recent projects as a list, with create / open / import up front</div>
+  <div data-screen-label="1a Start" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px;font-weight:500"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span>Plotr</div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search projects<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;gap:4px;font-size:13px;color:#64656B"><span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Connectors</span><span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">App settings</span></div>
+    </div>
+    <div style="width:720px;display:flex;flex-direction:column;gap:36px;padding-top:72px">
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center">
+        <h1 style="margin:0;font:600 48px/1.05 Geist,sans-serif;letter-spacing:-.035em">Your projects</h1>
+        <p style="margin:0;font-size:15px;line-height:1.5;color:#64656B;max-width:440px;text-wrap:pretty">A quiet workspace for stories — plot lines, maps of ideas, and every note in its place.</p>
+        <div style="display:flex;gap:8px;margin-top:8px;font-size:13.5px;font-weight:500">
+          <span style="display:flex;align-items:center;gap:8px;padding:9px 10px 9px 14px;border-radius:8px;background:#06070E;color:#fff;cursor:pointer;transition:background .18s" style-hover="background:#29524A">New project<span style="font:500 10.5px 'Geist Mono',monospace;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.16)">N</span></span>
+          <span style="padding:9px 14px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;cursor:pointer" style-hover="background:#F4F4F5">Open project…</span>
+          <span style="padding:9px 14px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;cursor:pointer" style-hover="background:#F4F4F5">Import backup…</span>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:4px">
+        <div style="display:flex;justify-content:space-between;padding:0 12px 6px;font-size:12px;font-weight:500;color:#64656B"><span>Recent</span><span>Last opened</span></div>
+        <sc-for list="{{ projects }}" as="p" hint-placeholder-count="4">
+          <div style="display:grid;grid-template-columns:40px 1fr auto;gap:18px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .18s,box-shadow .18s" style-hover="background:#fff;box-shadow:0 0 0 1px #E4E4E6,0 6px 20px -10px rgba(6,7,14,.22)">
+            <div style="width:40px;height:54px;border-radius:4px;background:{{ p.cover }};display:flex;align-items:flex-end;padding:5px"><span style="width:14px;height:1.5px;background:{{ p.rule }}"></span></div>
+            <div style="display:flex;flex-direction:column;gap:3px;min-width:0"><span style="font-size:15px;font-weight:500">{{ p.name }}</span><span style="font:400 11.5px 'Geist Mono',monospace;color:#64656B;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">{{ p.path }}</span></div>
+            <span style="font:400 11.5px 'Geist Mono',monospace;color:#64656B">{{ p.opened }}</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1b DASHBOARD -->
+<div id="1b" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1b" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1b</a>Dashboard (locked 4g). The type filter works.</div>
+  <div data-screen-label="1b Dashboard" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span><span style="color:#64656B">Projects</span><span style="color:#B5B6BA">/</span><span style="font-weight:500">The Silent Kingdom</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:#64656B">
+        <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Trash</span>
+        <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Settings</span>
+        <span style="display:flex;align-items:center;gap:8px;margin-left:6px;padding:7px 8px 7px 12px;border-radius:8px;background:#06070E;color:#fff;font-weight:500;cursor:pointer;transition:background .18s" style-hover="background:#29524A">New board<span style="font:500 10.5px 'Geist Mono',monospace;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.16)">N</span></span>
+      </div>
+    </div>
+    <div style="width:720px;display:flex;flex-direction:column;gap:28px;padding-top:52px">
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center">
+        <div style="display:flex;gap:6px;font-size:12px;font-weight:500"><span style="padding:3px 10px;border-radius:999px;background:#DFE6E4;color:#1E3B38">Second draft</span><span style="padding:3px 10px;border-radius:999px;box-shadow:0 0 0 1px #E4E4E6;color:#64656B">Fantasy</span></div>
+        <h1 style="margin:0;font:600 48px/1.05 Geist,sans-serif;letter-spacing:-.035em">The Silent Kingdom</h1>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:#64656B"><span style="width:6px;height:6px;border-radius:50%;background:#29524A"></span>Autosaved · 6 boards · edited 2 hours ago</div>
+      </div>
+      <div style="align-self:center;display:flex;gap:2px;padding:3px;border-radius:10px;background:#F4F4F5;font-size:12.5px;font-weight:500">
+        <sc-for list="{{ qTabs }}" as="t" hint-placeholder-count="4">
+          <span onClick="{{ t.pick }}" style="display:flex;gap:6px;padding:5px 12px;border-radius:7px;cursor:pointer;background:{{ t.bg }};box-shadow:{{ t.shadow }};color:{{ t.color }};transition:background .18s,color .18s">{{ t.label }}<span style="font:400 11px 'Geist Mono',monospace;opacity:.6">{{ t.count }}</span></span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <sc-for list="{{ quietFolders }}" as="f" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 12px 6px;font-size:12px;font-weight:500;color:#64656B"><span>{{ f.name }}</span><span style="cursor:pointer" style-hover="color:#29524A">+ Add</span></div>
+            <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:72px 1fr auto 76px;gap:20px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .18s,box-shadow .18s" style-hover="background:#fff;box-shadow:0 0 0 1px #E4E4E6,0 6px 20px -10px rgba(6,7,14,.22)">
+                <div style="position:relative;height:36px;border-radius:7px;background:#F4F4F5;overflow:hidden">
+                  <sc-if value="{{ b.isPlot }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 190 50" preserveAspectRatio="none" style="position:absolute;left:8px;top:7px;width:calc(100% - 16px);height:calc(100% - 14px)"><polyline points="{{ b.pts }}" fill="none" stroke="#29524A" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline></svg></sc-if>
+                  <sc-if value="{{ b.isMap }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:8px;top:7px;right:8px;bottom:7px"><sc-for list="{{ b.nodes }}" as="n" hint-placeholder-count="0"><span style="position:absolute;left:{{ n.left }};top:{{ n.top }};width:5px;height:5px;border-radius:50%;transform:translate(-50%,-50%);background:#06070E"></span></sc-for></div></sc-if>
+                  <sc-if value="{{ b.isNotes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:9px;top:10px;right:9px;display:flex;flex-direction:column;gap:4px"><sc-for list="{{ b.bars }}" as="w" hint-placeholder-count="3"><span style="height:2px;width:{{ w }};border-radius:1px;background:#B5B6BA"></span></sc-for></div></sc-if>
+                </div>
+                <span style="font-size:15px;font-weight:500">{{ b.name }}</span>
+                <span style="font-size:12px;padding:2px 8px;border-radius:6px;background:#F4F4F5;color:#64656B">{{ b.type }} · {{ b.count }}</span>
+                <span style="font:400 11.5px 'Geist Mono',monospace;color:#64656B;text-align:right">{{ b.edited }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1c PLOT LINE -->
+<div id="1c" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1c" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1c</a>Plot Line: sections as soft bands, the curve in teal. Click any moment to open its card.</div>
+  <div data-screen-label="1c Plot Line" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span><span style="color:#64656B">The Silent Kingdom</span><span style="color:#B5B6BA">/</span><span style="color:#64656B">Story</span><span style="color:#B5B6BA">/</span><span style="font-weight:500">Main Plot</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:#64656B">
+        <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Sections</span>
+        <span style="padding:6px 10px;border-radius:7px;cursor:pointer;background:#F4F4F5;color:#06070E">List</span>
+        <span style="display:flex;align-items:center;gap:8px;margin-left:6px;padding:7px 8px 7px 12px;border-radius:8px;background:#06070E;color:#fff;font-weight:500;cursor:pointer;transition:background .18s" style-hover="background:#29524A">Add moment<span style="font:500 10.5px 'Geist Mono',monospace;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.16)">N</span></span>
+      </div>
+    </div>
+    <div style="flex:1;position:relative;background:#FFFFFF">
+      <div style="position:absolute;left:80px;top:0;bottom:64px;width:336px;background:#FAFAFA"></div>
+      <div style="position:absolute;left:416px;top:0;bottom:64px;width:504px;background:#FFFFFF;border-left:1px dashed #D6D6D9;border-right:1px dashed #D6D6D9"></div>
+      <div style="position:absolute;left:920px;top:0;bottom:64px;width:280px;background:#FAFAFA"></div>
+      <div style="position:absolute;left:96px;top:92px;font-size:12px;font-weight:500;color:#64656B">Act I · The Silence</div>
+      <div style="position:absolute;left:432px;top:92px;font-size:12px;font-weight:500;color:#64656B">Act II · The False Peal</div>
+      <div style="position:absolute;left:936px;top:92px;font-size:12px;font-weight:500;color:#64656B">Act III · The Last Ring</div>
+      <div style="position:absolute;left:32px;top:28px;display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font:600 28px/1 Geist,sans-serif;letter-spacing:-.03em">Main Plot</h1><span style="font-size:12px;color:#64656B">11 moments · 3 sections</span></div>
+      <div style="position:absolute;left:80px;right:80px;bottom:64px;height:1px;background:#D6D6D9"></div>
+      <div style="position:absolute;left:80px;bottom:38px;font:400 11px 'Geist Mono',monospace;color:#64656B">BEGINNING</div>
+      <div style="position:absolute;right:80px;bottom:38px;font:400 11px 'Geist Mono',monospace;color:#64656B">END →</div>
+      <div style="position:absolute;left:32px;top:140px;bottom:64px;display:flex;flex-direction:column;justify-content:space-between;font:400 11px 'Geist Mono',monospace;color:#64656B"><span>HIGH</span><span>LOW</span></div>
+      <svg viewBox="0 0 1280 744" width="1280" height="744" style="position:absolute;left:0;top:0;pointer-events:none"><polyline points="{{ plotPath }}" fill="none" stroke="#29524A" stroke-width="2" stroke-linejoin="round"></polyline></svg>
+      <sc-for list="{{ plotPts }}" as="p" hint-placeholder-count="11">
+        <div onClick="{{ p.select }}" title="{{ p.t }}" style="position:absolute;left:{{ p.left }};top:{{ p.top }};width:24px;height:24px;margin:-12px 0 0 -12px;border-radius:50%;display:grid;place-items:center;cursor:pointer" style-hover="background:rgba(41,82,74,.12)"><span style="width:12px;height:12px;border-radius:50%;background:{{ p.fill }};box-shadow:0 0 0 2px #fff,0 0 0 {{ p.ring }} #06070E"></span></div>
+      </sc-for>
+      <div style="position:absolute;left:{{ card.left }};top:{{ card.top }};width:240px;padding:12px 14px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #E4E4E6,0 12px 32px -12px rgba(6,7,14,.28);display:flex;flex-direction:column;gap:6px;cursor:pointer">
+        <div style="display:flex;justify-content:space-between;font:400 11px 'Geist Mono',monospace;color:#64656B"><span>{{ card.sec }}</span><span>{{ card.pos }}</span></div>
+        <span style="font-size:14.5px;font-weight:600">{{ card.t }}</span>
+        <span style="font-size:12.5px;line-height:1.5;color:#64656B">{{ card.d }}</span>
+        <span style="font-size:12px;color:#29524A;font-weight:500">Open note ↵</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1d INFO MAP -->
+<div id="1d" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1d" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1d</a>Info Map: dotted canvas, tool rail on the left, selection in teal</div>
+  <div data-screen-label="1d Info Map" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span><span style="color:#64656B">The Silent Kingdom</span><span style="color:#B5B6BA">/</span><span style="color:#64656B">Worldbuilding</span><span style="color:#B5B6BA">/</span><span style="font-weight:500">Character Web</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:#64656B"><span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Fit to screen</span><span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Share</span></div>
+    </div>
+    <div style="flex:1;position:relative;background:#FFFFFF;background-image:radial-gradient(#DADADD 1px,transparent 1px);background-size:22px 22px;background-position:11px 11px">
+      <div style="position:absolute;left:32px;top:28px;display:flex;flex-direction:column;gap:4px"><h1 style="margin:0;font:600 28px/1 Geist,sans-serif;letter-spacing:-.03em">Character Web</h1><span style="font-size:12px;color:#64656B">27 items</span></div>
+      <div style="position:absolute;left:24px;top:50%;transform:translateY(-50%);display:flex;flex-direction:column;gap:2px;padding:5px;border-radius:12px;background:#fff;box-shadow:0 0 0 1px #E4E4E6,0 8px 24px -12px rgba(6,7,14,.2);font-size:13px;color:#64656B">
+        <span style="padding:7px 12px;border-radius:8px;background:#06070E;color:#fff">Select</span>
+        <span style="padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Note</span>
+        <span style="padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Image</span>
+        <span style="padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Text</span>
+        <span style="padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Group</span>
+        <span style="height:1px;background:#E4E4E6;margin:3px 8px"></span>
+        <span style="padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Line</span>
+        <span style="padding:7px 12px;border-radius:8px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Arrow</span>
+      </div>
+      <div style="position:absolute;left:300px;top:150px;width:540px;height:300px;border:1.5px solid #D6D6D9;border-radius:10px;background:rgba(6,7,14,.015)"></div>
+      <div style="position:absolute;left:302px;top:124px;font-size:13px;font-weight:500;color:#64656B">House Veyl</div>
+      <svg viewBox="0 0 1280 744" width="1280" height="744" style="position:absolute;left:0;top:0;pointer-events:none"><defs><marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#64656B"></path></marker></defs><line x1="560" y1="265" x2="640" y2="265" stroke="#64656B" stroke-width="1.5"></line><line x1="735" y1="330" x2="920" y2="500" stroke="#64656B" stroke-width="1.5" marker-end="url(#arr)"></line><line x1="450" y1="330" x2="920" y2="560" stroke="#64656B" stroke-width="1.5" stroke-dasharray="4 4"></line></svg>
+      <div style="position:absolute;left:600px;top:254px;transform:translateX(-50%);padding:1px 7px;border-radius:4px;background:#fff;font-size:12px;font-weight:500;color:#64656B">mentor</div>
+      <div style="position:absolute;left:835px;top:405px;transform:translateX(-50%);padding:1px 7px;border-radius:4px;background:#fff;font-size:12px;font-weight:500;color:#64656B">hides from</div>
+      <div style="position:absolute;left:670px;top:448px;transform:translateX(-50%);padding:1px 7px;border-radius:4px;background:#fff;font-size:12px;font-weight:500;color:#64656B">owes a debt</div>
+      <div style="position:absolute;left:340px;top:200px;width:220px;height:130px;padding:14px 16px;border-radius:8px;background:#fff;box-shadow:0 0 0 1px #E4E4E6;display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:600">Queen Ione</span><span style="font-size:12.5px;line-height:1.5;color:#64656B">Deaf since the fever. Reads lips, trusts no one who speaks with their back turned.</span></div>
+      <div style="position:absolute;left:640px;top:200px;width:190px;height:130px;padding:14px 16px;border-radius:8px;background:#fff;box-shadow:0 0 0 2px #29524A,0 8px 24px -12px rgba(41,82,74,.4);display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:600">Orrin, the bellwright</span><span style="font-size:12.5px;line-height:1.5;color:#64656B">Keeps the tower keys. Tuned every bell in the city, including the false one.</span><span style="position:absolute;right:-5px;top:50%;width:9px;height:9px;margin-top:-4px;border-radius:50%;background:#29524A;box-shadow:0 0 0 2px #fff"></span><span style="position:absolute;right:-5px;bottom:-5px;width:9px;height:9px;border-radius:2px;background:#fff;box-shadow:0 0 0 1.5px #29524A"></span></div>
+      <div style="position:absolute;left:920px;top:480px;width:230px;height:120px;padding:14px 16px;border-radius:8px;background:#fff;box-shadow:0 0 0 1px #E4E4E6;display:flex;flex-direction:column;gap:6px"><span style="font-size:15px;font-weight:600">Maren of the salt flats</span><span style="font-size:12.5px;line-height:1.5;color:#64656B">Smuggler. Teaches Ione the hand-speech in exchange for passage.</span></div>
+      <div style="position:absolute;left:920px;top:150px;width:220px;height:160px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;background:repeating-linear-gradient(135deg,#F4F4F5 0 8px,#FFFFFF 8px 16px);display:grid;place-items:center;font:400 11px 'Geist Mono',monospace;color:#64656B">reference image</div>
+      <div style="position:absolute;left:340px;top:500px;font-size:20px;font-weight:500;letter-spacing:-.01em;color:#06070E">Loyalties shift in Act II</div>
+      <div style="position:absolute;right:24px;bottom:24px;display:flex;align-items:center;gap:2px;padding:4px;border-radius:10px;background:#fff;box-shadow:0 0 0 1px #E4E4E6;font-size:13px"><span style="width:28px;height:28px;display:grid;place-items:center;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5">−</span><span style="font:400 11.5px 'Geist Mono',monospace;color:#64656B;padding:0 6px">100%</span><span style="width:28px;height:28px;display:grid;place-items:center;border-radius:7px;cursor:pointer" style-hover="background:#F4F4F5">+</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 1e NOTES BOARD -->
+<div id="1e" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1e" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1e</a>Notes board: folder tree on the left, note rows in the same style as the dashboard</div>
+  <div data-screen-label="1e Notes board" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span><span style="color:#64656B">The Silent Kingdom</span><span style="color:#B5B6BA">/</span><span style="color:#64656B">Story</span><span style="color:#B5B6BA">/</span><span style="font-weight:500">Scene Notes</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:#64656B"><span style="display:flex;align-items:center;gap:8px;margin-left:6px;padding:7px 8px 7px 12px;border-radius:8px;background:#06070E;color:#fff;font-weight:500;cursor:pointer;transition:background .18s" style-hover="background:#29524A">New note<span style="font:500 10.5px 'Geist Mono',monospace;padding:1px 5px;border-radius:4px;background:rgba(255,255,255,.16)">N</span></span></div>
+    </div>
+    <div style="flex:1;display:grid;grid-template-columns:248px 1fr;min-height:0">
+      <div style="border-right:1px solid #E4E4E6;padding:24px 12px;display:flex;flex-direction:column;gap:2px;font-size:13.5px">
+        <div style="padding:0 10px 14px;font-size:17px;font-weight:600;letter-spacing:-.02em">Scene Notes</div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:8px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">All notes<span style="font:400 11.5px 'Geist Mono',monospace">48</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:8px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Pinned<span style="font:400 11.5px 'Geist Mono',monospace">3</span></div>
+        <div style="height:1px;background:#E4E4E6;margin:8px 10px"></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:8px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Act I<span style="font:400 11.5px 'Geist Mono',monospace">14</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:8px;background:#F4F4F5;color:#06070E;font-weight:500;box-shadow:inset 2px 0 0 #29524A">Act II<span style="font:400 11.5px 'Geist Mono',monospace;color:#29524A">21</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px 7px 26px;border-radius:8px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Vesper feast<span style="font:400 11.5px 'Geist Mono',monospace">6</span></div>
+        <div style="display:flex;justify-content:space-between;padding:7px 10px;border-radius:8px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Act III<span style="font:400 11.5px 'Geist Mono',monospace">13</span></div>
+        <div style="padding:10px;font-size:13px;color:#64656B;cursor:pointer" style-hover="color:#29524A">+ New folder</div>
+      </div>
+      <div style="padding:28px 48px;display:flex;flex-direction:column;gap:16px;overflow:hidden">
+        <div style="display:flex;align-items:center;gap:10px">
+          <h1 style="margin:0;flex:1;font:600 28px/1 Geist,sans-serif;letter-spacing:-.03em">Act II</h1>
+          <div style="width:220px;height:32px;display:flex;align-items:center;padding:0 10px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Filter notes</div>
+          <span style="padding:7px 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5">Manual order ▾</span>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:2px;margin:0 -12px">
+          <sc-for list="{{ notes }}" as="n" hint-placeholder-count="6">
+            <div style="display:grid;grid-template-columns:1fr auto;gap:24px;padding:12px;border-radius:10px;cursor:pointer;transition:background .18s,box-shadow .18s" style-hover="background:#fff;box-shadow:0 0 0 1px #E4E4E6,0 6px 20px -10px rgba(6,7,14,.22)">
+              <div style="display:flex;flex-direction:column;gap:4px;min-width:0">
+                <div style="display:flex;align-items:center;gap:8px"><span style="font-size:15px;font-weight:500">{{ n.t }}</span><sc-if value="{{ n.pinned }}" hint-placeholder-val="{{ false }}"><span style="font-size:11px;font-weight:500;padding:1px 7px;border-radius:999px;background:#DFE6E4;color:#1E3B38">Pinned</span></sc-if></div>
+                <span style="font-size:13px;line-height:1.5;color:#64656B;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden">{{ n.p }}</span>
+              </div>
+              <div style="display:flex;flex-direction:column;align-items:flex-end;gap:6px"><span style="font:400 11.5px 'Geist Mono',monospace;color:#64656B">{{ n.d }}</span><span style="display:flex;align-items:center;gap:6px;font-size:12px;color:#64656B"><span style="width:7px;height:7px;border-radius:50%;background:{{ n.cc }}"></span>{{ n.c }}</span></div>
+            </div>
+          </sc-for>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1f NOTE POPUP -->
+<div id="1f" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1f" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1f</a>Note popup: click Read / Edit. Edit shows the toolbar and the add-category chip.</div>
+  <div data-screen-label="1f Note popup" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;opacity:.5">
+      <div style="height:56px;border-bottom:1px solid #E4E4E6"></div>
+      <div style="flex:1;display:grid;grid-template-columns:248px 1fr"><div style="border-right:1px solid #E4E4E6"></div><div style="padding:28px 48px;display:flex;flex-direction:column;gap:22px"><span style="width:120px;height:22px;border-radius:4px;background:#E4E4E6"></span><span style="width:70%;height:12px;border-radius:3px;background:#F0F0F1"></span><span style="width:60%;height:12px;border-radius:3px;background:#F0F0F1"></span><span style="width:66%;height:12px;border-radius:3px;background:#F0F0F1"></span><span style="width:54%;height:12px;border-radius:3px;background:#F0F0F1"></span></div></div>
+    </div>
+    <div style="position:absolute;inset:0;background:rgba(6,7,14,.32);backdrop-filter:blur(2px)"></div>
+    <div style="position:absolute;left:50%;top:50%;width:720px;height:640px;transform:translate(-50%,-50%);background:#fff;border-radius:14px;box-shadow:0 40px 90px -30px rgba(6,7,14,.55),0 0 0 1px #E4E4E6;display:flex;flex-direction:column;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:10px;padding:14px 16px 0 20px">
+        <div style="display:flex;padding:3px;border-radius:9px;background:#F4F4F5;font-size:12.5px;font-weight:500">
+          <span onClick="{{ setRead }}" style="padding:5px 14px;border-radius:6px;cursor:pointer;background:{{ readBg }};box-shadow:{{ readShadow }};color:{{ readColor }}">Read</span>
+          <span onClick="{{ setEdit }}" style="padding:5px 14px;border-radius:6px;cursor:pointer;background:{{ editBg }};box-shadow:{{ editShadow }};color:{{ editColor }}">Edit</span>
+        </div>
+        <span style="font-size:12px;font-weight:500;padding:3px 9px;border-radius:999px;background:#DFE6E4;color:#1E3B38">Linked · 3 places</span>
+        <span style="margin-left:auto;width:30px;height:30px;display:grid;place-items:center;border-radius:7px;font-size:17px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">×</span>
+      </div>
+      <div style="flex:1;padding:22px 40px 0;display:flex;flex-direction:column;gap:14px;overflow:hidden">
+        <h2 style="margin:0;font:600 30px/1.1 Geist,sans-serif;letter-spacing:-.03em">Betrayal at Vesper</h2>
+        <div style="display:flex;gap:6px;font-size:12px;font-weight:500">
+          <span style="display:flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;box-shadow:0 0 0 1px #E4E4E6;color:#64656B"><span style="width:7px;height:7px;border-radius:50%;background:#c8503f"></span>Conflict</span>
+          <span style="display:flex;align-items:center;gap:6px;padding:3px 9px;border-radius:999px;box-shadow:0 0 0 1px #E4E4E6;color:#64656B"><span style="width:7px;height:7px;border-radius:50%;background:#7c5cbf"></span>Character</span>
+          <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}"><span style="padding:3px 9px;border-radius:999px;border:1px dashed #D6D6D9;color:#64656B;cursor:pointer" style-hover="color:#29524A;border-color:#29524A">+ Category</span></sc-if>
+        </div>
+        <sc-if value="{{ isEdit }}" hint-placeholder-val="{{ false }}">
+          <div style="display:flex;align-items:center;gap:2px;padding:4px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B;align-self:flex-start">
+            <span style="width:30px;height:28px;display:grid;place-items:center;border-radius:6px;font-weight:700;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">B</span>
+            <span style="width:30px;height:28px;display:grid;place-items:center;border-radius:6px;font-style:italic;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">I</span>
+            <span style="width:1px;height:16px;background:#E4E4E6;margin:0 4px"></span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">H1</span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">H2</span>
+            <span style="width:1px;height:16px;background:#E4E4E6;margin:0 4px"></span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">List</span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Checklist</span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Quote</span>
+            <span style="width:1px;height:16px;background:#E4E4E6;margin:0 4px"></span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Link</span>
+            <span style="padding:0 8px;height:28px;display:grid;place-items:center;border-radius:6px;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">Image</span>
+          </div>
+        </sc-if>
+        <div style="display:flex;flex-direction:column;gap:12px;font-size:15px;line-height:1.7;max-width:600px;border-radius:8px;padding:{{ bodyPad }};box-shadow:{{ bodyRing }}">
+          <p style="margin:0">During the vesper feast, <span style="color:#29524A;border-bottom:1px solid #29524A;cursor:pointer">Orrin, the bellwright</span> rings the false peal from the south tower. The court hears treason in it; Ione, who hears nothing, reads it in their faces first.</p>
+          <p style="margin:0">She has one breath to decide whether to accuse him or run.</p>
+          <div style="display:flex;flex-direction:column;gap:6px;font-size:14px">
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:15px;height:15px;border-radius:4px;background:#29524A;display:grid;place-items:center;color:#fff;font-size:10px">✓</span><span style="color:#64656B;text-decoration:line-through">Seed the bell pattern in Act I, ch. 3</span></div>
+            <div style="display:flex;align-items:center;gap:10px"><span style="width:15px;height:15px;border-radius:4px;box-shadow:inset 0 0 0 1.5px #B5B6BA"></span><span>Decide who else is at the high table</span></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;max-width:340px;font-size:13px"><span style="width:36px;height:36px;border-radius:6px;background:repeating-linear-gradient(135deg,#F4F4F5 0 5px,#fff 5px 10px);box-shadow:0 0 0 1px #E4E4E6"></span><div style="display:flex;flex-direction:column"><span style="font-weight:500">vesper-hall-sketch.png</span><span style="font:400 11px 'Geist Mono',monospace;color:#64656B">240 KB</span></div></div>
+      </div>
+      <div style="display:flex;justify-content:space-between;padding:14px 40px;border-top:1px solid #E4E4E6;font:400 11.5px 'Geist Mono',monospace;color:#64656B"><span>Created 3 Sep 2026</span><span>Edited 28 Sep 2026, 14:02</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 1g SEARCH -->
+<div id="1g" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1g" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1g</a>Search (Ctrl K): opens from the top-bar field. Type to filter.</div>
+  <div data-screen-label="1g Search" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;position:relative;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;opacity:.5">
+      <div style="width:100%;height:56px;border-bottom:1px solid #E4E4E6"></div>
+      <span style="margin-top:80px;width:360px;height:40px;border-radius:6px;background:#E4E4E6"></span>
+      <div style="width:720px;margin-top:80px;display:flex;flex-direction:column;gap:26px"><span style="height:14px;width:80%;border-radius:3px;background:#F0F0F1"></span><span style="height:14px;width:70%;border-radius:3px;background:#F0F0F1"></span><span style="height:14px;width:76%;border-radius:3px;background:#F0F0F1"></span></div>
+    </div>
+    <div style="position:absolute;inset:0;background:rgba(6,7,14,.28)"></div>
+    <div style="position:absolute;left:50%;top:96px;width:640px;transform:translateX(-50%);background:#fff;border-radius:14px;box-shadow:0 40px 90px -30px rgba(6,7,14,.55),0 0 0 1px #E4E4E6;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:12px;padding:0 16px 0 20px;height:56px;border-bottom:1px solid #E4E4E6">
+        <span style="width:12px;height:12px;border-radius:50%;box-shadow:inset 0 0 0 2px #64656B"></span>
+        <input value="{{ q }}" onChange="{{ onQ }}" placeholder="Search notes, boards, folders…" style="flex:1;border:none;outline:none;background:transparent;font-size:16px;color:#06070E"></input>
+        <span style="font:500 11px 'Geist Mono',monospace;padding:2px 6px;border-radius:4px;background:#F4F4F5;color:#64656B">Esc</span>
+      </div>
+      <div style="display:flex;flex-direction:column;padding:8px;gap:2px;max-height:430px;overflow:hidden">
+        <sc-for list="{{ results }}" as="r" hint-placeholder-count="6">
+          <sc-if value="{{ r.head }}" hint-placeholder-val="{{ false }}"><div style="padding:10px 12px 4px;font-size:11.5px;font-weight:500;color:#64656B">{{ r.head }}</div></sc-if>
+          <div style="display:grid;grid-template-columns:28px 1fr auto;gap:12px;align-items:center;padding:8px 12px;border-radius:9px;cursor:pointer;background:{{ r.bg }};box-shadow:{{ r.bar }}" style-hover="background:#F4F4F5">
+            <span style="width:28px;height:28px;border-radius:7px;background:{{ r.iconBg }};display:grid;place-items:center;font:500 10px 'Geist Mono',monospace;color:{{ r.iconColor }}">{{ r.glyph }}</span>
+            <div style="display:flex;flex-direction:column;gap:1px;min-width:0"><span style="font-size:14px;font-weight:500">{{ r.t }}</span><span style="font-size:12px;color:#64656B">{{ r.loc }}</span></div>
+            <span style="font:400 11px 'Geist Mono',monospace;color:#64656B">{{ r.hint }}</span>
+          </div>
+        </sc-for>
+        <sc-if value="{{ noResults }}" hint-placeholder-val="{{ false }}"><div style="padding:28px 12px;text-align:center;font-size:13px;color:#64656B">Nothing found for “{{ q }}”.</div></sc-if>
+      </div>
+      <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 20px;border-top:1px solid #E4E4E6;font-size:12px;color:#64656B"><span style="color:#29524A;font-weight:500;cursor:pointer" style-hover="text-decoration:underline">See all results</span><span>↑↓ to move · Enter to open</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 1h TRASH -->
+<div id="1h" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1h" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1h</a>Trash: same centred column, restore on every row</div>
+  <div data-screen-label="1h Trash" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span><span style="color:#64656B">The Silent Kingdom</span><span style="color:#B5B6BA">/</span><span style="font-weight:500">Trash</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;font-size:13px"><span style="padding:7px 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;color:#06070E;cursor:pointer" style-hover="background:#06070E;color:#fff">Empty trash</span></div>
+    </div>
+    <div style="width:720px;display:flex;flex-direction:column;gap:28px;padding-top:52px">
+      <div style="display:flex;flex-direction:column;gap:8px;align-items:center;text-align:center"><h1 style="margin:0;font:600 48px/1.05 Geist,sans-serif;letter-spacing:-.035em">Trash</h1><span style="font-size:13px;color:#64656B;max-width:420px;text-wrap:pretty">Deleted boards, folders and notes wait here until you restore or remove them.</span></div>
+      <div style="display:flex;flex-direction:column;gap:2px">
+        <sc-for list="{{ trash }}" as="e" hint-placeholder-count="5">
+          <div style="display:grid;grid-template-columns:1fr auto auto;gap:10px;align-items:center;padding:12px;border-radius:10px;transition:background .18s,box-shadow .18s" style-hover="background:#fff;box-shadow:0 0 0 1px #E4E4E6,0 6px 20px -10px rgba(6,7,14,.22)">
+            <div style="display:flex;flex-direction:column;gap:3px"><span style="font-size:15px;font-weight:500">{{ e.n }}</span><span style="font-size:12.5px;color:#64656B">{{ e.o }} · deleted {{ e.d }}</span></div>
+            <span style="padding:6px 12px;border-radius:7px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:#29524A;color:#fff;box-shadow:none">Restore</span>
+            <span title="Delete permanently" style="width:30px;height:30px;display:grid;place-items:center;border-radius:7px;font-size:16px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">×</span>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 1i PROJECT SETTINGS -->
+<div id="1i" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1i" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1i</a>Project settings: details on the left; cover, categories and export on the right</div>
+  <div data-screen-label="1i Project settings" style="width:1280px;height:800px;background:#FFFFFF;color:#06070E;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;height:56px;flex:none;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:0 20px;border-bottom:1px solid #E4E4E6">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:#06070E;display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:#5E9A8C"></span></span><span style="color:#64656B">The Silent Kingdom</span><span style="color:#B5B6BA">/</span><span style="font-weight:500">Settings</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;padding:0 8px 0 12px;border-radius:9px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;color:#64656B">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:#F4F4F5">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:8px;font-size:12.5px;color:#64656B"><span style="width:6px;height:6px;border-radius:50%;background:#29524A"></span>Saved</div>
+    </div>
+    <div style="width:960px;display:flex;flex-direction:column;gap:36px;padding-top:48px">
+      <h1 style="margin:0;font:600 36px/1 Geist,sans-serif;letter-spacing:-.035em">Project settings</h1>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:56px">
+        <div style="display:flex;flex-direction:column;gap:20px">
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500">Name<span style="height:38px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:0 0 0 2px #29524A;font-size:14px;font-weight:400">The Silent Kingdom</span></label>
+          <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500">Description<span style="height:96px;padding:10px 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;font-size:14px;line-height:1.5;font-weight:400">A deaf queen inherits a kingdom that speaks only in bells, and learns who has been ringing them.</span></label>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:14px">
+            <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500">Genre<span style="height:38px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;font-size:14px;font-weight:400">Fantasy</span></label>
+            <label style="display:flex;flex-direction:column;gap:7px;font-size:13px;font-weight:500">Status<span style="height:38px;display:flex;align-items:center;padding:0 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;font-size:14px;font-weight:400">Second draft</span></label>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:10px;padding-top:6px">
+            <span style="font-size:13px;font-weight:500">Export</span>
+            <span style="font-size:12.5px;line-height:1.5;color:#64656B">A backup keeps everything and can be imported again. Markdown export gives you plain, readable files — your work is never locked in.</span>
+            <div style="display:flex;gap:8px;font-size:13px;font-weight:500"><span style="padding:8px 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;cursor:pointer" style-hover="background:#F4F4F5">Export backup (.zip)</span><span style="padding:8px 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;cursor:pointer" style-hover="background:#F4F4F5">Export as Markdown</span></div>
+          </div>
+        </div>
+        <div style="display:flex;flex-direction:column;gap:28px">
+          <div style="display:flex;flex-direction:column;gap:10px">
+            <span style="font-size:13px;font-weight:500">Cover &amp; colour</span>
+            <div style="display:flex;gap:16px;align-items:flex-start">
+              <div style="width:84px;height:120px;border-radius:6px;background:#29524A;display:flex;align-items:flex-end;padding:9px"><span style="width:26px;height:2px;background:rgba(255,255,255,.7)"></span></div>
+              <div style="display:flex;flex-direction:column;gap:10px">
+                <span style="font-size:12.5px;line-height:1.5;color:#64656B;max-width:280px">Shown on this project's card on the Start screen.</span>
+                <div style="display:flex;gap:6px"><span style="width:24px;height:24px;border-radius:6px;background:#06070E;cursor:pointer"></span><span style="width:24px;height:24px;border-radius:6px;background:#29524A;box-shadow:0 0 0 2px #fff,0 0 0 4px #29524A"></span><span style="width:24px;height:24px;border-radius:6px;background:#fff;box-shadow:inset 0 0 0 1px #D6D6D9;cursor:pointer"></span></div>
+                <span style="align-self:flex-start;padding:7px 12px;border-radius:8px;box-shadow:0 0 0 1px #E4E4E6;font-size:13px;font-weight:500;cursor:pointer" style-hover="background:#F4F4F5">Choose image…</span>
+              </div>
+            </div>
+          </div>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            <span style="font-size:13px;font-weight:500">Categories</span>
+            <span style="font-size:12.5px;color:#64656B">Changing a colour updates every note using it.</span>
+            <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px">
+              <sc-for list="{{ cats }}" as="c" hint-placeholder-count="4">
+                <div style="display:grid;grid-template-columns:24px 1fr 30px;gap:10px;align-items:center"><span style="width:18px;height:18px;border-radius:5px;background:{{ c.color }}"></span><span style="height:34px;display:flex;align-items:center;padding:0 10px;border-radius:7px;box-shadow:0 0 0 1px #E4E4E6;font-size:13.5px">{{ c.name }}</span><span style="width:30px;height:30px;display:grid;place-items:center;border-radius:7px;color:#64656B;cursor:pointer" style-hover="background:#F4F4F5;color:#06070E">×</span></div>
+              </sc-for>
+              <span style="align-self:flex-start;margin-top:4px;font-size:13px;font-weight:500;color:#29524A;cursor:pointer" style-hover="text-decoration:underline">+ Add category</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script>
+class Component extends DCLogic {
+  state = { qf: 'all', sel: 5, mode: 'read', q: 'bell' };
+  renderVals() {
+    const T = { plot: 'Plot Line', map: 'Info Map', notes: 'Notes' };
+    const node = (x, y) => ({ left: (x / 190 * 100).toFixed(1) + '%', top: (y / 50 * 100) + '%' });
+    const raw = [
+      { f: 'Story', boards: [
+        { id: 'b1', name: 'Main Plot', k: 'plot', count: 34, edited: '2h ago', pts: '0,42 28,34 52,38 80,20 104,26 132,8 160,22 190,14' },
+        { id: 'b2', name: 'The Bellringer Subplot', k: 'plot', count: 12, edited: 'Yesterday', pts: '0,30 36,36 70,24 104,30 140,12 190,18' },
+        { id: 'b3', name: 'Scene Notes', k: 'notes', count: 48, edited: '2h ago', bars: ['82%', '64%', '72%'] } ] },
+      { f: 'Worldbuilding', boards: [
+        { id: 'b4', name: 'Character Web', k: 'map', count: 27, edited: 'Mon', nodes: [node(20, 14), node(80, 34), node(140, 12), node(170, 40)] },
+        { id: 'b5', name: 'Places of the Realm', k: 'map', count: 19, edited: '12 Sep', nodes: [node(30, 36), node(96, 16), node(156, 32)] },
+        { id: 'b6', name: 'Bell Lore', k: 'notes', count: 22, edited: 'Yesterday', bars: ['74%', '58%', '66%'] } ] },
+    ];
+    const all = raw.flatMap(r => r.boards);
+    const { qf, sel, mode, q } = this.state;
+    const qTabs = [['all', 'All'], ['plot', 'Plot Line'], ['map', 'Info Map'], ['notes', 'Notes']].map(([k, label]) => {
+      const on = k === qf;
+      return { label, count: k === 'all' ? all.length : all.filter(b => b.k === k).length, pick: () => this.setState({ qf: k }),
+        bg: on ? '#fff' : 'transparent', shadow: on ? '0 1px 2px rgba(6,7,14,.12), 0 0 0 1px #E4E4E6' : 'none', color: on ? '#06070E' : '#64656B' };
+    });
+    const quietFolders = raw.map(r => ({ name: r.f, boards: r.boards.filter(b => qf === 'all' || b.k === qf).map(b => ({ ...b, type: T[b.k], isPlot: b.k === 'plot', isMap: b.k === 'map', isNotes: b.k === 'notes' })) })).filter(f => f.boards.length);
+
+    const moments = [
+      ['The bells fall silent', .05, .25, 'Act I', 'The king dies at dawn and every bell in Harrowmere stops at once.'],
+      ['Coronation', .13, .35, 'Act I', 'Ione is crowned in a hall she cannot hear.'],
+      ['First false ring', .22, .5, 'Act I', 'A single bell rings at midnight with no one in the tower.'],
+      ['Meeting the bellwright', .30, .38, 'Act I', 'Orrin offers to teach her the old bell-language.'],
+      ['The Tower Archive', .40, .55, 'Act II', 'Ione finds peal records that do not match the city ledgers.'],
+      ['Betrayal at Vesper', .52, .8, 'Act II', 'Orrin rings the false peal during the vesper feast; the court turns on Ione.'],
+      ['Exile to the salt flats', .60, .42, 'Act II', 'She escapes with Maren and a stolen tuning fork.'],
+      ['Learning the hand-speech', .68, .5, 'Act II', 'Maren teaches her a language no bell can overhear.'],
+      ['Return by the north gate', .78, .72, 'Act III', 'Ione re-enters the city on the night of the bell fair.'],
+      ['The last ring', .88, .96, 'Act III', 'She silences the south tower with her own hands.'],
+      ['Quiet morning', .96, .3, 'Act III', 'The city wakes to no bells at all, and listens to her instead.'],
+    ];
+    const X = x => 80 + x * 1120, Y = y => 64 + 56 + (1 - y) * 500;
+    const plotPts = moments.map((m, i) => ({ t: m[0], left: X(m[1]) + 'px', top: Y(m[2]) + 'px', fill: i === sel ? '#06070E' : '#29524A', ring: i === sel ? '4px' : '0px', select: () => this.setState({ sel: i }) }));
+    const plotPath = moments.map(m => `${X(m[1])},${Y(m[2])}`).join(' ');
+    const m = moments[sel];
+    let cl = X(m[1]) + 18, ct = Y(m[2]) + 14;
+    if (cl + 240 > 1260) cl = X(m[1]) - 258;
+    if (ct + 150 > 740) ct = Y(m[2]) - 160;
+    const card = { t: m[0], d: m[4], sec: m[3].toUpperCase(), pos: `${sel + 1} / ${moments.length}`, left: cl + 'px', top: ct + 'px' };
+
+    const CAT = { Conflict: '#c8503f', Character: '#7c5cbf', Location: '#3f9a5a', Lore: '#3b7dd8' };
+    const notes = [
+      ['Betrayal at Vesper', 'Orrin rings the false peal from the south tower. The court hears treason in it; Ione reads it in their faces first.', '14:02', 'Conflict', true],
+      ['The high table seating', 'Who sits where at the feast, and who can see Ione\'s face when the bell starts.', 'Yesterday', 'Character', true],
+      ['Exile to the salt flats', 'Maren\'s cart, the stolen tuning fork, and the long road east along the dry lake.', 'Mon', 'Location', false],
+      ['What the false peal says', 'The pattern is an old coronation call played backwards. Only the bellwrights would know.', '22 Sep', 'Lore', false],
+      ['Ione alone in the tower', 'Short scene. She lays a hand on the great bell and feels it still humming.', '20 Sep', 'Character', false],
+      ['Maren\'s bargain', 'Passage for lessons. Maren wants something from the city she will not name yet.', '18 Sep', 'Conflict', false],
+    ].map(n => ({ t: n[0], p: n[1], d: n[2], c: n[3], cc: CAT[n[3]], pinned: n[4] }));
+
+    const isEdit = mode === 'edit';
+    const segOn = { bg: '#fff', sh: '0 1px 2px rgba(6,7,14,.12), 0 0 0 1px #E4E4E6', c: '#06070E' }, segOff = { bg: 'transparent', sh: 'none', c: '#64656B' };
+    const R = isEdit ? segOff : segOn, E = isEdit ? segOn : segOff;
+
+    const index = [
+      ['Notes', 'Betrayal at Vesper', 'Scene Notes › Act II', 'N', 'note'],
+      ['Notes', 'What the false peal says', 'Scene Notes › Act II', 'N', 'note'],
+      ['Notes', 'Orrin, the bellwright', 'Character Web', 'N', 'note'],
+      ['Notes', 'The bells fall silent', 'Main Plot · Act I', 'N', 'note'],
+      ['Notes', 'Maren\'s bargain', 'Scene Notes › Act II', 'N', 'note'],
+      ['Boards', 'The Bellringer Subplot', 'Story', 'P', 'board'],
+      ['Boards', 'Bell Lore', 'Worldbuilding', 'T', 'board'],
+      ['Boards', 'Character Web', 'Worldbuilding', 'M', 'board'],
+      ['Folders', 'Worldbuilding', '3 boards', 'F', 'folder'],
+      ['Folders', 'Story', '3 boards', 'F', 'folder'],
+    ];
+    const needle = q.trim().toLowerCase();
+    const hits = needle ? index.filter(r => r[1].toLowerCase().includes(needle) || r[2].toLowerCase().includes(needle)).slice(0, 8) : index.slice(0, 6);
+    let last = null;
+    const results = hits.map((r, i) => {
+      const head = r[0] !== last ? r[0] : null; last = r[0];
+      const on = i === 0;
+      return { head, t: r[1], loc: r[2], glyph: r[3], hint: on ? '↵' : '', bg: on ? '#F4F4F5' : 'transparent', bar: on ? 'inset 2px 0 0 #29524A' : 'none', iconBg: on ? '#29524A' : '#F4F4F5', iconColor: on ? '#fff' : '#64656B' };
+    });
+
+    return {
+      projects: [
+        { name: 'The Silent Kingdom', path: '~/Writing/The Silent Kingdom.plotr', opened: '2h ago', cover: '#29524A', rule: 'rgba(255,255,255,.7)' },
+        { name: 'Saltwater', path: '~/Writing/Saltwater.plotr', opened: '4 days ago', cover: '#06070E', rule: 'rgba(255,255,255,.6)' },
+        { name: 'The Lantern Keeper', path: '~/Documents/Drafts/The Lantern Keeper.plotr', opened: '12 Sep', cover: '#F4F4F5', rule: '#06070E' },
+        { name: 'Short stories 2026', path: '~/Writing/Short stories 2026.plotr', opened: 'Aug', cover: '#DFE6E4', rule: '#29524A' },
+      ],
+      qTabs, quietFolders, plotPts, plotPath, card, notes,
+      isEdit, setRead: () => this.setState({ mode: 'read' }), setEdit: () => this.setState({ mode: 'edit' }),
+      readBg: R.bg, readShadow: R.sh, readColor: R.c, editBg: E.bg, editShadow: E.sh, editColor: E.c,
+      bodyPad: isEdit ? '10px 12px' : '0px', bodyRing: isEdit ? '0 0 0 1px #E4E4E6' : 'none',
+      q, onQ: e => this.setState({ q: e.target.value }), results, noResults: needle && !hits.length,
+      trash: [
+        { n: 'Old opening — the funeral', o: 'Main Plot', d: '26 Sep' },
+        { n: 'Prophecy subplot', o: 'Story', d: '21 Sep' },
+        { n: 'Tavern map sketch', o: 'Places of the Realm', d: '19 Sep' },
+        { n: 'Duke Harlan', o: 'Character Web', d: '14 Sep' },
+        { n: 'Unused names', o: 'Bell Lore › Drafts', d: '2 Sep' },
+      ],
+      cats: Object.entries(CAT).map(([name, color]) => ({ name, color })),
+    };
+  }
+}
+</script>
+</body>
+</html>

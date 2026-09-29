@@ -1,67 +1,130 @@
-import { Search, Settings, Trash2, X } from "lucide-react";
+import { useState, type ReactNode } from "react";
 import { useNav } from "../../app/navStore";
 import { useProject } from "../../stores/projectStore";
-import { assetUrl } from "../../tauri/commands";
-import { Shelves } from "./Shelves";
-import { Dock } from "../../components/shell/Dock";
-import "../../components/shell/shell.css";
+import { useNotes } from "../../stores/notesStore";
+import { useSettings } from "../../stores/settingsStore";
+import { useSaveState } from "../../lib/saveQueue";
+import { agoLong } from "../../lib/time";
+import type { TreeBoard, TreeItem } from "../../lib/schema";
+import { AppShell, PrimaryAction } from "../../components/shell/TopBar";
+import { Button } from "../../components/ui/Button";
+import { SegmentedControl } from "../../components/ui/SegmentedControl";
+import { BoardList, type TypeFilter } from "./BoardList";
+import { CreateBoardModal } from "./CreateBoardModal";
 import "./dashboard.css";
 
 export function DashboardScreen() {
   const meta = useProject((s) => s.meta);
-  const projectPath = useProject((s) => s.projectPath);
-  const close = useProject((s) => s.close);
-  const treeItems = useProject((s) => s.treeItems);
+  if (!meta) return null;
+  return (
+    <FolderLayout
+      parentId={null}
+      title={meta.name}
+      chips={
+        (meta.status || meta.genre) && (
+          <div className="dash__chips">
+            {meta.status && <span className="pill pill--accent">{meta.status}</span>}
+            {meta.genre && <span className="pill pill--ring">{meta.genre}</span>}
+          </div>
+        )
+      }
+    />
+  );
+}
+
+/** Shared by the dashboard (project root) and FolderScreen (one folder). */
+export function FolderLayout({
+  parentId,
+  title,
+  chips,
+}: {
+  parentId: string | null;
+  title: string;
+  chips?: ReactNode;
+}) {
   const navigate = useNav((s) => s.navigate);
+  const treeItems = useProject((s) => s.treeItems);
+  const [filter, setFilter] = useState<TypeFilter>("all");
+  const [creating, setCreating] = useState(false);
 
-  if (!meta || !projectPath) return null;
-
-  const boardCount = treeItems.filter((t) => t.kind === "board").length;
-  const folderCount = treeItems.filter((t) => t.kind === "folder").length;
+  const boards = subtreeBoards(treeItems, parentId);
+  const count = (t: TypeFilter) => boards.filter((b) => t === "all" || b.boardType === t).length;
 
   return (
-    <div className="shell">
-      <aside className="spine">
-        <div className="spine__brand">Plotr</div>
-        {meta.coverImage && (
-          <img className="spine__cover" src={assetUrl(projectPath, meta.coverImage)} alt="" />
-        )}
-        <h1 className="spine__title">{meta.name}</h1>
-        {meta.description && <p className="spine__desc">{meta.description}</p>}
-        <div className="spine__meta">
-          {meta.genre && <span>{meta.genre}</span>}
-          {meta.status && <span>{meta.status}</span>}
-          <span>
-            {boardCount} {boardCount === 1 ? "board" : "boards"} · {folderCount}{" "}
-            {folderCount === 1 ? "folder" : "folders"}
-          </span>
+    <AppShell
+      actions={
+        <>
+          <Button variant="ghost" onClick={() => navigate({ name: "trash" })}>
+            Trash
+          </Button>
+          <Button variant="ghost" onClick={() => navigate({ name: "projectSettings" })}>
+            Settings
+          </Button>
+          <PrimaryAction label="New board" onClick={() => setCreating(true)} />
+        </>
+      }
+    >
+      <div className="page">
+        <div className="page__head">
+          {chips}
+          <h1 className="page__title">{title}</h1>
+          <MetaLine boardCount={boards.length} />
         </div>
-        <div className="spine__spacer" />
-        <nav className="spine__nav">
-          <button className="spine__navitem" onClick={() => navigate({ name: "search", query: "" })}>
-            <Search size={15} /> Search
-          </button>
-          <button className="spine__navitem" onClick={() => navigate({ name: "trash" })}>
-            <Trash2 size={15} /> Trash
-          </button>
-          <button
-            className="spine__navitem"
-            onClick={() => navigate({ name: "projectSettings" })}
-          >
-            <Settings size={15} /> Project Settings
-          </button>
-          <button className="spine__navitem" onClick={() => void close()}>
-            <X size={15} /> Close Project
-          </button>
-        </nav>
-      </aside>
 
-      <main className="shell__main">
-        <div className="dash__main">
-          <Shelves parentId={null} />
-        </div>
-        <Dock withSpine />
-      </main>
+        {boards.length > 0 && (
+          <SegmentedControl
+            className="dash__filter"
+            label="Board type"
+            value={filter}
+            onChange={setFilter}
+            segments={[
+              { value: "all", label: "All", count: count("all") },
+              { value: "plotline", label: "Plot Line", count: count("plotline") },
+              { value: "infomap", label: "Info Map", count: count("infomap") },
+              { value: "notes", label: "Notes", count: count("notes") },
+            ]}
+          />
+        )}
+
+        <BoardList parentId={parentId} filter={filter} />
+      </div>
+
+      {creating && <CreateBoardModal parentId={parentId} onClose={() => setCreating(false)} />}
+    </AppShell>
+  );
+}
+
+function subtreeBoards(items: TreeItem[], rootId: string | null): TreeBoard[] {
+  const inside = new Set<string | null>([rootId]);
+  let grew = true;
+  while (grew) {
+    grew = false;
+    for (const it of items) {
+      if (it.kind === "folder" && inside.has(it.parentId) && !inside.has(it.id)) {
+        inside.add(it.id);
+        grew = true;
+      }
+    }
+  }
+  return items.filter((it): it is TreeBoard => it.kind === "board" && inside.has(it.parentId));
+}
+
+function MetaLine({ boardCount }: { boardCount: number }) {
+  const meta = useProject((s) => s.meta);
+  const notes = useNotes((s) => s.notes);
+  const autosave = useSettings((s) => s.autosave);
+  const pending = useSaveState((s) => s.pendingCount);
+
+  let edited = meta?.modifiedAt ?? "";
+  for (const n of Object.values(notes)) if (n.modifiedAt > edited) edited = n.modifiedAt;
+
+  const unsaved = !autosave && pending > 0;
+  const state = unsaved ? "Unsaved changes" : autosave ? "Autosaved" : "Saved";
+  return (
+    <div className="page__metaline">
+      <span className={unsaved ? "statusdot statusdot--pending" : "statusdot"} />
+      {state} · {boardCount} {boardCount === 1 ? "board" : "boards"}
+      {edited && ` · edited ${agoLong(edited)}`}
     </div>
   );
 }

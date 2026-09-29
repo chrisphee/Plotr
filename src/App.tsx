@@ -3,7 +3,7 @@ import { getCurrentWindow } from "@tauri-apps/api/window";
 import { useNav } from "./app/navStore";
 import { useSettings } from "./stores/settingsStore";
 import { useProject } from "./stores/projectStore";
-import { saveQueue, useSaveState } from "./lib/saveQueue";
+import { saveQueue } from "./lib/saveQueue";
 import { Modal } from "./components/ui/Modal";
 import { Button } from "./components/ui/Button";
 import { StartScreen } from "./features/start/StartScreen";
@@ -73,7 +73,6 @@ export default function App() {
       <ScreenSwitch />
       <NotePopupHost />
       <SearchOverlayHost />
-      <UnsavedPill />
       {closePrompt && (
         <Modal
           title="Unsaved changes"
@@ -106,35 +105,6 @@ export default function App() {
         </Modal>
       )}
     </>
-  );
-}
-
-/** Shown when autosave is off and edits are waiting to be written. */
-function UnsavedPill() {
-  const autosave = useSettings((s) => s.autosave);
-  const pendingCount = useSaveState((s) => s.pendingCount);
-  const saving = useSaveState((s) => s.saving);
-  if (autosave || (pendingCount === 0 && !saving)) return null;
-  return (
-    <button
-      onClick={() => void saveQueue.flush()}
-      title="Save now (Ctrl+S)"
-      style={{
-        position: "fixed",
-        right: "var(--sp-6)",
-        bottom: "var(--sp-6)",
-        zIndex: 90,
-        background: "var(--ink)",
-        color: "var(--ink-text)",
-        borderRadius: "var(--r-dock)",
-        padding: "8px 14px",
-        fontSize: "var(--fs-ui)",
-        fontWeight: 500,
-        boxShadow: "var(--shadow-lift)",
-      }}
-    >
-      {saving ? "Saving…" : `Save changes · Ctrl+S`}
-    </button>
   );
 }
 

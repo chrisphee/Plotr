@@ -1,19 +1,16 @@
 import { useEffect, useState } from "react";
-import { ArrowLeft, Plug, Unplug } from "lucide-react";
-import { useNav } from "../../app/navStore";
 import { useConnectors } from "./connectorStore";
 import {
   pinterestConfigure,
   pinterestConnect,
   pinterestDisconnect,
 } from "../../tauri/commands";
+import { AppShell } from "../../components/shell/TopBar";
 import { Button } from "../../components/ui/Button";
 import { Field, TextInput } from "../../components/ui/Field";
-import "../dashboard/dashboard.css";
 import "./connectors.css";
 
 export function ConnectorsScreen() {
-  const back = useNav((s) => s.back);
   const status = useConnectors((s) => s.pinterest);
   const refresh = useConnectors((s) => s.refresh);
   const [appId, setAppId] = useState("");
@@ -64,22 +61,18 @@ export function ConnectorsScreen() {
   };
 
   return (
-    <main className="shell__main" style={{ height: "100%" }}>
-      <div className="dash__main" style={{ maxWidth: 640 }}>
-        <div>
-          <Button variant="ghost" onClick={back}>
-            <ArrowLeft size={15} /> Back
-          </Button>
+    <AppShell>
+      <div className="page page--settings">
+        <div className="connectors__head">
+          <h1 className="page__title page__title--settings">Connectors</h1>
+          <p className="field__hint">
+            Connect outside services to import content. Imports are copied into your project, so
+            everything keeps working offline.
+          </p>
         </div>
-        <h1 className="dash__boardtitle">Connectors</h1>
-        <p className="meta">
-          Connect outside services to import content. Imports are copied into your
-          project, so everything keeps working offline.
-        </p>
 
         <div className="connector-card">
           <div className="connector-card__head">
-            <Plug size={18} />
             <span className="connector-card__name">Pinterest</span>
             <span
               className={
@@ -139,9 +132,7 @@ export function ConnectorsScreen() {
           ) : (
             <div style={{ display: "flex", gap: "var(--sp-4)", flexWrap: "wrap" }}>
               {status.connected ? (
-                <Button variant="secondary" onClick={() => void disconnect()}>
-                  <Unplug size={14} /> Disconnect
-                </Button>
+                <Button onClick={() => void disconnect()}>Disconnect</Button>
               ) : (
                 <Button variant="primary" disabled={busy !== null} onClick={() => void connect()}>
                   {busy === "connect" ? "Waiting for browser…" : "Connect"}
@@ -165,6 +156,6 @@ export function ConnectorsScreen() {
           )}
         </div>
       </div>
-    </main>
+    </AppShell>
   );
 }

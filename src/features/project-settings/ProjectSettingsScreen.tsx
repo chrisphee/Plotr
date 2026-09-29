@@ -1,19 +1,26 @@
 import { useState } from "react";
-import { Archive, FileDown, ImagePlus, Plug, Plus, Trash2, X } from "lucide-react";
+import { X } from "lucide-react";
 import { open as openDialog, save as saveDialog } from "@tauri-apps/plugin-dialog";
 import { useProject } from "../../stores/projectStore";
 import { useConnectors } from "../connectors/connectorStore";
 import { PinterestPicker } from "../connectors/PinterestPicker";
 import { importAttachment, assetUrl } from "../../tauri/commands";
+import { readableTextOn } from "../../lib/color";
 import { exportProjectBackup, exportProjectMarkdown } from "./exportProject";
-import { Dock } from "../../components/shell/Dock";
+import { AppShell } from "../../components/shell/TopBar";
 import { Field, TextInput, TextArea } from "../../components/ui/Field";
 import { Button, IconButton } from "../../components/ui/Button";
 import { ColorPicker } from "../../components/ui/ColorPicker";
-import { CategoryDot } from "../../components/ui/CategoryChip";
 import { CATEGORY_PRESETS } from "../../lib/schema";
-import "../dashboard/dashboard.css";
 import "../../components/ui/categories.css";
+import "./projectSettings.css";
+
+const COVER_PRESETS = [
+  { name: "Black", color: "#06070E" },
+  { name: "Pine", color: "#29524A" },
+  { name: "White", color: "#FFFFFF" },
+];
+const DEFAULT_COVER = "#29524A";
 
 export function ProjectSettingsScreen() {
   const meta = useProject((s) => s.meta);
@@ -23,55 +30,61 @@ export function ProjectSettingsScreen() {
   if (!meta) return null;
 
   return (
-    <main className="shell__main" style={{ height: "100%" }}>
-      <div className="dash__main" style={{ maxWidth: 560 }}>
-        <h1 className="dash__boardtitle">Project Settings</h1>
-
-        <Field label="Name">
-          {(id) => (
-            <TextInput
-              id={id}
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              onBlur={() => name.trim() && updateMeta({ name: name.trim() })}
-            />
-          )}
-        </Field>
-        <Field label="Description">
-          {(id) => (
-            <TextArea
-              id={id}
-              defaultValue={meta.description}
-              onBlur={(e) => updateMeta({ description: e.target.value })}
-            />
-          )}
-        </Field>
-        <Field label="Genre">
-          {(id) => (
-            <TextInput
-              id={id}
-              defaultValue={meta.genre}
-              placeholder="Fantasy"
-              onBlur={(e) => updateMeta({ genre: e.target.value })}
-            />
-          )}
-        </Field>
-        <Field label="Status">
-          {(id) => (
-            <TextInput
-              id={id}
-              defaultValue={meta.status}
-              placeholder="Drafting"
-              onBlur={(e) => updateMeta({ status: e.target.value })}
-            />
-          )}
-        </Field>
-        <AppearanceSection />
-        <CategoryManager />
-        <ExportSection />
+    <AppShell saveStatus="always">
+      <div className="page page--wide">
+        <h1 className="page__title page__title--settings">Project settings</h1>
+        <div className="settings__grid">
+          <div className="settings__col">
+            <Field label="Name">
+              {(id) => (
+                <TextInput
+                  id={id}
+                  value={name}
+                  onChange={(e) => setName(e.target.value)}
+                  onBlur={() => name.trim() && updateMeta({ name: name.trim() })}
+                />
+              )}
+            </Field>
+            <Field label="Description">
+              {(id) => (
+                <TextArea
+                  id={id}
+                  defaultValue={meta.description}
+                  onBlur={(e) => updateMeta({ description: e.target.value })}
+                />
+              )}
+            </Field>
+            <div className="settings__pair">
+              <Field label="Genre">
+                {(id) => (
+                  <TextInput
+                    id={id}
+                    defaultValue={meta.genre}
+                    placeholder="Fantasy"
+                    onBlur={(e) => updateMeta({ genre: e.target.value })}
+                  />
+                )}
+              </Field>
+              <Field label="Status">
+                {(id) => (
+                  <TextInput
+                    id={id}
+                    defaultValue={meta.status}
+                    placeholder="Drafting"
+                    onBlur={(e) => updateMeta({ status: e.target.value })}
+                  />
+                )}
+              </Field>
+            </div>
+            <ExportSection />
+          </div>
+          <div className="settings__col settings__col--right">
+            <AppearanceSection />
+            <CategoryManager />
+          </div>
+        </div>
       </div>
-      <Dock />
-    </main>
+    </AppShell>
   );
 }
 
@@ -108,21 +121,17 @@ function ExportSection() {
   };
 
   return (
-    <div className="field">
+    <div className="settings__section settings__export">
       <div className="field__label">Export</div>
-      <div className="field__hint">
+      <p className="field__hint">
         A backup keeps everything and can be imported again. Markdown export gives you plain,
         readable files — your work is never locked in.
+      </p>
+      <div className="settings__buttons">
+        <Button onClick={() => void backup()}>Export backup (.zip)</Button>
+        <Button onClick={() => void markdown()}>Export as Markdown</Button>
       </div>
-      <div style={{ display: "flex", gap: "var(--sp-4)" }}>
-        <Button variant="secondary" onClick={() => void backup()}>
-          <Archive size={14} /> Export Backup (.zip)
-        </Button>
-        <Button variant="secondary" onClick={() => void markdown()}>
-          <FileDown size={14} /> Export as Markdown
-        </Button>
-      </div>
-      {status && <p className="meta">{status}</p>}
+      {status && <p className="field__hint">{status}</p>}
     </div>
   );
 }
@@ -145,57 +154,44 @@ function AppearanceSection() {
     updateMeta({ coverImage: imported.rel_path });
   };
 
-  return (
-    <div className="field">
-      <div className="field__label">Cover & colour</div>
-      <div className="field__hint">
-        Shown on this project's card on the Start screen. The image is copied into the
-        project, so it travels with your backups.
-      </div>
+  const color = meta.color ?? DEFAULT_COVER;
 
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-5)" }}>
-        {meta.coverImage ? (
-          <img
-            src={assetUrl(projectPath, meta.coverImage)}
-            alt="Project cover"
-            style={{
-              width: 96,
-              height: 144,
-              objectFit: "cover",
-              borderRadius: "var(--r-card)",
-              border: "1px solid var(--hairline)",
-            }}
+  return (
+    <div className="settings__section">
+      <div className="field__label">Cover &amp; colour</div>
+      <div className="cover">
+        <div
+          className="cover__preview"
+          style={{ background: color }}
+          data-tone={readableTextOn(color)}
+        >
+          {meta.coverImage ? (
+            <img src={assetUrl(projectPath, meta.coverImage)} alt="Project cover" />
+          ) : (
+            <span className="cover__rule" />
+          )}
+        </div>
+        <div className="cover__controls">
+          <p className="field__hint">
+            Shown on this project's card on the Start screen. Images are copied into the project,
+            so they travel with your backups.
+          </p>
+          <ColorPicker
+            value={color}
+            presets={COVER_PRESETS}
+            onChange={(c) => updateMeta({ color: c })}
           />
-        ) : (
-          <div
-            style={{
-              width: 96,
-              height: 144,
-              borderRadius: "var(--r-card)",
-              border: "1px dashed var(--hairline-strong)",
-              display: "grid",
-              placeItems: "center",
-              color: "var(--text-muted)",
-              background: meta.color ?? "transparent",
-            }}
-          >
-            {!meta.color && <ImagePlus size={20} strokeWidth={1.5} />}
+          <div className="settings__buttons">
+            <Button onClick={() => void pickCover()}>
+              {meta.coverImage ? "Change image…" : "Choose image…"}
+            </Button>
+            {pinterestConnected && <Button onClick={() => setPickerOpen(true)}>From Pinterest</Button>}
+            {meta.coverImage && (
+              <Button variant="ghost" onClick={() => updateMeta({ coverImage: null })}>
+                Remove image
+              </Button>
+            )}
           </div>
-        )}
-        <div style={{ display: "flex", flexDirection: "column", gap: "var(--sp-4)", alignItems: "flex-start" }}>
-          <Button variant="secondary" onClick={() => void pickCover()}>
-            <ImagePlus size={14} /> {meta.coverImage ? "Change Image…" : "Choose Image…"}
-          </Button>
-          {pinterestConnected && (
-            <Button variant="secondary" onClick={() => setPickerOpen(true)}>
-              <Plug size={14} /> From Pinterest
-            </Button>
-          )}
-          {meta.coverImage && (
-            <Button variant="ghost" onClick={() => updateMeta({ coverImage: null })}>
-              <X size={14} /> Remove image
-            </Button>
-          )}
         </div>
       </div>
 
@@ -208,18 +204,6 @@ function AppearanceSection() {
           onClose={() => setPickerOpen(false)}
         />
       )}
-
-      <div style={{ display: "flex", alignItems: "center", gap: "var(--sp-5)" }}>
-        <ColorPicker
-          value={meta.color ?? ""}
-          onChange={(color) => updateMeta({ color })}
-        />
-        {meta.color && (
-          <Button variant="ghost" onClick={() => updateMeta({ color: null })}>
-            <X size={14} /> Default colour
-          </Button>
-        )}
-      </div>
     </div>
   );
 }
@@ -232,21 +216,23 @@ function CategoryManager() {
   const [editingColorId, setEditingColorId] = useState<string | null>(null);
 
   return (
-    <div className="field">
+    <div className="settings__section">
       <div className="field__label">Categories</div>
-      <div className="field__hint">
+      <p className="field__hint">
         Categories belong to the whole project. Changing a colour updates every note using it.
-      </div>
-      <div>
+      </p>
+      <div className="catlist">
         {categories.map((c) => (
-          <div key={c.id} className="catmanager__row">
+          <div key={c.id} className="catlist__row">
             <button
-              className="swatch swatch--active"
-              style={{ background: c.color, borderColor: "var(--hairline-strong)" }}
+              className="catlist__swatch"
+              style={{ background: c.color }}
               title="Change colour"
+              aria-label={`Change colour of ${c.name}`}
               onClick={() => setEditingColorId(editingColorId === c.id ? null : c.id)}
             />
             <TextInput
+              className="catlist__input"
               defaultValue={c.name}
               onBlur={(e) => {
                 const name = e.target.value.trim();
@@ -254,39 +240,30 @@ function CategoryManager() {
               }}
             />
             <IconButton label={`Delete ${c.name}`} onClick={() => deleteCategory(c.id)}>
-              <Trash2 size={14} />
+              <X size={15} strokeWidth={1.75} />
             </IconButton>
             {editingColorId === c.id && (
-              <ColorPicker
-                value={c.color}
-                onChange={(color) => updateCategory(c.id, { color })}
-              />
+              <div className="catlist__picker">
+                <ColorPicker
+                  value={c.color}
+                  presets={CATEGORY_PRESETS}
+                  onChange={(color) => updateCategory(c.id, { color })}
+                />
+              </div>
             )}
           </div>
         ))}
-      </div>
-      <div>
-        <Button
-          variant="secondary"
+        <button
+          className="textbtn textbtn--accent catlist__add"
           onClick={() => {
             const used = new Set(categories.map((c) => c.color));
             const preset = CATEGORY_PRESETS.find((p) => !used.has(p.color));
             addCategory("New category", preset?.color ?? "#7c5cbf");
           }}
         >
-          <Plus size={14} /> Add category
-        </Button>
+          + Add category
+        </button>
       </div>
-      {categories.length > 0 && (
-        <div className="swatches" style={{ marginTop: "var(--sp-3)" }}>
-          {categories.map((c) => (
-            <span key={c.id} style={{ display: "inline-flex", alignItems: "center", gap: 6 }}>
-              <CategoryDot color={c.color} />
-              <span className="meta">{c.name}</span>
-            </span>
-          ))}
-        </div>
-      )}
     </div>
   );
 }

@@ -9,40 +9,27 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import {
-  ArrowDownAZ,
-  ArrowUpAZ,
-  ChevronRight,
-  Copy,
-  FilePlus2,
-  Folder,
-  FolderPlus,
-  Inbox,
-  Link2,
-  MoreHorizontal,
-  Pencil,
-  Pin,
-  PinOff,
-  Plus,
-  Scissors,
-  Trash2,
-} from "lucide-react";
+import { Copy, FolderPlus, Link2, Pencil, Pin, PinOff, Scissors, Trash2 } from "lucide-react";
 import clsx from "clsx";
 import { useProject } from "../../stores/projectStore";
 import { useNotes, refcountOf } from "../../stores/notesStore";
 import { useNoteModal } from "../note-editor/noteModalStore";
 import { notesBoard } from "./notesBoardActions";
 import type { NoteRef, NotesBoard, NotesBoardFolder, TreeBoard } from "../../lib/schema";
-import { Dock } from "../../components/shell/Dock";
-import { Button, IconButton } from "../../components/ui/Button";
+import { AppShell, PrimaryAction } from "../../components/shell/TopBar";
+import { Button } from "../../components/ui/Button";
 import { TextInput } from "../../components/ui/Field";
 import { Menu, MenuItem, MenuSeparator, type MenuPosition } from "../../components/ui/Menu";
 import { ConfirmDialog } from "../../components/ui/Modal";
 import { RenameModal } from "../dashboard/RenameModal";
 import { CategoryDot } from "../../components/ui/CategoryChip";
+import { shortDate } from "../../lib/time";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { extractPreview } from "./preview";
 import "./notesBoard.css";
+
+/** Tree selection that lists pinned notes from every folder. */
+const PINNED = "__pinned__";
 
 export function NotesBoardScreen({ treeItem }: { treeItem: TreeBoard }) {
   const board = useProject((s) => s.boards[treeItem.id]) as NotesBoard | undefined;
@@ -64,8 +51,14 @@ export function NotesBoardScreen({ treeItem }: { treeItem: TreeBoard }) {
     }
   };
 
+  const newNote = () => {
+    const folderId = activeFolderId === PINNED ? null : activeFolderId;
+    const { noteId } = notesBoard.createNote(board.id, folderId);
+    useNoteModal.getState().open(noteId, "edit");
+  };
+
   return (
-    <div style={{ height: "100%", position: "relative" }}>
+    <AppShell canvas actions={<PrimaryAction label="New note" onClick={newNote} />}>
       <DndContext
         sensors={sensors}
         onDragStart={(e) => setDragRefId(e.active.data.current?.refId ?? null)}
@@ -90,23 +83,7 @@ export function NotesBoardScreen({ treeItem }: { treeItem: TreeBoard }) {
           {dragRefId && <DragPreview board={board} refId={dragRefId} />}
         </DragOverlay>
       </DndContext>
-      <Dock
-        actions={
-          <>
-            <IconButton
-              onInk
-              label="New note"
-              onClick={() => {
-                const { noteId } = notesBoard.createNote(board.id, activeFolderId);
-                useNoteModal.getState().open(noteId, "edit");
-              }}
-            >
-              <FilePlus2 size={15} />
-            </IconButton>
-          </>
-        }
-      />
-    </div>
+    </AppShell>
   );
 }
 
@@ -133,6 +110,14 @@ function FolderTreePane({
     <aside className="nb__tree">
       <div className="nb__boardname">{boardName}</div>
       <AllNotesRow board={board} active={activeFolderId === null} onSelect={() => onSelect(null)} />
+      <button
+        className={clsx("nb-folder", activeFolderId === PINNED && "nb-folder--active")}
+        onClick={() => onSelect(PINNED)}
+      >
+        <span className="nb-folder__name">Pinned</span>
+        <span className="nb-folder__count">{board.noteRefs.filter((r) => r.pinned).length}</span>
+      </button>
+      {roots.length > 0 && <div className="nb__treesep" />}
       {roots.map((f) => (
         <FolderNode
           key={f.id}
@@ -144,17 +129,15 @@ function FolderTreePane({
           onNewSubfolder={(parentId) => setCreating({ parentId })}
         />
       ))}
-      <div className="nb__treefoot">
-        <Button variant="ghost" onClick={() => setCreating({ parentId: null })}>
-          <FolderPlus size={14} /> New folder
-        </Button>
-      </div>
+      <button className="textbtn nb__newfolder" onClick={() => setCreating({ parentId: null })}>
+        + New folder
+      </button>
       {creating && (
         <RenameModal
           item={null}
-          title="New Folder"
+          title="New folder"
           confirmLabel="Create"
-          placeholder="Main Cast"
+          placeholder="Main cast"
           onSubmit={(name) => notesBoard.createFolder(board.id, creating.parentId, name)}
           onClose={() => setCreating(null)}
         />
@@ -182,7 +165,7 @@ function AllNotesRow({
       className={clsx("nb-folder", active && "nb-folder--active", isOver && "nb-folder--droptarget")}
       onClick={onSelect}
     >
-      <Inbox size={14} /> All notes
+      <span className="nb-folder__name">All notes</span>
       <span className="nb-folder__count">{board.noteRefs.length}</span>
     </button>
   );
@@ -225,18 +208,15 @@ function FolderNode({
           activeFolderId === folder.id && "nb-folder--active",
           isOver && "nb-folder--droptarget",
         )}
-        style={{ paddingLeft: 10 + depth * 14 }}
+        style={{ paddingLeft: 10 + depth * 16 }}
         onClick={() => onSelect(folder.id)}
         onContextMenu={(e) => {
           e.preventDefault();
           setMenu({ x: e.clientX, y: e.clientY });
         }}
       >
-        {children.length > 0 ? <ChevronRight size={12} /> : <Folder size={13} />}
-        <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
-          {folder.name}
-        </span>
-        <span className="nb-folder__count">{count > 0 ? count : ""}</span>
+        <span className="nb-folder__name">{folder.name}</span>
+        <span className="nb-folder__count">{count}</span>
       </button>
       {children.map((f) => (
         <FolderNode
@@ -307,13 +287,17 @@ function NoteListPane({
   const folderName =
     activeFolderId === null
       ? "All notes"
-      : board.folders.find((f) => f.id === activeFolderId)?.name ?? "";
+      : activeFolderId === PINNED
+        ? "Pinned"
+        : board.folders.find((f) => f.id === activeFolderId)?.name ?? "";
 
   const refs = useMemo(() => {
     let list =
       activeFolderId === null
         ? [...board.noteRefs]
-        : board.noteRefs.filter((r) => r.folderId === activeFolderId);
+        : activeFolderId === PINNED
+          ? board.noteRefs.filter((r) => r.pinned)
+          : board.noteRefs.filter((r) => r.folderId === activeFolderId);
     if (filter.trim()) {
       const q = filter.toLowerCase();
       list = list.filter((r) => {
@@ -342,58 +326,46 @@ function NoteListPane({
   }, [board.noteRefs, board.sort, activeFolderId, filter, notes]);
 
   const sortLabel = {
-    manual: "Manual",
+    manual: "Manual order",
     title: "Title",
-    createdAt: "Created",
-    modifiedAt: "Modified",
+    createdAt: "Date created",
+    modifiedAt: "Date modified",
   }[board.sort.by];
 
   return (
     <section className="nb__list">
       <div className="nb__listhead">
-        <div className="nb__listtitle">{folderName}</div>
+        <h1 className="nb__listtitle">{folderName}</h1>
         <TextInput
-          className="nb__filter"
-          placeholder="Filter notes…"
+          className="input--sm nb__filter"
+          placeholder="Filter notes"
           value={filter}
           onChange={(e) => setFilter(e.target.value)}
         />
-        <Button variant="ghost" onClick={(e) => setSortMenu({ x: e.clientX, y: e.clientY })}>
-          {board.sort.dir === "asc" ? <ArrowDownAZ size={14} /> : <ArrowUpAZ size={14} />}
-          {sortLabel}
-        </Button>
-        <Button
-          variant="primary"
-          onClick={() => {
-            const { noteId } = notesBoard.createNote(board.id, activeFolderId);
-            useNoteModal.getState().open(noteId, "edit");
-          }}
-        >
-          <Plus size={14} /> New note
+        <Button onClick={(e) => setSortMenu({ x: e.clientX, y: e.clientY })}>
+          {sortLabel} ▾
         </Button>
       </div>
 
       {refs.length === 0 ? (
         <EmptyState
-          icon={<FilePlus2 size={24} strokeWidth={1.5} />}
-          title={filter ? "No matching notes" : "No notes here yet"}
-          message={filter ? "Try a different filter." : "Create a note to start filling this folder."}
-          action={
-            !filter && (
-              <Button
-                variant="primary"
-                onClick={() => {
-                  const { noteId } = notesBoard.createNote(board.id, activeFolderId);
-                  useNoteModal.getState().open(noteId, "edit");
-                }}
-              >
-                <Plus size={14} /> New note
-              </Button>
-            )
+          title={
+            filter ? "No matching notes" : activeFolderId === PINNED ? "No pinned notes" : "No notes here yet"
+          }
+          message={
+            filter
+              ? "Try a different filter."
+              : activeFolderId === PINNED
+                ? "Pin a note from its right-click menu to keep it here."
+                : "Create a note to start filling this folder. Press N."
           }
         />
       ) : (
-        refs.map((r) => <NoteRow key={r.id} board={board} noteRef={r} />)
+        <div className="nb__rows">
+          {refs.map((r) => (
+            <NoteRow key={r.id} board={board} noteRef={r} />
+          ))}
+        </div>
       )}
 
       {sortMenu && (
@@ -470,7 +442,7 @@ function NoteRow({ board, noteRef }: { board: NotesBoard; noteRef: NoteRef }) {
         {...attributes}
         {...listeners}
         className={clsx(
-          "noterow",
+          "lrow noterow",
           isDragging && "noterow--dragging",
           note.color && "noterow--tinted",
         )}
@@ -486,28 +458,23 @@ function NoteRow({ board, noteRef }: { board: NotesBoard; noteRef: NoteRef }) {
       >
         <div className="noterow__main">
           <div className="noterow__title">
-            {noteRef.pinned && <Pin size={13} className="noterow__pin" />}
-            <span className="t">{note.title || "Untitled note"}</span>
-            {refcount > 1 && <Link2 size={13} color="var(--text-muted)" />}
-            {cats.map((c) => (
-              <CategoryDot key={c.id} color={c.color} title={c.name} />
-            ))}
+            <span className="lrow__name">{note.title || "Untitled note"}</span>
+            {noteRef.pinned && <span className="pill pill--accent noterow__pill">Pinned</span>}
+            {refcount > 1 && (
+              <Link2 size={13} className="noterow__linked" aria-label={`Linked in ${refcount} places`} />
+            )}
           </div>
           {preview && <div className="noterow__preview">{preview}</div>}
         </div>
         <div className="noterow__side">
-          <span className="noterow__date">
-            {new Date(note.modifiedAt).toLocaleDateString()}
-          </span>
-          <IconButton
-            label="Note options"
-            onClick={(e) => {
-              e.stopPropagation();
-              setMenu({ x: e.clientX, y: e.clientY });
-            }}
-          >
-            <MoreHorizontal size={15} />
-          </IconButton>
+          <span className="lrow__mono">{shortDate(note.modifiedAt, true)}</span>
+          {cats[0] && (
+            <span className="noterow__cat">
+              <CategoryDot color={cats[0].color} />
+              {cats[0].name}
+              {cats.length > 1 && ` +${cats.length - 1}`}
+            </span>
+          )}
         </div>
       </div>
 
@@ -578,10 +545,10 @@ function DragPreview({ board, refId }: { board: NotesBoard; refId: string }) {
   const note = ref ? notes[ref.noteId] : null;
   if (!note) return null;
   return (
-    <div className="noterow" style={{ width: 280, boxShadow: "var(--shadow-soft)" }}>
+    <div className="lrow noterow noterow--ghost">
       <div className="noterow__main">
         <div className="noterow__title">
-          <span className="t">{note.title || "Untitled note"}</span>
+          <span className="lrow__name">{note.title || "Untitled note"}</span>
         </div>
       </div>
     </div>

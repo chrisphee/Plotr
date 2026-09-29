@@ -34,7 +34,7 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
 
   return (
     <Modal
-      title="New Board"
+      title="New board"
       onClose={onClose}
       width={620}
       footer={
@@ -43,7 +43,7 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
             Cancel
           </Button>
           <Button variant="primary" disabled={!canCreate} onClick={() => void create()}>
-            {busy ? "Creating…" : "Create Board"}
+            {busy ? "Creating…" : "Create board"}
           </Button>
         </>
       }

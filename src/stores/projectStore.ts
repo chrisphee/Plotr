@@ -178,14 +178,21 @@ export const useProject = create<ProjectState>((set, get) => {
     updateBoard: (boardId, updater) => {
       const board = get().boards[boardId];
       if (!board) return;
-      set({ boards: { ...get().boards, [boardId]: updater(board) } });
+      const next = updater(board);
+      if (next === board) return;
+      // Updaters spread the old board, so a shallow compare finds real edits.
+      const before = board as unknown as Record<string, unknown>;
+      const after = next as unknown as Record<string, unknown>;
+      const edited = Object.keys(after).some((k) => k !== "view" && after[k] !== before[k]);
+      const stamped = edited ? { ...next, modifiedAt: nowIso() } : next;
+      set({ boards: { ...get().boards, [boardId]: stamped } });
       const { projectPath } = get();
       if (projectPath) {
         saveQueue.schedule(projectPath, `boards/${boardId}.json`, () =>
           JSON.stringify(get().boards[boardId], null, 2),
         );
       }
-      touchMeta();
+      if (edited) touchMeta();
     },
 
     addCategory: (name, color) => {
@@ -277,7 +284,7 @@ export const useProject = create<ProjectState>((set, get) => {
         icon: null,
         color: null,
       };
-      const board = emptyBoard(id, boardType);
+      const board = { ...emptyBoard(id, boardType), modifiedAt: nowIso() };
       set({
         treeItems: [...get().treeItems, item],
         boards: { ...get().boards, [id]: board },

@@ -52,17 +52,6 @@ export const plotline = {
     });
   },
 
-  setExpanded(boardId: string, pointId: string, expanded: boolean) {
-    mutate(boardId, (b) => ({
-      ...b,
-      points: b.points.map((p) => (p.id === pointId ? { ...p, expanded } : p)),
-    }));
-  },
-
-  setAllExpanded(boardId: string, expanded: boolean) {
-    mutate(boardId, (b) => ({ ...b, points: b.points.map((p) => ({ ...p, expanded })) }));
-  },
-
   /** Remove a point; the reference goes to project trash (undoable too). */
   deletePoint(boardId: string, pointId: string) {
     const board = getBoard(boardId);

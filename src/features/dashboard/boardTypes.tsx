@@ -1,6 +1,6 @@
 import { Network, StickyNote, TrendingUp } from "lucide-react";
 import type { ReactNode } from "react";
-import type { Board, BoardType } from "../../lib/schema";
+import type { Board, BoardType, Note } from "../../lib/schema";
 
 export const BOARD_TYPES: {
   type: BoardType;
@@ -42,4 +42,26 @@ export function boardItemCount(board: Board | undefined): number {
     case "infomap":
       return board.items.length;
   }
+}
+
+/** Last edit to a board or to any note it shows. */
+export function boardEditedAt(board: Board | undefined, notes: Record<string, Note>): string | null {
+  if (!board) return null;
+  let latest = board.modifiedAt ?? "";
+  const consider = (noteId: string) => {
+    const m = notes[noteId]?.modifiedAt;
+    if (m && m > latest) latest = m;
+  };
+  switch (board.type) {
+    case "notes":
+      board.noteRefs.forEach((r) => consider(r.noteId));
+      break;
+    case "plotline":
+      board.points.forEach((p) => consider(p.noteId));
+      break;
+    case "infomap":
+      board.items.forEach((i) => i.kind === "note" && consider(i.noteId));
+      break;
+  }
+  return latest || null;
 }

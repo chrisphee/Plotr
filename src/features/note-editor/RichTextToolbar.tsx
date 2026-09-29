@@ -1,5 +1,6 @@
-import { useEffect, useReducer } from "react";
+import { Fragment, useEffect, useReducer, type ReactNode } from "react";
 import type { Editor } from "@tiptap/react";
+import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import {
   AlignCenter,
   AlignLeft,
@@ -8,6 +9,7 @@ import {
   Heading1,
   Heading2,
   Heading3,
+  Image as ImageIcon,
   Italic,
   Link as LinkIcon,
   List,
@@ -17,7 +19,18 @@ import {
   Underline,
 } from "lucide-react";
 import clsx from "clsx";
+import { useProject } from "../../stores/projectStore";
+import { importAttachment } from "../../tauri/commands";
 import "./noteEditor.css";
+
+interface Tool {
+  label: string;
+  icon: ReactNode;
+  active: boolean;
+  run: () => void;
+}
+
+const ICON = { size: 15, strokeWidth: 1.75 };
 
 export function RichTextToolbar({ editor }: { editor: Editor | null }) {
   // Re-render on every editor transaction so active states stay current.
@@ -34,25 +47,6 @@ export function RichTextToolbar({ editor }: { editor: Editor | null }) {
 
   if (!editor) return null;
 
-  const btn = (
-    label: string,
-    icon: React.ReactNode,
-    active: boolean,
-    run: () => void,
-  ) => (
-    <button
-      className={clsx("rt-toolbar__btn", active && "rt-toolbar__btn--active")}
-      title={label}
-      aria-label={label}
-      onMouseDown={(e) => {
-        e.preventDefault(); // keep editor selection
-        run();
-      }}
-    >
-      {icon}
-    </button>
-  );
-
   const setLink = () => {
     const prev = editor.getAttributes("link").href as string | undefined;
     const url = window.prompt("Link URL", prev ?? "https://");
@@ -64,55 +58,69 @@ export function RichTextToolbar({ editor }: { editor: Editor | null }) {
     }
   };
 
-  const c = editor.chain().focus.bind(editor.chain());
+  const insertImage = async () => {
+    const projectPath = useProject.getState().projectPath;
+    if (!projectPath) return;
+    const picked = await openDialog({
+      title: "Insert image",
+      filters: [{ name: "Images", extensions: ["png", "jpg", "jpeg", "gif", "webp", "svg"] }],
+    });
+    if (typeof picked !== "string") return;
+    const meta = await importAttachment(projectPath, picked);
+    editor.chain().focus().setImage({ src: meta.rel_path }).run();
+  };
+
+  const c = () => editor.chain().focus();
+
+  const groups: Tool[][] = [
+    [
+      { label: "Bold", icon: <Bold {...ICON} />, active: editor.isActive("bold"), run: () => c().toggleBold().run() },
+      { label: "Italic", icon: <Italic {...ICON} />, active: editor.isActive("italic"), run: () => c().toggleItalic().run() },
+      { label: "Underline", icon: <Underline {...ICON} />, active: editor.isActive("underline"), run: () => c().toggleUnderline().run() },
+    ],
+    [
+      { label: "Heading 1", icon: <Heading1 {...ICON} />, active: editor.isActive("heading", { level: 1 }), run: () => c().toggleHeading({ level: 1 }).run() },
+      { label: "Heading 2", icon: <Heading2 {...ICON} />, active: editor.isActive("heading", { level: 2 }), run: () => c().toggleHeading({ level: 2 }).run() },
+      { label: "Heading 3", icon: <Heading3 {...ICON} />, active: editor.isActive("heading", { level: 3 }), run: () => c().toggleHeading({ level: 3 }).run() },
+    ],
+    [
+      { label: "Bullet list", icon: <List {...ICON} />, active: editor.isActive("bulletList"), run: () => c().toggleBulletList().run() },
+      { label: "Numbered list", icon: <ListOrdered {...ICON} />, active: editor.isActive("orderedList"), run: () => c().toggleOrderedList().run() },
+      { label: "Checklist", icon: <ListChecks {...ICON} />, active: editor.isActive("taskList"), run: () => c().toggleTaskList().run() },
+      { label: "Quote", icon: <Quote {...ICON} />, active: editor.isActive("blockquote"), run: () => c().toggleBlockquote().run() },
+    ],
+    [
+      { label: "Link", icon: <LinkIcon {...ICON} />, active: editor.isActive("link"), run: setLink },
+      { label: "Image", icon: <ImageIcon {...ICON} />, active: false, run: () => void insertImage() },
+    ],
+    [
+      { label: "Align left", icon: <AlignLeft {...ICON} />, active: editor.isActive({ textAlign: "left" }), run: () => c().setTextAlign("left").run() },
+      { label: "Align centre", icon: <AlignCenter {...ICON} />, active: editor.isActive({ textAlign: "center" }), run: () => c().setTextAlign("center").run() },
+      { label: "Align right", icon: <AlignRight {...ICON} />, active: editor.isActive({ textAlign: "right" }), run: () => c().setTextAlign("right").run() },
+    ],
+  ];
 
   return (
     <div className="rt-toolbar">
-      {btn("Bold", <Bold size={15} />, editor.isActive("bold"), () => c().toggleBold().run())}
-      {btn("Italic", <Italic size={15} />, editor.isActive("italic"), () =>
-        c().toggleItalic().run(),
-      )}
-      {btn("Underline", <Underline size={15} />, editor.isActive("underline"), () =>
-        c().toggleUnderline().run(),
-      )}
-      <span className="rt-toolbar__sep" />
-      {btn("Heading 1", <Heading1 size={15} />, editor.isActive("heading", { level: 1 }), () =>
-        c().toggleHeading({ level: 1 }).run(),
-      )}
-      {btn("Heading 2", <Heading2 size={15} />, editor.isActive("heading", { level: 2 }), () =>
-        c().toggleHeading({ level: 2 }).run(),
-      )}
-      {btn("Heading 3", <Heading3 size={15} />, editor.isActive("heading", { level: 3 }), () =>
-        c().toggleHeading({ level: 3 }).run(),
-      )}
-      <span className="rt-toolbar__sep" />
-      {btn("Bullet list", <List size={15} />, editor.isActive("bulletList"), () =>
-        c().toggleBulletList().run(),
-      )}
-      {btn("Numbered list", <ListOrdered size={15} />, editor.isActive("orderedList"), () =>
-        c().toggleOrderedList().run(),
-      )}
-      {btn("Checklist", <ListChecks size={15} />, editor.isActive("taskList"), () =>
-        c().toggleTaskList().run(),
-      )}
-      {btn("Quote", <Quote size={15} />, editor.isActive("blockquote"), () =>
-        c().toggleBlockquote().run(),
-      )}
-      <span className="rt-toolbar__sep" />
-      {btn("Link", <LinkIcon size={15} />, editor.isActive("link"), setLink)}
-      <span className="rt-toolbar__sep" />
-      {btn("Align left", <AlignLeft size={15} />, editor.isActive({ textAlign: "left" }), () =>
-        c().setTextAlign("left").run(),
-      )}
-      {btn(
-        "Align centre",
-        <AlignCenter size={15} />,
-        editor.isActive({ textAlign: "center" }),
-        () => c().setTextAlign("center").run(),
-      )}
-      {btn("Align right", <AlignRight size={15} />, editor.isActive({ textAlign: "right" }), () =>
-        c().setTextAlign("right").run(),
-      )}
+      {groups.map((group, gi) => (
+        <Fragment key={gi}>
+          {gi > 0 && <span className="rt-toolbar__sep" />}
+          {group.map((t) => (
+            <button
+              key={t.label}
+              className={clsx("rt-toolbar__btn", t.active && "rt-toolbar__btn--active")}
+              title={t.label}
+              aria-label={t.label}
+              onMouseDown={(e) => {
+                e.preventDefault(); // keep editor selection
+                t.run();
+              }}
+            >
+              {t.icon}
+            </button>
+          ))}
+        </Fragment>
+      ))}
     </div>
   );
 }

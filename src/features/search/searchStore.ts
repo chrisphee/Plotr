@@ -4,6 +4,7 @@ import { useProject } from "../../stores/projectStore";
 import { useNotes } from "../../stores/notesStore";
 import { extractFullText } from "./fullText";
 import type { Screen } from "../../app/navStore";
+import type { BoardType } from "../../lib/schema";
 
 /* Project-wide search over notes (title + body + attachment names), boards,
    folders and categories. The index rebuilds lazily: any store change marks
@@ -21,6 +22,7 @@ export interface SearchDoc {
   screen: Screen | null;
   noteId?: string;
   categoryIds?: string[];
+  boardType?: BoardType;
 }
 
 export interface SearchResult extends SearchDoc {
@@ -103,6 +105,7 @@ function buildDocs(): SearchDoc[] {
       title: item.name,
       body: item.kind === "board" ? item.description : "",
       location: treePath(item.parentId) || "Project root",
+      boardType: item.kind === "board" ? item.boardType : undefined,
       screen:
         item.kind === "board"
           ? { name: "board", boardId: item.id }

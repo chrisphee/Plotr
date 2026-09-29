@@ -6,6 +6,7 @@ import {
   BackgroundVariant,
   MarkerType,
   useReactFlow,
+  useStore,
   type Edge,
   type EdgeChange,
   type Node,
@@ -13,18 +14,7 @@ import {
   type Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import {
-  ArrowRight,
-  Image as ImageIcon,
-  Maximize2,
-  Minus,
-  Network,
-  StickyNote,
-  Group as GroupIcon,
-  Type,
-  ZoomIn,
-  ZoomOut,
-} from "lucide-react";
+import { Image as ImageIcon } from "lucide-react";
 import clsx from "clsx";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { useProject } from "../../stores/projectStore";
@@ -33,8 +23,9 @@ import { undoStackFor } from "../../lib/undoStack";
 import { importAttachment } from "../../tauri/commands";
 import type { InfoMapBoard, TreeBoard } from "../../lib/schema";
 import { infomap, ITEM_SIZES } from "./infomapActions";
-import { Dock } from "../../components/shell/Dock";
-import { IconButton } from "../../components/ui/Button";
+import { isTypingTarget } from "../../app/shortcuts";
+import { AppShell } from "../../components/shell/TopBar";
+import { Button } from "../../components/ui/Button";
 import { ConfirmDialog } from "../../components/ui/Modal";
 import { Menu, MenuItem, type MenuPosition } from "../../components/ui/Menu";
 import { EmptyState } from "../../components/ui/EmptyState";
@@ -59,7 +50,8 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
   const board = useProject((s) => s.boards[treeItem.id]) as InfoMapBoard | undefined;
   const rf = useReactFlow();
   const [sel, setSel] = useState<Set<string>>(new Set());
-  const [connectKind, setConnectKind] = useState<"arrow" | "line">("arrow");
+  const [tool, setTool] = useState<"select" | "line" | "arrow">("select");
+  const connectKind = tool === "line" ? "line" : "arrow";
   const [confirmDelete, setConfirmDelete] = useState(false);
   const [imageMenu, setImageMenu] = useState<MenuPosition | null>(null);
   const [pinPickerOpen, setPinPickerOpen] = useState(false);
@@ -72,11 +64,11 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
   // Undo/redo + confirmed deletion (React Flow's own delete key is disabled).
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
-      const el = document.activeElement as HTMLElement | null;
-      if (el && (el.tagName === "INPUT" || el.tagName === "TEXTAREA" || el.isContentEditable))
-        return;
+      if (isTypingTarget(document.activeElement)) return;
       if (useNoteModal.getState().noteId) return;
-      if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === "z") {
+      if (e.key === "Escape") {
+        setTool("select");
+      } else if ((e.ctrlKey || e.metaKey) && !e.shiftKey && e.key.toLowerCase() === "z") {
         e.preventDefault();
         undoStackFor(boardId).undo();
       } else if ((e.ctrlKey || e.metaKey) && e.shiftKey && e.key.toLowerCase() === "z") {
@@ -145,7 +137,7 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
       data: { boardId, label: c.label },
       markerEnd:
         c.kind === "arrow"
-          ? { type: MarkerType.ArrowClosed, width: 16, height: 16, color: "var(--text-muted)" }
+          ? { type: MarkerType.ArrowClosed, width: 14, height: 14, color: "var(--text-muted)" }
           : undefined,
     }));
   }, [board, boardId, sel]);
@@ -295,7 +287,7 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
           void addImage(at);
           break;
         case "text":
-          infomap.addText(boardId, at.x - 80, at.y - 22);
+          infomap.addText(boardId, at.x - 120, at.y - 22);
           break;
         case "group":
           infomap.addGroup(boardId, at.x - 210, at.y - 150);
@@ -325,10 +317,16 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
   if (!board) return null;
 
   return (
-    <div style={{ height: "100%", position: "relative" }}>
+    <AppShell
+      canvas
+      actions={
+        <Button variant="ghost" onClick={() => void rf.fitView({ padding: 0.2, duration: 300 })}>
+          Fit to screen
+        </Button>
+      }
+    >
       <div
-        className="im"
-        style={{ position: "absolute", inset: 0 }}
+        className={clsx("im", tool !== "select" && "im--connecting")}
         onDragOver={onCanvasDragOver}
         onDrop={onCanvasDrop}
       >
@@ -350,24 +348,42 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
           maxZoom={2.5}
           proOptions={{ hideAttribution: true }}
         >
-          <Background variant={BackgroundVariant.Dots} gap={22} size={1.2} color="var(--hairline-strong)" />
+          <Background
+            variant={BackgroundVariant.Dots}
+            gap={22}
+            size={1}
+            offset={11}
+            color="var(--grid-dot)"
+          />
         </ReactFlow>
 
-        <div className="im__title">{treeItem.name}</div>
+        <div className="boardtitle">
+          <h1 className="boardtitle__name">{treeItem.name}</h1>
+          <span className="boardtitle__meta">
+            {board.items.length} {board.items.length === 1 ? "item" : "items"}
+          </span>
+        </div>
 
-        {/* Add / tool panel — click to place at centre, or drag onto the canvas */}
-        <div className="im__panel">
+        {/* Tool rail: click an item type to place it at the centre, or drag it onto the canvas */}
+        <div className="im__rail">
+          <button
+            className={clsx("im__tool", tool === "select" && "im__tool--on")}
+            onClick={() => setTool("select")}
+            title="Select and move (Esc)"
+          >
+            Select
+          </button>
           {(
             [
-              ["note", "Note", <StickyNote key="i" size={15} />],
-              ["image", "Image", <ImageIcon key="i" size={15} />],
-              ["text", "Text", <Type key="i" size={15} />],
-              ["group", "Group", <GroupIcon key="i" size={15} />],
+              ["note", "Note"],
+              ["image", "Image"],
+              ["text", "Text"],
+              ["group", "Group"],
             ] as const
-          ).map(([kind, label, icon]) => (
+          ).map(([kind, label]) => (
             <button
               key={kind}
-              className="im__panelbtn"
+              className="im__tool"
               draggable
               onDragStart={(e) => {
                 e.dataTransfer.setData("application/plotr-item", kind);
@@ -385,11 +401,26 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
                   createAt(kind, centerWorld());
                 }
               }}
-              title={`Click to add, or drag onto the canvas`}
+              title="Click to add, or drag onto the canvas"
             >
-              {icon} {label}
+              {label}
             </button>
           ))}
+          <div className="im__railsep" />
+          <button
+            className={clsx("im__tool", tool === "line" && "im__tool--on")}
+            onClick={() => setTool("line")}
+            title="Drag between items to draw lines"
+          >
+            Line
+          </button>
+          <button
+            className={clsx("im__tool", tool === "arrow" && "im__tool--on")}
+            onClick={() => setTool("arrow")}
+            title="Drag between items to draw arrows"
+          >
+            Arrow
+          </button>
 
           {imageMenu && (
             <Menu position={imageMenu} onClose={() => setImageMenu(null)}>
@@ -436,7 +467,7 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
                 ghostRefs.current.text = el;
               }}
               className="imnode imnode--text im__ghost"
-              style={{ width: ITEM_SIZES.text.w, height: ITEM_SIZES.text.h, fontSize: 18 }}
+              style={{ width: ITEM_SIZES.text.w, height: ITEM_SIZES.text.h, fontSize: 20 }}
             >
               <span>Label</span>
             </div>
@@ -452,53 +483,19 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
               </span>
             </div>
           </div>
-          <div className="im__panelsep" />
-          <button
-            className={clsx("im__panelbtn", connectKind === "line" && "im__panelbtn--active")}
-            onClick={() => setConnectKind("line")}
-            title="New connections are undirected lines"
-          >
-            <Minus size={15} /> Line
-          </button>
-          <button
-            className={clsx("im__panelbtn", connectKind === "arrow" && "im__panelbtn--active")}
-            onClick={() => setConnectKind("arrow")}
-            title="New connections are directional arrows"
-          >
-            <ArrowRight size={15} /> Arrow
-          </button>
         </div>
+
+        <ZoomControl />
 
         {board.items.length === 0 && (
           <div className="im__empty">
             <EmptyState
-              icon={<Network size={28} strokeWidth={1.5} />}
               title="An empty canvas"
-              message="Add a note, image, text or group from the panel on the left, then drag between items to connect them."
+              message="Add a note, image, text or group from the rail on the left, then drag between items to connect them."
             />
           </div>
         )}
       </div>
-
-      <Dock
-        actions={
-          <>
-            <IconButton onInk label="Zoom out" onClick={() => void rf.zoomOut()}>
-              <ZoomOut size={15} />
-            </IconButton>
-            <IconButton onInk label="Zoom in" onClick={() => void rf.zoomIn()}>
-              <ZoomIn size={15} />
-            </IconButton>
-            <IconButton
-              onInk
-              label="Fit to view"
-              onClick={() => void rf.fitView({ padding: 0.2, duration: 300 })}
-            >
-              <Maximize2 size={15} />
-            </IconButton>
-          </>
-        }
-      />
 
       {confirmDelete && (
         <ConfirmDialog
@@ -526,6 +523,22 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
           onCancel={() => setConfirmDelete(false)}
         />
       )}
+    </AppShell>
+  );
+}
+
+function ZoomControl() {
+  const rf = useReactFlow();
+  const zoom = useStore((s) => s.transform[2]);
+  return (
+    <div className="im__zoom">
+      <button className="im__zoombtn" aria-label="Zoom out" onClick={() => void rf.zoomOut()}>
+        −
+      </button>
+      <span className="im__zoomval">{Math.round(zoom * 100)}%</span>
+      <button className="im__zoombtn" aria-label="Zoom in" onClick={() => void rf.zoomIn()}>
+        +
+      </button>
     </div>
   );
 }

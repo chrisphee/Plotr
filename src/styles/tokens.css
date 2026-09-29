@@ -1,71 +1,89 @@
-/* ── Quill · UI system v1 ─────────────────────────────────────────────
-   Ink & paper: one dark ink, one warm-neutral paper, four category
-   colours. Bricolage for titles, Figtree for everything the app says. */
+/* ── Plotr · Pine UI tokens ───────────────────────────────────────────
+   Three colours: white #FFFFFF, black #06070E, pine teal #29524A. Lines
+   and muted text are mixed from black and white. Geist for everything,
+   Geist Mono for meta, timestamps and keyboard hints.                  */
 
 :root {
-  /* Colour — light (paper) */
-  --ink: oklch(17% 0.02 250);
-  --ink-hover: oklch(26% 0.02 250);
-  --ink-text: oklch(96% 0.005 220);        /* text on ink surfaces */
-  --ink-text-muted: oklch(75% 0.01 230);
-  --ink-hairline: oklch(32% 0.02 250);
+  /* Ink (primary buttons, logo tile, active tool) */
+  --ink: #06070E;
+  --ink-hover: #29524A;
+  --ink-text: #FFFFFF;
+  --ink-text-muted: #B5B6BA;
+  --ink-kbd: rgba(255, 255, 255, 0.16);
 
-  --text: oklch(18% 0.015 240);
-  --text-muted: oklch(52% 0.015 240);
-  --paper: oklch(98% 0.004 220);
-  --surface: #ffffff;
-  --hairline: oklch(90% 0.004 220);
-  --hairline-strong: oklch(84% 0.006 220);
-  --hover-wash: oklch(94.5% 0.005 220);
+  /* Text & surfaces */
+  --text: #06070E;
+  --text-muted: #64656B;
+  --text-faint: #B5B6BA;
+  --paper: #FFFFFF;
+  --paper-band: #FAFAFA;
+  --surface: #FFFFFF;
+  --hairline: #E4E4E6;
+  --hairline-strong: #D6D6D9;
+  --hover-wash: #F4F4F5;
+  --grid-dot: #DADADD;
 
-  --accent: var(--ink);
+  /* Accent */
+  --accent: #29524A;
+  --accent-soft: #DFE6E4;
+  --accent-strong-text: #1E3B38;
+  --accent-halo: rgba(41, 82, 74, 0.12);
+  --accent-on-ink: #5E9A8C;
   --danger: #c8503f;
 
-  /* Category presets */
+  /* Category presets (user data, shown as small dots and tints) */
   --cat-character: #7c5cbf;
   --cat-location: #3f9a5a;
   --cat-conflict: #c8503f;
   --cat-lore: #3b7dd8;
-  --cat-tint: 13%; /* tint strength for note backgrounds */
+  --cat-tint: 13%;
 
   /* Type */
-  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", sans-serif;
-  --font-ui: "Figtree Variable", "Figtree", sans-serif;
-  --font-mono: ui-monospace, "Cascadia Mono", Menlo, monospace;
+  --font-display: "Geist Variable", "Geist", system-ui, sans-serif;
+  --font-ui: "Geist Variable", "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono Variable", "Geist Mono", ui-monospace, monospace;
 
-  --fs-display: 42px;   /* project title */
-  --fs-board: 36px;     /* board title */
-  --fs-shelf: 26px;     /* folder shelf */
-  --fs-note-heading: 17px;
-  --fs-section: 13px;   /* plot sections, groups — medium */
-  --fs-body: 15px;      /* line-height 1.7 */
-  --fs-label: 14px;     /* card names, list titles — medium */
-  --fs-ui: 13px;        /* dock, buttons, menus */
-  --fs-meta: 12px;      /* paths, counts, timestamps — muted */
-  --fs-eyebrow: 11px;   /* tracking .12em */
-  --fs-mono: 11px;
+  --fs-display: 48px;   /* project title, Start, Trash — 600, -0.035em, lh 1.05 */
+  --fs-settings: 36px;  /* settings page titles */
+  --fs-note-title: 30px;
+  --fs-board: 28px;     /* board titles — 600, -0.03em */
+  --fs-row: 15px;       /* row and card names — 500 */
+  --fs-body: 15px;      /* note body, lh 1.7 */
+  --fs-ui: 13px;        /* top bar, buttons, menus */
+  --fs-meta: 12px;      /* group labels, counts, chips */
+  --fs-mono: 11.5px;    /* timestamps, paths, counts */
+  --fs-kbd: 11px;
 
-  /* Space & shape */
-  --r-chip: 4px;
-  --r-btn: 6px;
-  --r-card: 6px;
-  --r-dock-item: 8px;
-  --r-dock: 12px;
+  /* Shape */
+  --r-kbd: 4px;
+  --r-tag: 6px;
+  --r-btn: 8px;
+  --r-input: 9px;
+  --r-row: 10px;
+  --r-segment: 7px;
+  --r-panel: 12px;
   --r-popup: 14px;
+  --r-pill: 999px;
 
   --sp-1: 2px; --sp-2: 4px; --sp-3: 6px; --sp-4: 8px;
   --sp-5: 12px; --sp-6: 16px; --sp-7: 24px; --sp-8: 32px;
-  --gutter: 44px;
+  --topbar-h: 56px;
+  --column-w: 720px;
 
-  --spine-w: 320px;
-
-  /* Elevation — one long soft shadow, never stacked */
-  --shadow-soft: 0 12px 40px rgba(10, 12, 24, 0.14);
-  --shadow-lift: 0 6px 24px rgba(10, 12, 24, 0.1);
+  /* Elevation — hairline ring plus one soft drop, never stacked further */
+  --ring: 0 0 0 1px var(--hairline);
+  --shadow-row: 0 0 0 1px var(--hairline), 0 6px 20px -10px rgba(6, 7, 14, 0.22);
+  --shadow-pop: 0 0 0 1px var(--hairline), 0 12px 32px -12px rgba(6, 7, 14, 0.28);
+  --shadow-rail: 0 0 0 1px var(--hairline), 0 8px 24px -12px rgba(6, 7, 14, 0.2);
+  --shadow-modal: 0 0 0 1px var(--hairline), 0 40px 90px -30px rgba(6, 7, 14, 0.55);
+  --shadow-segment: 0 1px 2px rgba(6, 7, 14, 0.12), 0 0 0 1px var(--hairline);
+  --shadow-selected: 0 0 0 2px var(--accent), 0 8px 24px -12px rgba(41, 82, 74, 0.4);
+  --backdrop: rgba(6, 7, 14, 0.32);
+  --focus-ring: 0 0 0 2px var(--accent);
 
   /* Motion — one curve everywhere */
   --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
-  --t-hover: 180ms;   /* background, border, colour; cards lift 2px */
+  --t-hover: 180ms;
   --t-focus: 200ms;
   --t-enter: 320ms;   /* popups scale from 96.5%, sheets rise 10px */
   --t-exit: 160ms;    /* always faster than entry, fade only */
@@ -74,24 +92,38 @@
 }
 
 [data-theme="dark"] {
-  --ink: oklch(23% 0.02 250);
-  --ink-hover: oklch(30% 0.02 250);
-  --ink-text: oklch(95% 0.005 220);
-  --ink-text-muted: oklch(72% 0.01 230);
-  --ink-hairline: oklch(34% 0.02 250);
+  --ink: #FFFFFF;
+  --ink-hover: #5E9A8C;
+  --ink-text: #06070E;
+  --ink-text-muted: #64656B;
+  --ink-kbd: rgba(6, 7, 14, 0.12);
 
-  --text: oklch(92% 0.008 230);
-  --text-muted: oklch(64% 0.012 235);
-  --paper: oklch(17% 0.012 250);
-  --surface: oklch(21.5% 0.014 250);
-  --hairline: oklch(29% 0.014 250);
-  --hairline-strong: oklch(35% 0.015 250);
-  --hover-wash: oklch(25% 0.014 250);
+  --text: #FFFFFF;
+  --text-muted: #9FA0A6;
+  --text-faint: #4A4C54;
+  --paper: #06070E;
+  --paper-band: #0B0C14;
+  --surface: #10121A;
+  --hairline: #1F2129;
+  --hairline-strong: #2A2C35;
+  --hover-wash: #151720;
+  --grid-dot: #23252E;
+
+  /* Pine is too dark for thin lines on black, so dark mode uses the lighter pine. */
+  --accent: #5E9A8C;
+  --accent-soft: #14231F;
+  --accent-strong-text: #9CC7BC;
+  --accent-halo: rgba(94, 154, 140, 0.16);
 
   --cat-tint: 20%;
 
-  --shadow-soft: 0 12px 40px rgba(0, 0, 0, 0.5);
-  --shadow-lift: 0 6px 24px rgba(0, 0, 0, 0.4);
+  --shadow-row: 0 0 0 1px var(--hairline), 0 6px 20px -10px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 0 0 1px var(--hairline), 0 12px 32px -12px rgba(0, 0, 0, 0.7);
+  --shadow-rail: 0 0 0 1px var(--hairline), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --shadow-modal: 0 0 0 1px var(--hairline), 0 40px 90px -30px rgba(0, 0, 0, 0.8);
+  --shadow-segment: 0 1px 2px rgba(0, 0, 0, 0.5), 0 0 0 1px var(--hairline);
+  --shadow-selected: 0 0 0 2px var(--accent), 0 8px 24px -12px rgba(0, 0, 0, 0.6);
+  --backdrop: rgba(0, 0, 0, 0.5);
 
   color-scheme: dark;
 }

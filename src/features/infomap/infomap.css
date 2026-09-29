@@ -11,68 +11,85 @@
   display: none;
 }
 
-/* Board title floats over the canvas like the plot line */
-.im__title {
-  position: absolute;
-  top: var(--sp-7);
-  left: var(--gutter);
-  font-family: var(--font-display);
-  font-size: var(--fs-board);
-  font-weight: 600;
-  pointer-events: none;
-  z-index: 10;
-  opacity: 0.9;
-}
+/* ── Tool rail ── */
 
-/* ── Add / tool panel ── */
-
-.im__panel {
+.im__rail {
   position: absolute;
-  left: var(--sp-6);
+  left: 24px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
   display: flex;
   flex-direction: column;
   gap: var(--sp-1);
+  padding: 5px;
+  border-radius: var(--r-panel);
   background: var(--surface);
-  border: 1px solid var(--hairline);
-  border-radius: var(--r-dock);
-  box-shadow: var(--shadow-lift);
-  padding: var(--sp-3);
+  box-shadow: var(--shadow-rail);
   animation: sheet-rise 240ms var(--ease);
 }
 
-.im__panelbtn {
-  display: flex;
-  align-items: center;
-  gap: var(--sp-4);
-  padding: 7px 10px;
-  border-radius: var(--r-dock-item);
+.im__tool {
+  padding: 7px 12px;
+  border-radius: var(--r-btn);
   font-size: var(--fs-ui);
   color: var(--text-muted);
+  text-align: left;
+  white-space: nowrap;
   transition:
     background var(--t-hover) var(--ease),
     color var(--t-hover) var(--ease);
-  white-space: nowrap;
 }
-.im__panelbtn:hover {
+.im__tool:hover {
   background: var(--hover-wash);
   color: var(--text);
 }
-.im__panelbtn--active {
+.im__tool--on,
+.im__tool--on:hover {
   background: var(--ink);
   color: var(--ink-text);
 }
-.im__panelbtn--active:hover {
-  background: var(--ink-hover);
-  color: var(--ink-text);
-}
 
-.im__panelsep {
+.im__railsep {
   height: 1px;
   background: var(--hairline);
-  margin: var(--sp-2) var(--sp-3);
+  margin: 3px 8px;
+}
+
+/* ── Zoom control ── */
+
+.im__zoom {
+  position: absolute;
+  right: 24px;
+  bottom: 24px;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  gap: var(--sp-1);
+  padding: var(--sp-2);
+  border-radius: var(--r-row);
+  background: var(--surface);
+  box-shadow: var(--ring);
+  font-size: var(--fs-ui);
+}
+.im__zoombtn {
+  width: 28px;
+  height: 28px;
+  display: grid;
+  place-items: center;
+  border-radius: var(--r-segment);
+  transition: background var(--t-hover) var(--ease);
+}
+.im__zoombtn:hover {
+  background: var(--hover-wash);
+}
+.im__zoomval {
+  font-family: var(--font-mono);
+  font-size: var(--fs-mono);
+  color: var(--text-muted);
+  padding: 0 6px;
+  min-width: 48px;
+  text-align: center;
 }
 
 /* ── Nodes ── */
@@ -80,48 +97,47 @@
 .imnode {
   width: 100%;
   height: 100%;
-  border-radius: var(--r-card);
+  border-radius: var(--r-btn);
   transition: box-shadow var(--t-hover) var(--ease);
 }
 
 .imnode--note {
   background: var(--surface);
-  border: 1px solid var(--hairline);
-  padding: var(--sp-5) var(--sp-6);
+  box-shadow: var(--ring);
+  padding: 14px 16px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-2);
+  gap: var(--sp-3);
 }
 .imnode--note.imnode--tinted {
   background: color-mix(in srgb, var(--node-tint) var(--cat-tint), var(--surface));
 }
-.imnode--selected {
-  box-shadow: 0 0 0 2px color-mix(in oklch, var(--text) 60%, transparent);
-}
 .imnode--note:hover {
-  box-shadow: var(--shadow-lift);
+  box-shadow: var(--shadow-row);
 }
-.imnode--note.imnode--selected:hover {
-  box-shadow:
-    0 0 0 2px color-mix(in oklch, var(--text) 60%, transparent),
-    var(--shadow-lift);
+.imnode--note.imnode--selected,
+.imnode--image.imnode--selected {
+  box-shadow: var(--shadow-selected);
+}
+.imnode--text.imnode--selected,
+.imnode--group.imnode--selected {
+  box-shadow: 0 0 0 2px var(--accent);
 }
 
 .imnode__title {
-  font-family: var(--font-display);
-  font-size: var(--fs-note-heading);
+  font-size: 15px;
   font-weight: 600;
-  line-height: 1.25;
+  line-height: 1.3;
   display: flex;
   align-items: center;
   gap: var(--sp-3);
 }
 
 .imnode__preview {
-  font-size: var(--fs-meta);
+  font-size: 12.5px;
   color: var(--text-muted);
-  line-height: 1.55;
+  line-height: 1.5;
   overflow: hidden;
   flex: 1;
 }
@@ -133,7 +149,7 @@
 
 .imnode--image {
   overflow: hidden;
-  border: 1px solid var(--hairline);
+  box-shadow: var(--ring);
   background: var(--surface);
 }
 .imnode--image img {
@@ -148,8 +164,8 @@
   display: flex;
   align-items: center;
   background: transparent;
-  font-family: var(--font-display);
   font-weight: 500;
+  letter-spacing: -0.01em;
   color: var(--text);
   padding: var(--sp-2) var(--sp-3);
 }
@@ -167,15 +183,14 @@
 
 .imnode--group {
   border: 1.5px solid var(--hairline-strong);
-  background: color-mix(in srgb, var(--text-muted) 4%, transparent);
-  border-radius: var(--r-dock-item);
+  background: color-mix(in srgb, var(--text) 1.5%, transparent);
+  border-radius: var(--r-row);
 }
 .imnode--group .imnode__grouptitle {
   position: absolute;
   top: -26px;
   left: 2px;
-  font-family: var(--font-display);
-  font-size: var(--fs-section);
+  font-size: var(--fs-ui);
   font-weight: 500;
   color: var(--text-muted);
   background: transparent;
@@ -187,27 +202,33 @@ input.imnode__grouptitle:focus {
   color: var(--text);
 }
 
-/* Handles: subtle, appear on hover */
+/* Handles: teal dots, shown on hover and selection (always while drawing links) */
 .im .react-flow__handle {
-  width: 8px;
-  height: 8px;
-  background: var(--text-muted);
-  border: 2px solid var(--paper);
+  width: 9px;
+  height: 9px;
+  background: var(--accent);
+  border: none;
+  box-shadow: 0 0 0 2px var(--paper);
   opacity: 0;
   transition: opacity var(--t-hover) var(--ease);
 }
 .im .react-flow__node:hover .react-flow__handle,
-.im .react-flow__node.selected .react-flow__handle {
+.im .react-flow__node.selected .react-flow__handle,
+.im--connecting .react-flow__handle {
   opacity: 1;
 }
 
 /* Resizer */
 .im .react-flow__resize-control.handle {
-  width: 8px;
-  height: 8px;
+  width: 9px;
+  height: 9px;
   border-radius: 2px;
   background: var(--surface);
-  border: 1.5px solid var(--text);
+  border: none;
+  box-shadow: 0 0 0 1.5px var(--accent);
+}
+.im .react-flow__resize-control.line {
+  border-color: transparent;
 }
 
 /* Edges */
@@ -219,6 +240,10 @@ input.imnode__grouptitle:focus {
   stroke: var(--text);
   stroke-width: 2;
 }
+.im .react-flow__connection-path {
+  stroke: var(--accent);
+  stroke-width: 1.5;
+}
 
 .imedge__label {
   position: absolute;
@@ -228,12 +253,12 @@ input.imnode__grouptitle:focus {
   color: var(--text-muted);
   background: var(--paper);
   padding: 1px 7px;
-  border-radius: var(--r-chip);
+  border-radius: var(--r-kbd);
   pointer-events: all;
 }
 .imedge__label--selected {
   color: var(--text);
-  outline: 1px solid var(--hairline-strong);
+  box-shadow: 0 0 0 1px var(--hairline-strong);
 }
 .imedge__label input {
   border: none;
@@ -263,7 +288,7 @@ input.imnode__grouptitle:focus {
 .im__ghostline {
   height: 8px;
   border-radius: 4px;
-  background: var(--hairline);
+  background: var(--hover-wash);
 }
 
 .im__ghost--image {
@@ -271,7 +296,6 @@ input.imnode__grouptitle:focus {
   align-items: center;
   justify-content: center;
   color: var(--text-muted);
-  border-style: dashed;
 }
 
 .im__ghost--group {

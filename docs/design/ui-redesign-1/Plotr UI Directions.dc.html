@@ -1,0 +1,362 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<script src="./support.js"></script>
+</head>
+<body>
+<x-dc>
+<helmet><meta name="design_doc_mode" content="canvas">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link href="https://fonts.googleapis.com/css2?family=Newsreader:ital,opsz,wght@0,6..72,400;0,6..72,500;1,6..72,400&family=IBM+Plex+Mono:wght@400;500&family=Schibsted+Grotesk:wght@400;500;600;700&family=Geist:wght@400;500;600&family=Geist+Mono:wght@400;500&family=Onest:wght@400;500;600&display=swap" rel="stylesheet"><link href="https://fonts.googleapis.com/css2?family=Shippori+Mincho:wght@400;500&family=Zen+Kaku+Gothic+New:wght@400;500&family=Chivo:wght@400;500;600&family=Chivo+Mono:wght@400;500&family=Instrument+Serif&display=swap" rel="stylesheet">
+<style>*,*::before,*::after{box-sizing:border-box}body{margin:0;background:#ecebe7;font-family:system-ui,sans-serif}a{color:inherit;text-decoration:none}a:hover{color:inherit}</style></helmet>
+
+<section id="t4" style="padding:40px 44px 48px;display:flex;flex-direction:column;gap:24px;border-bottom:1px solid rgba(0,0,0,.08)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+    <div style="display:flex;gap:10px;align-items:baseline"><a href="#t4" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px">4</a><span style="font:600 13px system-ui,sans-serif;color:#1a1a1a">Colour schemes on the <a href="#3d" style="text-decoration:underline">3d</a> layout</span></div>
+    <p style="margin:0;font:13px/1.55 system-ui,sans-serif;color:rgba(0,0,0,.62);text-wrap:pretty">Each scheme is three colours: paper, ink and one accent. Lines, muted text and chips are mixed from those three, so they'd map to three tokens in <code>tokens.css</code>. The accent is used for the plot line, the saved dot, the draft chip and the button hover. The type filter works, and it's shared across all six.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+    <sc-for list="{{ palettes }}" as="p" hint-placeholder-count="6">
+      <div id="{{ p.id }}" style="display:flex;flex-direction:column;gap:10px">
+        <div style="display:flex;gap:8px;align-items:center;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#{{ p.id }}" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">{{ p.id }}</a><span style="display:flex;gap:3px"><span style="width:14px;height:14px;border-radius:3px;box-shadow:0 0 0 1px rgba(0,0,0,.12);background:{{ p.bg }}"></span><span style="width:14px;height:14px;border-radius:3px;background:{{ p.ink }}"></span><span style="width:14px;height:14px;border-radius:3px;background:{{ p.accent }}"></span></span>{{ p.name }}</div>
+        <div data-screen-label="{{ p.id }} Palette" style="--bg:{{ p.bg }};--surface:{{ p.surface }};--ink:{{ p.ink }};--accent:{{ p.accent }};--onInk:{{ p.onInk }};--line:color-mix(in oklch, var(--ink) 11%, var(--bg));--chip:color-mix(in oklch, var(--ink) 5%, var(--bg));--muted:color-mix(in oklch, var(--ink) 62%, var(--bg));--faint:color-mix(in oklch, var(--ink) 30%, var(--bg));width:1280px;height:800px;background:var(--bg);color:var(--ink);font-family:Geist,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+          <div style="width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 20px;border-bottom:1px solid var(--line)">
+            <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:var(--ink);display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span></span><span style="color:var(--muted)">Projects</span><span style="color:var(--faint)">/</span><span style="font-weight:500">The Silent Kingdom</span></div>
+            <div style="width:380px;height:34px;display:flex;align-items:center;gap:10px;padding:0 8px 0 12px;border-radius:9px;background:var(--surface);box-shadow:0 0 0 1px var(--line);font-size:13px;color:var(--muted);cursor:text">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:var(--chip)">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:var(--chip)">K</span></span></div>
+            <div style="display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:var(--muted)">
+              <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:var(--chip);color:var(--ink)">Trash</span>
+              <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:var(--chip);color:var(--ink)">Settings</span>
+              <span style="display:flex;align-items:center;gap:8px;margin-left:6px;padding:7px 8px 7px 12px;border-radius:8px;background:var(--ink);color:var(--onInk);font-weight:500;cursor:pointer;transition:background .18s" style-hover="background:var(--accent)">New board<span style="font:500 10.5px 'Geist Mono',monospace;padding:1px 5px;border-radius:4px;background:color-mix(in oklch, var(--onInk) 16%, transparent)">N</span></span>
+            </div>
+          </div>
+          <div style="width:720px;display:flex;flex-direction:column;gap:28px;padding-top:52px">
+            <div style="display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center">
+              <div style="display:flex;gap:6px;font-size:12px;font-weight:500"><span style="padding:3px 10px;border-radius:999px;background:color-mix(in oklch, var(--accent) 16%, var(--bg));color:color-mix(in oklch, var(--accent) 70%, var(--ink))">Second draft</span><span style="padding:3px 10px;border-radius:999px;box-shadow:0 0 0 1px var(--line);color:var(--muted)">Fantasy</span></div>
+              <h1 style="margin:0;font-size:{{ tf.size }};line-height:1.05;font-family:{{ tf.family }};font-weight:{{ tf.weight }};letter-spacing:{{ tf.track }}">The Silent Kingdom</h1>
+              <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:var(--muted)"><span style="width:6px;height:6px;border-radius:50%;background:var(--accent)"></span>Autosaved · 6 boards · edited 2 hours ago</div>
+            </div>
+            <div style="align-self:center;display:flex;gap:2px;padding:3px;border-radius:10px;background:var(--chip);box-shadow:inset 0 0 0 1px color-mix(in oklch, var(--ink) 4%, transparent);font-size:12.5px;font-weight:500">
+              <sc-for list="{{ qTabsV }}" as="t" hint-placeholder-count="4">
+                <span onClick="{{ t.pick }}" style="display:flex;gap:6px;padding:5px 12px;border-radius:7px;cursor:pointer;background:{{ t.bg }};box-shadow:{{ t.shadow }};color:{{ t.color }};transition:background .18s,color .18s">{{ t.label }}<span style="font:400 11px 'Geist Mono',monospace;opacity:.6">{{ t.count }}</span></span>
+              </sc-for>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:22px">
+              <sc-for list="{{ quietFolders }}" as="f" hint-placeholder-count="2">
+                <div style="display:flex;flex-direction:column;gap:4px">
+                  <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 12px 6px;font-size:12px;font-weight:500;color:var(--muted)"><span>{{ f.name }}</span><span style="cursor:pointer" style-hover="color:var(--accent)">+ Add</span></div>
+                  <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+                    <div style="display:grid;grid-template-columns:72px 1fr auto 76px;gap:20px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .18s cubic-bezier(.2,.7,.2,1),box-shadow .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:var(--surface);box-shadow:0 0 0 1px var(--line),0 6px 20px -10px color-mix(in oklch, var(--ink) 25%, transparent)">
+                      <div style="position:relative;height:36px;border-radius:7px;background:var(--chip);overflow:hidden">
+                        <sc-if value="{{ b.isPlot }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 190 50" preserveAspectRatio="none" style="position:absolute;left:8px;top:7px;width:calc(100% - 16px);height:calc(100% - 14px)"><polyline points="{{ b.pts }}" fill="none" stroke="var(--accent)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline></svg></sc-if>
+                        <sc-if value="{{ b.isMap }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:8px;top:7px;right:8px;bottom:7px"><sc-for list="{{ b.nodes }}" as="n" hint-placeholder-count="0"><span style="position:absolute;left:{{ n.left }};top:{{ n.top }};width:5px;height:5px;border-radius:50%;transform:translate(-50%,-50%);background:var(--ink)"></span></sc-for></div></sc-if>
+                        <sc-if value="{{ b.isNotes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:9px;top:10px;right:9px;display:flex;flex-direction:column;gap:4px"><sc-for list="{{ b.bars }}" as="w" hint-placeholder-count="3"><span style="height:2px;width:{{ w }};border-radius:1px;background:var(--faint)"></span></sc-for></div></sc-if>
+                      </div>
+                      <span style="font-size:15px;font-weight:500;letter-spacing:-.005em">{{ b.name }}</span>
+                      <span style="font-size:12px;padding:2px 8px;border-radius:6px;background:var(--chip);color:var(--muted)">{{ b.type }} · {{ b.count }}</span>
+                      <span style="font:400 11.5px 'Geist Mono',monospace;color:var(--muted);text-align:right">{{ b.edited }}</span>
+                    </div>
+                  </sc-for>
+                </div>
+              </sc-for>
+            </div>
+          </div>
+        </div>
+      </div>
+    </sc-for>
+  </div>
+</section>
+
+<section id="t3" style="padding:40px 44px 48px;display:flex;flex-direction:column;gap:24px;border-bottom:1px solid rgba(0,0,0,.08)">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+    <div style="display:flex;gap:10px;align-items:baseline"><a href="#t3" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px">3</a><span style="font:600 13px system-ui,sans-serif;color:#1a1a1a">Directions drawn from clean design traditions</span></div>
+    <p style="margin:0;font:13px/1.55 system-ui,sans-serif;color:rgba(0,0,0,.62);text-wrap:pretty">Same dashboard, new palettes and layouts. Each takes principles from a tradition rather than copying a product: Japanese retail minimalism in the Muji vein (unbleached ground, quiet serif, lots of air) and consumer-hardware industrial design (grey panels, labelled keys, one signal orange).</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+<!-- 3b QUIET -->
+<div id="3b" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#3b" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">3b</a>Quiet — unbleached paper, sumi grey, brick red. A single centred column, a quiet serif, boards as a list with a small preview. Hardly any chrome.</div>
+  <div data-screen-label="3b Quiet" style="width:1280px;height:800px;background:oklch(95.5% 0.014 80);color:oklch(30% 0.012 60);font-family:'Zen Kaku Gothic New',system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;display:flex;justify-content:space-between;padding:24px 40px;font-size:12px;color:oklch(50% 0.012 60);letter-spacing:.06em">
+      <span>Plotr</span>
+      <div style="display:flex;gap:28px"><span style="cursor:pointer" style-hover="color:oklch(52% 0.13 35)">Search</span><span style="cursor:pointer" style-hover="color:oklch(52% 0.13 35)">Trash</span><span style="cursor:pointer" style-hover="color:oklch(52% 0.13 35)">Settings</span><span style="cursor:pointer" style-hover="color:oklch(52% 0.13 35)">Projects</span></div>
+    </div>
+    <div style="width:720px;display:flex;flex-direction:column;gap:40px;padding-top:36px">
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center">
+        <span style="font-size:11px;letter-spacing:.2em;color:oklch(52% 0.13 35)">FANTASY · SECOND DRAFT</span>
+        <h1 style="margin:0;font:400 46px/1.1 'Shippori Mincho',serif;letter-spacing:.01em">The Silent Kingdom</h1>
+        <span style="width:24px;height:1px;background:oklch(52% 0.13 35)"></span>
+      </div>
+      <sc-for list="{{ folders }}" as="f" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column">
+          <div style="display:flex;justify-content:space-between;align-items:baseline;padding-bottom:10px;font-size:13px;letter-spacing:.08em"><span>{{ f.name }}</span><span style="color:oklch(55% 0.012 60);font-size:12px">{{ f.count }}</span></div>
+          <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+            <div style="display:grid;grid-template-columns:88px 1fr auto;gap:24px;align-items:center;padding:12px 0;border-top:1px solid oklch(86% 0.014 75);cursor:pointer;transition:padding .22s cubic-bezier(.2,.7,.2,1)" style-hover="padding-left:8px">
+              <div style="position:relative;height:30px">
+                <sc-if value="{{ b.isPlot }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 190 50" preserveAspectRatio="none" style="position:absolute;inset:0;width:100%;height:100%"><polyline points="{{ b.pts }}" fill="none" stroke="oklch(52% 0.13 35)" stroke-width="1.3" vector-effect="non-scaling-stroke"></polyline></svg></sc-if>
+                <sc-if value="{{ b.isMap }}" hint-placeholder-val="{{ false }}"><sc-for list="{{ b.nodes }}" as="n" hint-placeholder-count="0"><span style="position:absolute;left:{{ n.left }};top:{{ n.top }};width:5px;height:5px;border-radius:50%;transform:translate(-50%,-50%);background:oklch(30% 0.012 60)"></span></sc-for></sc-if>
+                <sc-if value="{{ b.isNotes }}" hint-placeholder-val="{{ false }}"><div style="display:flex;flex-direction:column;gap:5px;padding-top:5px"><sc-for list="{{ b.bars }}" as="w" hint-placeholder-count="3"><span style="height:2px;width:{{ w }};background:oklch(70% 0.014 70)"></span></sc-for></div></sc-if>
+              </div>
+              <span style="font:400 19px 'Shippori Mincho',serif">{{ b.name }}</span>
+              <span style="font-size:12px;color:oklch(52% 0.012 60)">{{ b.type }} · {{ b.count }}</span>
+            </div>
+          </sc-for>
+        </div>
+      </sc-for>
+      <div style="display:flex;justify-content:center;gap:32px;font-size:13px;color:oklch(52% 0.13 35)"><span style="cursor:pointer" style-hover="text-decoration:underline">New board</span><span style="cursor:pointer" style-hover="text-decoration:underline">New folder</span></div>
+    </div>
+  </div>
+</div>
+
+<!-- 3d QUIET MODERN -->
+<div id="3d" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#3d" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">3d</a><a href="#3b" style="text-decoration:underline">3b</a>'s layout with a modern software feel: command bar, working type filter, rounded hover rows, keyboard hints.</div>
+  <div data-screen-label="3d Quiet modern" style="width:1280px;height:800px;background:oklch(97.5% 0.008 80);color:oklch(24% 0.01 60);font-family:Geist,system-ui,sans-serif;display:flex;flex-direction:column;align-items:center;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="width:100%;display:grid;grid-template-columns:1fr auto 1fr;align-items:center;padding:14px 20px;border-bottom:1px solid oklch(91% 0.01 75);background:oklch(98.5% 0.006 80 / .8);backdrop-filter:blur(12px)">
+      <div style="display:flex;align-items:center;gap:10px;font-size:13px"><span style="width:22px;height:22px;border-radius:6px;background:oklch(24% 0.01 60);display:grid;place-items:center"><span style="width:6px;height:6px;border-radius:50%;background:oklch(60% 0.15 35)"></span></span><span style="color:oklch(50% 0.01 60)">Projects</span><span style="color:oklch(75% 0.01 60)">/</span><span style="font-weight:500">The Silent Kingdom</span></div>
+      <div style="width:380px;height:34px;display:flex;align-items:center;gap:10px;padding:0 8px 0 12px;border-radius:9px;background:#fff;box-shadow:0 0 0 1px oklch(90% 0.01 70),0 1px 2px oklch(24% 0.01 60 / .06);font-size:13px;color:oklch(55% 0.01 60);cursor:text;transition:box-shadow .18s" style-hover="box-shadow:0 0 0 1px oklch(80% 0.02 60),0 2px 8px oklch(24% 0.01 60 / .08)">Search notes, boards, or run a command<span style="margin-left:auto;display:flex;gap:3px;font:500 11px 'Geist Mono',monospace"><span style="padding:2px 5px;border-radius:4px;background:oklch(95% 0.008 75)">Ctrl</span><span style="padding:2px 5px;border-radius:4px;background:oklch(95% 0.008 75)">K</span></span></div>
+      <div style="display:flex;justify-content:flex-end;align-items:center;gap:4px;font-size:13px;color:oklch(45% 0.01 60)">
+        <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:oklch(94% 0.01 75);color:oklch(24% 0.01 60)">Trash</span>
+        <span style="padding:6px 10px;border-radius:7px;cursor:pointer" style-hover="background:oklch(94% 0.01 75);color:oklch(24% 0.01 60)">Settings</span>
+        <span style="display:flex;align-items:center;gap:8px;margin-left:6px;padding:7px 8px 7px 12px;border-radius:8px;background:oklch(24% 0.01 60);color:#fff;font-weight:500;cursor:pointer;transition:background .18s" style-hover="background:oklch(58% 0.15 35)">New board<span style="font:500 10.5px 'Geist Mono',monospace;padding:1px 5px;border-radius:4px;background:oklch(100% 0 0 / .14)">N</span></span>
+      </div>
+    </div>
+    <div style="width:720px;display:flex;flex-direction:column;gap:28px;padding-top:52px">
+      <div style="display:flex;flex-direction:column;gap:14px;align-items:center;text-align:center">
+        <div style="display:flex;gap:6px;font-size:12px;font-weight:500"><span style="padding:3px 10px;border-radius:999px;background:oklch(93% 0.035 40);color:oklch(46% 0.13 35)">Second draft</span><span style="padding:3px 10px;border-radius:999px;box-shadow:0 0 0 1px oklch(88% 0.01 70);color:oklch(45% 0.01 60)">Fantasy</span></div>
+        <h1 style="margin:0;font:400 46px/1.1 'Shippori Mincho',serif;letter-spacing:.005em">The Silent Kingdom</h1>
+        <div style="display:flex;align-items:center;gap:8px;font-size:12.5px;color:oklch(52% 0.01 60)"><span style="width:6px;height:6px;border-radius:50%;background:oklch(60% 0.15 35)"></span>Autosaved · 6 boards · edited 2 hours ago</div>
+      </div>
+      <div style="align-self:center;display:flex;gap:2px;padding:3px;border-radius:10px;background:oklch(94% 0.01 75);font-size:12.5px;font-weight:500">
+        <sc-for list="{{ qTabs }}" as="t" hint-placeholder-count="4">
+          <span onClick="{{ t.pick }}" style="display:flex;gap:6px;padding:5px 12px;border-radius:7px;cursor:pointer;background:{{ t.bg }};box-shadow:{{ t.shadow }};color:{{ t.color }};transition:background .18s,color .18s">{{ t.label }}<span style="font:400 11px 'Geist Mono',monospace;opacity:.6">{{ t.count }}</span></span>
+        </sc-for>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:22px">
+        <sc-for list="{{ quietFolders }}" as="f" hint-placeholder-count="2">
+          <div style="display:flex;flex-direction:column;gap:4px">
+            <div style="display:flex;justify-content:space-between;align-items:baseline;padding:0 12px 6px;font-size:12px;font-weight:500;color:oklch(50% 0.01 60)"><span>{{ f.name }}</span><span style="cursor:pointer" style-hover="color:oklch(58% 0.15 35)">+ Add</span></div>
+            <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+              <div style="display:grid;grid-template-columns:72px 1fr auto 76px;gap:20px;align-items:center;padding:10px 12px;border-radius:10px;cursor:pointer;transition:background .18s cubic-bezier(.2,.7,.2,1),box-shadow .18s cubic-bezier(.2,.7,.2,1)" style-hover="background:#fff;box-shadow:0 0 0 1px oklch(91% 0.01 70),0 6px 20px -10px oklch(24% 0.01 60 / .2)">
+                <div style="position:relative;height:36px;border-radius:7px;background:oklch(94.5% 0.01 75);overflow:hidden">
+                  <sc-if value="{{ b.isPlot }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 190 50" preserveAspectRatio="none" style="position:absolute;left:8px;top:7px;width:calc(100% - 16px);height:calc(100% - 14px)"><polyline points="{{ b.pts }}" fill="none" stroke="oklch(58% 0.15 35)" stroke-width="1.6" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline></svg></sc-if>
+                  <sc-if value="{{ b.isMap }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:8px;top:7px;right:8px;bottom:7px"><sc-for list="{{ b.nodes }}" as="n" hint-placeholder-count="0"><span style="position:absolute;left:{{ n.left }};top:{{ n.top }};width:5px;height:5px;border-radius:50%;transform:translate(-50%,-50%);background:oklch(30% 0.012 60)"></span></sc-for></div></sc-if>
+                  <sc-if value="{{ b.isNotes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;left:9px;top:10px;right:9px;display:flex;flex-direction:column;gap:4px"><sc-for list="{{ b.bars }}" as="w" hint-placeholder-count="3"><span style="height:2px;width:{{ w }};border-radius:1px;background:oklch(72% 0.014 70)"></span></sc-for></div></sc-if>
+                </div>
+                <span style="font-size:15px;font-weight:500;letter-spacing:-.005em">{{ b.name }}</span>
+                <span style="font-size:12px;padding:2px 8px;border-radius:6px;background:oklch(94.5% 0.01 75);color:oklch(45% 0.01 60)">{{ b.type }} · {{ b.count }}</span>
+                <span style="font:400 11.5px 'Geist Mono',monospace;color:oklch(58% 0.01 60);text-align:right">{{ b.edited }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </sc-for>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- 3c HARDWARE -->
+<div id="3c" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#3c" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">3c</a>Instrument — grey panels, near-black, signal orange. The project reads like a device: a display panel, boards as keys, round function buttons.</div>
+  <div data-screen-label="3c Instrument" style="width:1280px;height:800px;background:oklch(88% 0.004 250);color:oklch(18% 0.005 250);font-family:Chivo,system-ui,sans-serif;display:grid;grid-template-columns:380px 1fr;gap:16px;padding:16px;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="display:flex;flex-direction:column;gap:16px">
+      <div style="flex:1;background:oklch(18% 0.005 250);color:oklch(95% 0.004 250);border-radius:16px;padding:28px;display:flex;flex-direction:column;gap:16px">
+        <div style="display:flex;justify-content:space-between;font:400 11px 'Chivo Mono',monospace;color:oklch(68% 0.004 250)"><span>PLOTR</span><span style="display:flex;align-items:center;gap:6px"><span style="width:7px;height:7px;border-radius:50%;background:oklch(68% 0.19 45)"></span>SAVED</span></div>
+        <h1 style="margin:auto 0 0;font:500 44px/1 Chivo,sans-serif;letter-spacing:-.03em">The Silent Kingdom</h1>
+        <p style="margin:0;font-size:14px;line-height:1.5;color:oklch(76% 0.004 250)">A deaf queen inherits a kingdom that speaks only in bells.</p>
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:oklch(30% 0.005 250);border-radius:8px;overflow:hidden;font:400 11px 'Chivo Mono',monospace">
+          <div style="background:oklch(22% 0.005 250);padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="color:oklch(62% 0.004 250)">BOARDS</span><span style="font-size:18px;color:oklch(68% 0.19 45)">06</span></div>
+          <div style="background:oklch(22% 0.005 250);padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="color:oklch(62% 0.004 250)">FOLDERS</span><span style="font-size:18px">02</span></div>
+          <div style="background:oklch(22% 0.005 250);padding:10px 12px;display:flex;flex-direction:column;gap:4px"><span style="color:oklch(62% 0.004 250)">DRAFT</span><span style="font-size:18px">2ND</span></div>
+        </div>
+      </div>
+      <div style="background:oklch(94% 0.003 250);border-radius:16px;padding:20px;display:grid;grid-template-columns:repeat(4,1fr);gap:8px">
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer"><span style="width:52px;height:52px;border-radius:50%;background:oklch(68% 0.19 45);color:#fff;display:grid;place-items:center;font-size:22px;box-shadow:inset 0 -3px 0 oklch(56% 0.18 45)" style-active="transform:translateY(1px)">+</span><span style="font:400 10px 'Chivo Mono',monospace">NEW</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer"><span style="width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:16px;box-shadow:inset 0 -3px 0 oklch(84% 0.004 250)">⌕</span><span style="font:400 10px 'Chivo Mono',monospace">SEARCH</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer"><span style="width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:14px;box-shadow:inset 0 -3px 0 oklch(84% 0.004 250)">▢</span><span style="font:400 10px 'Chivo Mono',monospace">TRASH</span></div>
+        <div style="display:flex;flex-direction:column;align-items:center;gap:8px;cursor:pointer"><span style="width:52px;height:52px;border-radius:50%;background:#fff;display:grid;place-items:center;font-size:15px;box-shadow:inset 0 -3px 0 oklch(84% 0.004 250)">⚙</span><span style="font:400 10px 'Chivo Mono',monospace">SETUP</span></div>
+      </div>
+    </div>
+    <div style="background:oklch(94% 0.003 250);border-radius:16px;padding:24px;display:flex;flex-direction:column;gap:22px">
+      <div style="display:flex;justify-content:space-between;font:400 11px 'Chivo Mono',monospace;color:oklch(45% 0.005 250)"><span>PROJECTS / THE SILENT KINGDOM</span><span style="cursor:pointer" style-hover="color:oklch(68% 0.19 45)">+ FOLDER</span></div>
+      <sc-for list="{{ folders }}" as="f" hint-placeholder-count="2">
+        <div style="display:flex;flex-direction:column;gap:10px">
+          <div style="display:flex;gap:10px;align-items:baseline;font-size:15px;font-weight:600">{{ f.name }}<span style="font:400 11px 'Chivo Mono',monospace;color:oklch(50% 0.005 250)">{{ f.count }}</span></div>
+          <div style="display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px">
+            <sc-for list="{{ f.boards }}" as="b" hint-placeholder-count="3">
+              <div style="height:196px;background:#fff;border-radius:12px;padding:16px;display:flex;flex-direction:column;gap:12px;cursor:pointer;box-shadow:inset 0 -4px 0 oklch(86% 0.004 250);transition:transform .12s ease-out" style-hover="box-shadow:inset 0 -4px 0 oklch(68% 0.19 45)" style-active="transform:translateY(2px)">
+                <div style="display:flex;justify-content:space-between;font:400 11px 'Chivo Mono',monospace;color:oklch(45% 0.005 250)"><span>{{ b.typeUpper }}</span><span>{{ b.count }}</span></div>
+                <div style="position:relative;flex:1;border-radius:6px;background:oklch(96% 0.003 250)">
+                  <sc-if value="{{ b.isPlot }}" hint-placeholder-val="{{ false }}"><svg viewBox="0 0 190 50" preserveAspectRatio="none" style="position:absolute;inset:12px;width:calc(100% - 24px);height:calc(100% - 24px)"><polyline points="{{ b.pts }}" fill="none" stroke="oklch(68% 0.19 45)" stroke-width="2.2" stroke-linejoin="round" vector-effect="non-scaling-stroke"></polyline></svg></sc-if>
+                  <sc-if value="{{ b.isMap }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:12px"><sc-for list="{{ b.nodes }}" as="n" hint-placeholder-count="0"><span style="position:absolute;left:{{ n.left }};top:{{ n.top }};width:{{ n.size }};height:{{ n.size }};border-radius:50%;transform:translate(-50%,-50%);background:oklch(18% 0.005 250)"></span></sc-for></div></sc-if>
+                  <sc-if value="{{ b.isNotes }}" hint-placeholder-val="{{ false }}"><div style="position:absolute;inset:14px;display:flex;flex-direction:column;gap:7px"><sc-for list="{{ b.bars }}" as="w" hint-placeholder-count="3"><span style="height:4px;width:{{ w }};border-radius:2px;background:oklch(82% 0.004 250)"></span></sc-for></div></sc-if>
+                </div>
+                <span style="font-size:16px;font-weight:600">{{ b.name }}</span>
+              </div>
+            </sc-for>
+          </div>
+        </div>
+      </sc-for>
+    </div>
+  </div>
+</div>
+
+  </div>
+</section>
+
+<section id="t1" style="padding:40px 44px 48px;display:flex;flex-direction:column;gap:24px">
+  <div style="display:flex;flex-direction:column;gap:8px;max-width:760px">
+    <div style="display:flex;gap:10px;align-items:baseline"><a href="#t1" style="font:600 10px ui-monospace,Menlo,monospace;padding:3px 7px;background:#1a1a1a;color:#fff;border-radius:4px">1</a><span style="font:600 13px system-ui,sans-serif;color:#1a1a1a">Index cards, from the logo palette</span></div>
+    <p style="margin:0;font:13px/1.55 system-ui,sans-serif;color:rgba(0,0,0,.62);text-wrap:pretty">Same data as the repo's DashboardScreen: project spine, folder shelves, board tiles (Plot Line / Info Map / Notes), search, trash, settings, breadcrumb. Each direction uses three colours: a ground, an ink, and one accent. Category colours stay for notes only.</p>
+  </div>
+  <div style="display:flex;flex-wrap:wrap;gap:40px;align-items:flex-start">
+
+<!-- 1b INDEX CARDS -->
+<div id="1b" style="display:flex;flex-direction:column;gap:10px">
+  <div style="display:flex;gap:8px;align-items:baseline;font:11px/1.3 system-ui,sans-serif;color:rgba(0,0,0,.55)"><a href="#1b" style="font:600 10.5px ui-monospace,monospace;padding:3px 7px;background:rgba(0,0,0,.08);color:#1a1a1a;border-radius:5px">1b</a>Index cards — the logo's navy, paper and violet nib. Folders are tabbed dividers, boards are ruled cards with a glimpse of their content.</div>
+  <div data-screen-label="1b Index cards" style="width:1280px;height:800px;background:oklch(95% 0.012 255);color:oklch(24% 0.05 265);font-family:'Schibsted Grotesk',system-ui,sans-serif;display:grid;grid-template-columns:260px 1fr;overflow:hidden;border-radius:6px;box-shadow:0 12px 40px rgba(0,0,0,.08)">
+    <div style="background:oklch(24% 0.05 265);color:oklch(96% 0.008 255);padding:32px 28px;display:flex;flex-direction:column;gap:28px">
+      <div style="display:flex;align-items:center;gap:9px;font:700 17px 'Schibsted Grotesk',sans-serif;letter-spacing:-.01em"><span style="width:0;height:0;border-left:6px solid transparent;border-right:6px solid transparent;border-top:14px solid oklch(66% 0.17 295);transform:rotate(30deg)"></span>Plotr</div>
+      <div style="display:flex;flex-direction:column;gap:12px">
+        <h1 style="margin:0;font:700 34px/1.02 'Schibsted Grotesk',sans-serif;letter-spacing:-.03em">The Silent Kingdom</h1>
+        <p style="margin:0;font-size:13px;line-height:1.55;color:oklch(78% 0.03 260)">A deaf queen inherits a kingdom that speaks only in bells.</p>
+        <div style="display:flex;gap:6px;flex-wrap:wrap;font-size:11.5px;font-weight:500"><span style="padding:3px 8px;border-radius:3px;background:oklch(66% 0.17 295);color:oklch(20% 0.05 265)">Second draft</span><span style="padding:3px 8px;border-radius:3px;border:1px solid oklch(38% 0.05 265);color:oklch(82% 0.03 260)">Fantasy</span></div>
+      </div>
+      <div style="margin-top:auto;display:flex;flex-direction:column;gap:2px;font-size:13px;margin-left:-10px;margin-right:-10px">
+        <div style="display:flex;justify-content:space-between;padding:8px 10px;border-radius:4px;cursor:pointer;color:oklch(82% 0.03 260)" style-hover="background:oklch(30% 0.05 265);color:#fff">Search<span style="opacity:.6;font-size:11px">⌃⇧F</span></div>
+        <div style="padding:8px 10px;border-radius:4px;cursor:pointer;color:oklch(82% 0.03 260)" style-hover="background:oklch(30% 0.05 265);color:#fff">Trash</div>
+        <div style="padding:8px 10px;border-radius:4px;cursor:pointer;color:oklch(82% 0.03 260)" style-hover="background:oklch(30% 0.05 265);color:#fff">Project settings</div>
+        <div style="padding:8px 10px;border-radius:4px;cursor:pointer;color:oklch(82% 0.03 260)" style-hover="background:oklch(30% 0.05 265);color:#fff">Close project</div>
+      </div>
+    </div>
+    <div style="display:flex;flex-direction:column;gap:30px;padding:36px 44px;overflow:hidden">
+      <div style="display:flex;align-items:center;gap:8px;font-size:13px;color:oklch(48% 0.04 265)"><span>Projects</span><span>›</span><span style="color:oklch(24% 0.05 265);font-weight:500">The Silent Kingdom</span><span style="margin-left:auto;padding:8px 14px;border-radius:4px;background:oklch(24% 0.05 265);color:#fff;font-weight:500;cursor:pointer" style-hover="background:oklch(66% 0.17 295);color:oklch(20% 0.05 265)">+ New board</span></div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex"><div style="padding:8px 16px 6px;background:oklch(99% 0.004 255);border-radius:6px 6px 0 0;font:600 14px 'Schibsted Grotesk',sans-serif;display:flex;gap:10px;align-items:baseline">Story<span style="font-weight:400;font-size:12px;color:oklch(48% 0.04 265)">3</span></div></div>
+        <div style="background:oklch(99% 0.004 255);border-radius:0 6px 6px 6px;padding:20px;display:flex;gap:16px">
+          <div style="width:220px;height:146px;flex:none;background:#fff;border:1px solid oklch(88% 0.015 255);border-top:3px solid oklch(66% 0.17 295);border-radius:3px;display:flex;flex-direction:column;padding:12px 14px;gap:8px;cursor:pointer;background-image:repeating-linear-gradient(transparent 0 23px,oklch(92% 0.02 255) 23px 24px);background-position:0 36px;transition:transform .18s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-3px) rotate(-.4deg)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.06em;color:oklch(52% 0.15 295)"><span>PLOT LINE</span><span style="color:oklch(48% 0.04 265);font-weight:400;letter-spacing:0">34</span></div>
+            <svg viewBox="0 0 190 50" width="190" height="50" style="display:block"><polyline points="0,42 28,34 52,38 80,20 104,26 132,8 160,22 190,14" fill="none" stroke="oklch(24% 0.05 265)" stroke-width="1.6"></polyline></svg>
+            <div style="margin-top:auto;font-weight:600;font-size:15px">Main Plot</div>
+          </div>
+          <div style="width:220px;height:146px;flex:none;background:#fff;border:1px solid oklch(88% 0.015 255);border-top:3px solid oklch(66% 0.17 295);border-radius:3px;display:flex;flex-direction:column;padding:12px 14px;gap:8px;cursor:pointer;background-image:repeating-linear-gradient(transparent 0 23px,oklch(92% 0.02 255) 23px 24px);background-position:0 36px;transition:transform .18s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-3px) rotate(.4deg)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.06em;color:oklch(52% 0.15 295)"><span>PLOT LINE</span><span style="color:oklch(48% 0.04 265);font-weight:400;letter-spacing:0">12</span></div>
+            <svg viewBox="0 0 190 50" width="190" height="50" style="display:block"><polyline points="0,30 36,36 70,24 104,30 140,12 190,18" fill="none" stroke="oklch(24% 0.05 265)" stroke-width="1.6"></polyline></svg>
+            <div style="margin-top:auto;font-weight:600;font-size:15px">The Bellringer Subplot</div>
+          </div>
+          <div style="width:220px;height:146px;flex:none;background:#fff;border:1px solid oklch(88% 0.015 255);border-top:3px solid oklch(66% 0.17 295);border-radius:3px;display:flex;flex-direction:column;padding:12px 14px;gap:8px;cursor:pointer;background-image:repeating-linear-gradient(transparent 0 23px,oklch(92% 0.02 255) 23px 24px);background-position:0 36px;transition:transform .18s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-3px) rotate(-.4deg)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.06em;color:oklch(52% 0.15 295)"><span>NOTES</span><span style="color:oklch(48% 0.04 265);font-weight:400;letter-spacing:0">48</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px"><span style="height:5px;width:80%;background:oklch(88% 0.02 255);border-radius:2px"></span><span style="height:5px;width:62%;background:oklch(88% 0.02 255);border-radius:2px"></span><span style="height:5px;width:70%;background:oklch(88% 0.02 255);border-radius:2px"></span></div>
+            <div style="margin-top:auto;font-weight:600;font-size:15px">Scene Notes</div>
+          </div>
+          <div style="width:140px;height:146px;flex:none;border:1.5px dashed oklch(80% 0.03 260);border-radius:3px;display:grid;place-items:center;font-size:13px;color:oklch(48% 0.04 265);cursor:pointer" style-hover="border-color:oklch(66% 0.17 295);color:oklch(24% 0.05 265)">+ Board</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column">
+        <div style="display:flex"><div style="padding:8px 16px 6px;background:oklch(99% 0.004 255);border-radius:6px 6px 0 0;font:600 14px 'Schibsted Grotesk',sans-serif;display:flex;gap:10px;align-items:baseline">Worldbuilding<span style="font-weight:400;font-size:12px;color:oklch(48% 0.04 265)">3</span></div></div>
+        <div style="background:oklch(99% 0.004 255);border-radius:0 6px 6px 6px;padding:20px;display:flex;gap:16px">
+          <div style="width:220px;height:146px;flex:none;background:#fff;border:1px solid oklch(88% 0.015 255);border-top:3px solid oklch(66% 0.17 295);border-radius:3px;display:flex;flex-direction:column;padding:12px 14px;gap:8px;cursor:pointer;background-image:repeating-linear-gradient(transparent 0 23px,oklch(92% 0.02 255) 23px 24px);background-position:0 36px;transition:transform .18s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-3px) rotate(.4deg)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.06em;color:oklch(52% 0.15 295)"><span>INFO MAP</span><span style="color:oklch(48% 0.04 265);font-weight:400;letter-spacing:0">27</span></div>
+            <svg viewBox="0 0 190 50" width="190" height="50" style="display:block"><line x1="20" y1="14" x2="80" y2="34" stroke="oklch(70% 0.04 265)" stroke-width="1"></line><line x1="80" y1="34" x2="140" y2="12" stroke="oklch(70% 0.04 265)" stroke-width="1"></line><line x1="80" y1="34" x2="170" y2="40" stroke="oklch(70% 0.04 265)" stroke-width="1"></line><circle cx="20" cy="14" r="5" fill="oklch(24% 0.05 265)"></circle><circle cx="80" cy="34" r="7" fill="oklch(66% 0.17 295)"></circle><circle cx="140" cy="12" r="5" fill="oklch(24% 0.05 265)"></circle><circle cx="170" cy="40" r="4" fill="oklch(24% 0.05 265)"></circle></svg>
+            <div style="margin-top:auto;font-weight:600;font-size:15px">Character Web</div>
+          </div>
+          <div style="width:220px;height:146px;flex:none;background:#fff;border:1px solid oklch(88% 0.015 255);border-top:3px solid oklch(66% 0.17 295);border-radius:3px;display:flex;flex-direction:column;padding:12px 14px;gap:8px;cursor:pointer;background-image:repeating-linear-gradient(transparent 0 23px,oklch(92% 0.02 255) 23px 24px);background-position:0 36px;transition:transform .18s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-3px) rotate(-.4deg)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.06em;color:oklch(52% 0.15 295)"><span>INFO MAP</span><span style="color:oklch(48% 0.04 265);font-weight:400;letter-spacing:0">19</span></div>
+            <svg viewBox="0 0 190 50" width="190" height="50" style="display:block"><line x1="30" y1="36" x2="96" y2="16" stroke="oklch(70% 0.04 265)" stroke-width="1"></line><line x1="96" y1="16" x2="156" y2="32" stroke="oklch(70% 0.04 265)" stroke-width="1"></line><circle cx="30" cy="36" r="5" fill="oklch(24% 0.05 265)"></circle><circle cx="96" cy="16" r="5" fill="oklch(24% 0.05 265)"></circle><circle cx="156" cy="32" r="6" fill="oklch(66% 0.17 295)"></circle></svg>
+            <div style="margin-top:auto;font-weight:600;font-size:15px">Places of the Realm</div>
+          </div>
+          <div style="width:220px;height:146px;flex:none;background:#fff;border:1px solid oklch(88% 0.015 255);border-top:3px solid oklch(66% 0.17 295);border-radius:3px;display:flex;flex-direction:column;padding:12px 14px;gap:8px;cursor:pointer;background-image:repeating-linear-gradient(transparent 0 23px,oklch(92% 0.02 255) 23px 24px);background-position:0 36px;transition:transform .18s cubic-bezier(.2,.7,.2,1)" style-hover="transform:translateY(-3px) rotate(.4deg)">
+            <div style="display:flex;justify-content:space-between;font-size:11px;font-weight:600;letter-spacing:.06em;color:oklch(52% 0.15 295)"><span>NOTES</span><span style="color:oklch(48% 0.04 265);font-weight:400;letter-spacing:0">22</span></div>
+            <div style="display:flex;flex-direction:column;gap:6px;padding-top:4px"><span style="height:5px;width:74%;background:oklch(88% 0.02 255);border-radius:2px"></span><span style="height:5px;width:58%;background:oklch(88% 0.02 255);border-radius:2px"></span><span style="height:5px;width:66%;background:oklch(88% 0.02 255);border-radius:2px"></span></div>
+            <div style="margin-top:auto;font-weight:600;font-size:15px">Bell Lore</div>
+          </div>
+          <div style="width:140px;height:146px;flex:none;border:1.5px dashed oklch(80% 0.03 260);border-radius:3px;display:grid;place-items:center;font-size:13px;color:oklch(48% 0.04 265);cursor:pointer" style-hover="border-color:oklch(66% 0.17 295);color:oklch(24% 0.05 265)">+ Board</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+  </div>
+</section>
+</x-dc>
+<script type="text/x-dc" data-dc-script data-props="{&quot;titleFont&quot;:{&quot;editor&quot;:&quot;enum&quot;,&quot;options&quot;:[&quot;Geist (sans)&quot;,&quot;Instrument Serif&quot;,&quot;Newsreader&quot;,&quot;Shippori Mincho&quot;],&quot;default&quot;:&quot;Geist (sans)&quot;,&quot;tsType&quot;:&quot;string&quot;,&quot;section&quot;:&quot;Turn 4&quot;}}">
+class Component extends DCLogic {
+  state = { calm: 'all', view: 'cards', focus: 'b1' };
+  renderVals() {
+    const NAVY = 'oklch(24% 0.05 265)', VIOLET = 'oklch(66% 0.17 295)';
+    const T = { plot: 'Plot Line', map: 'Info Map', notes: 'Notes' };
+    const S = { plot: 'plot', map: 'map', notes: 'notes' };
+    const node = (x, y, s, a) => ({ left: (x / 190 * 100).toFixed(1) + '%', top: (y / 50 * 100) + '%', size: s + 'px', fill: a ? VIOLET : NAVY, fill2a: a ? VIOLET : NAVY });
+    const raw = [
+      { f: 'Story', boards: [
+        { id: 'b1', name: 'Main Plot', k: 'plot', count: 34, pts: '0,42 28,34 52,38 80,20 104,26 132,8 160,22 190,14' },
+        { id: 'b2', name: 'The Bellringer Subplot', k: 'plot', count: 12, pts: '0,30 36,36 70,24 104,30 140,12 190,18' },
+        { id: 'b3', name: 'Scene Notes', k: 'notes', count: 48, bars: ['82%', '64%', '72%'] } ] },
+      { f: 'Worldbuilding', boards: [
+        { id: 'b4', name: 'Character Web', k: 'map', count: 27, link: '20,14 80,34 140,12 80,34 170,40', nodes: [node(20, 14, 8), node(80, 34, 12, true), node(140, 12, 8), node(170, 40, 7)] },
+        { id: 'b5', name: 'Places of the Realm', k: 'map', count: 19, link: '30,36 96,16 156,32', nodes: [node(30, 36, 8), node(96, 16, 8), node(156, 32, 10, true)] },
+        { id: 'b6', name: 'Bell Lore', k: 'notes', count: 22, bars: ['74%', '58%', '66%'] } ] },
+    ];
+    const { focus } = this.state;
+    const dec = (b, folder) => {
+      const on = b.id === focus;
+      return { ...b, folder, type: T[b.k], typeUpper: T[b.k].toUpperCase(), typeShort: S[b.k],
+        isPlot: b.k === 'plot', isMap: b.k === 'map', isNotes: b.k === 'notes',
+        focus: () => this.setState({ focus: b.id }),
+        ring: on ? `0 0 0 2px ${VIOLET}` : '0 0 0 1px oklch(90% 0.012 255)',
+        treeBg: on ? 'oklch(31% 0.06 275)' : 'transparent', treeColor: on ? '#fff' : 'inherit', treeDot: on ? VIOLET : 'oklch(50% 0.04 265)',
+        rowBg: on ? 'oklch(96% 0.02 295)' : '#fff', rowBar: on ? `inset 3px 0 0 ${VIOLET}` : 'none' };
+    };
+    const folders = raw.map(r => ({ name: r.f, count: r.boards.length, boards: r.boards.map(b => dec(b, r.f)) }));
+    const allBoards = folders.flatMap(f => f.boards);
+    const { calm, view } = this.state;
+    const navItems = [{ key: 'all', name: 'All boards', count: 6 }, ...folders.map(f => ({ key: f.name, name: f.name, count: f.count }))];
+    const calmNav = navItems.map(n => { const on = n.key === calm; return { ...n, select: () => this.setState({ calm: n.key }), bg: on ? '#fff' : 'transparent', shadow: on ? '0 1px 3px oklch(24% 0.05 265 / .1)' : 'none', weight: on ? 600 : 400, countColor: on ? VIOLET : 'oklch(55% 0.04 265)' }; });
+    const calmBoards = calm === 'all' ? allBoards : allBoards.filter(b => b.folder === calm);
+    const on = '#fff', sh = '0 1px 2px oklch(24% 0.05 265 / .15)';
+    const edited = { b1: '2h ago', b2: 'Yesterday', b3: '2h ago', b4: 'Mon', b5: '12 Sep', b6: 'Yesterday' };
+    const qf = this.state.qf || 'all';
+    const qTabs = [['all', 'All'], ['plot', 'Plot Line'], ['map', 'Info Map'], ['notes', 'Notes']].map(([k, label]) => {
+      const sel = k === qf;
+      return { label, count: k === 'all' ? 6 : allBoards.filter(b => b.k === k).length, pick: () => this.setState({ qf: k }),
+        bg: sel ? '#fff' : 'transparent', shadow: sel ? '0 1px 2px oklch(24% 0.01 60 / .12), 0 0 0 1px oklch(90% 0.01 70)' : 'none', color: sel ? 'oklch(24% 0.01 60)' : 'oklch(50% 0.01 60)' };
+    });
+    const quietFolders = folders.map(f => ({ ...f, boards: f.boards.filter(b => qf === 'all' || b.k === qf).map(b => ({ ...b, edited: edited[b.id] })) })).filter(f => f.boards.length);
+    const qTabsV = qTabs.map((t, i) => { const sel = ['all', 'plot', 'map', 'notes'][i] === qf; return { ...t, bg: sel ? 'var(--surface)' : 'transparent', shadow: sel ? '0 1px 2px color-mix(in oklch, var(--ink) 14%, transparent), 0 0 0 1px var(--line)' : 'none', color: sel ? 'var(--ink)' : 'var(--muted)' }; });
+    const palettes = [
+      { id: '4g', name: 'Pine — white, black, pine teal accent', bg: '#FFFFFF', surface: '#FFFFFF', ink: '#06070E', accent: '#29524A', onInk: '#FFFFFF' },
+      { id: '4h', name: 'Pine dark — black ground, white ink, pine teal accent', bg: '#06070E', surface: '#10121A', ink: '#FFFFFF', accent: '#29524A', onInk: '#06070E' },
+      { id: '4i', name: 'Pine ink — white ground, pine teal as the ink, black accent', bg: '#FFFFFF', surface: '#FFFFFF', ink: '#29524A', accent: '#06070E', onInk: '#FFFFFF' },
+      { id: '4a', name: 'Brick — unbleached paper, sumi, brick red (current 3d)', bg: 'oklch(97.5% 0.008 80)', surface: '#fff', ink: 'oklch(24% 0.01 60)', accent: 'oklch(58% 0.15 35)', onInk: '#fff' },
+      { id: '4b', name: 'Logo — cool paper, navy, violet nib', bg: 'oklch(97.5% 0.006 260)', surface: '#fff', ink: 'oklch(24% 0.05 265)', accent: 'oklch(57% 0.17 295)', onInk: '#fff' },
+      { id: '4c', name: 'Moss — sage paper, deep green, ochre', bg: 'oklch(96.8% 0.012 110)', surface: 'oklch(99.3% 0.004 110)', ink: 'oklch(27% 0.035 155)', accent: 'oklch(62% 0.13 70)', onInk: '#fff' },
+      { id: '4d', name: 'Harbour — blue-grey paper, ink blue, tomato', bg: 'oklch(97.5% 0.006 235)', surface: '#fff', ink: 'oklch(23% 0.035 250)', accent: 'oklch(60% 0.19 30)', onInk: '#fff' },
+      { id: '4e', name: 'Tidepool — pale sea, deep teal, coral pink', bg: 'oklch(97.3% 0.01 200)', surface: '#fff', ink: 'oklch(26% 0.04 220)', accent: 'oklch(62% 0.15 10)', onInk: '#fff' },
+      { id: '4f', name: 'Night — warm charcoal, bone, amber (dark mode)', bg: 'oklch(19% 0.008 60)', surface: 'oklch(23.5% 0.009 60)', ink: 'oklch(93% 0.012 85)', accent: 'oklch(74% 0.14 60)', onInk: 'oklch(19% 0.008 60)' },
+    ];
+    const TF = {
+      'Geist (sans)': { family: 'Geist, system-ui, sans-serif', weight: 600, size: '48px', track: '-.035em' },
+      'Instrument Serif': { family: "'Instrument Serif', serif", weight: 400, size: '56px', track: '-.01em' },
+      'Newsreader': { family: 'Newsreader, serif', weight: 500, size: '50px', track: '-.02em' },
+      'Shippori Mincho': { family: "'Shippori Mincho', serif", weight: 400, size: '46px', track: '.005em' },
+    };
+    const tf = TF[this.props.titleFont] || TF['Geist (sans)'];
+    return {
+      tf, qTabs, quietFolders, qTabsV, palettes,
+      folders, allBoards, calmNav, calmBoards,
+      calmTitle: calm === 'all' ? 'All boards' : calm,
+      calmSub: calm === 'all' ? 'The Silent Kingdom · 2 folders' : `The Silent Kingdom · ${calmBoards.length} boards`,
+      isCards: view === 'cards', isList: view === 'list',
+      setCards: () => this.setState({ view: 'cards' }), setList: () => this.setState({ view: 'list' }),
+      cardsBg: view === 'cards' ? on : 'transparent', cardsShadow: view === 'cards' ? sh : 'none',
+      listBg: view === 'list' ? on : 'transparent', listShadow: view === 'list' ? sh : 'none',
+      focusedName: allBoards.find(b => b.id === focus)?.name,
+    };
+  }
+}
+</script>
+</body>
+</html>

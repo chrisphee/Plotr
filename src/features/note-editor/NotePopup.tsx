@@ -1,12 +1,13 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { Link2, Plus, X } from "lucide-react";
+import { X } from "lucide-react";
 import type { Editor } from "@tiptap/react";
-import clsx from "clsx";
 import { useNoteModal } from "./noteModalStore";
 import { useNotes, refcountOf } from "../../stores/notesStore";
 import { useProject } from "../../stores/projectStore";
 import { IconButton } from "../../components/ui/Button";
+import { SegmentedControl } from "../../components/ui/SegmentedControl";
+import { longDate } from "../../lib/time";
 import { CategoryChip } from "../../components/ui/CategoryChip";
 import { CategoryPicker } from "../../components/ui/CategoryPicker";
 import { NoteEditor } from "./NoteEditor";
@@ -65,22 +66,26 @@ function NotePopup({ noteId }: { noteId: string }) {
     >
       <div className="notepopup" role="dialog" aria-label={note.title || "Note"}>
         <div className="notepopup__bar">
-          <div className="notepopup__seg">
-            <button className={clsx(mode === "read" && "active")} onClick={() => setMode("read")}>
-              Read
-            </button>
-            <button className={clsx(mode === "edit" && "active")} onClick={() => setMode("edit")}>
-              Edit
-            </button>
-          </div>
+          <SegmentedControl
+            className="notepopup__seg"
+            label="Mode"
+            value={mode}
+            onChange={setMode}
+            segments={[
+              { value: "read", label: "Read" },
+              { value: "edit", label: "Edit" },
+            ]}
+          />
           {refcount > 1 && (
-            <span className="linked-badge" title="This note appears in more than one place. Edits show everywhere.">
-              <Link2 size={12} /> Linked · {refcount} places
+            <span
+              className="pill pill--accent"
+              title="This note appears in more than one place. Edits show everywhere."
+            >
+              Linked · {refcount} places
             </span>
           )}
-          <div style={{ flex: 1 }} />
-          <IconButton label="Close" onClick={close}>
-            <X size={16} />
+          <IconButton label="Close" className="notepopup__close" onClick={close}>
+            <X size={17} strokeWidth={1.75} />
           </IconButton>
         </div>
 
@@ -94,22 +99,24 @@ function NotePopup({ noteId }: { noteId: string }) {
               onChange={(e) => updateNote(noteId, { title: e.target.value })}
             />
           ) : (
-            <div className="notepopup__title">{note.title || "Untitled note"}</div>
+            <h2 className="notepopup__title">{note.title || "Untitled note"}</h2>
           )}
 
-          <div className="notepopup__chips">
-            {noteCategories.map((c) => (
-              <CategoryChip key={c.id} category={c} />
-            ))}
-            {mode === "edit" && (
-              <button
-                className="notepopup__addcat"
-                onClick={(e) => setCatPicker({ x: e.clientX, y: e.clientY })}
-              >
-                <Plus size={11} style={{ verticalAlign: "-1px" }} /> Category
-              </button>
-            )}
-          </div>
+          {(noteCategories.length > 0 || mode === "edit") && (
+            <div className="notepopup__chips">
+              {noteCategories.map((c) => (
+                <CategoryChip key={c.id} category={c} />
+              ))}
+              {mode === "edit" && (
+                <button
+                  className="notepopup__addcat"
+                  onClick={(e) => setCatPicker({ x: e.clientX, y: e.clientY })}
+                >
+                  + Category
+                </button>
+              )}
+            </div>
+          )}
 
           {mode === "edit" && <RichTextToolbar editor={editor} />}
 
@@ -124,9 +131,9 @@ function NotePopup({ noteId }: { noteId: string }) {
           <AttachmentList note={note} editable={mode === "edit"} />
         </div>
 
-        <div className="notepopup__meta">
-          <span>Created {new Date(note.createdAt).toLocaleDateString()}</span>
-          <span>Edited {new Date(note.modifiedAt).toLocaleString()}</span>
+        <div className="notepopup__foot">
+          <span>Created {longDate(note.createdAt)}</span>
+          <span>Edited {longDate(note.modifiedAt, true)}</span>
         </div>
       </div>
 

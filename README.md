@@ -4,7 +4,7 @@ An offline-first desktop workspace for writers — organise projects, story
 structure, research, worldbuilding and notes. Windows + Linux.
 
 Built with **Tauri 2** (Rust) + **React 19 / TypeScript / Vite**, styled by the
-"Quill" design system (see `docs/design/`).
+the "Pine" design system (see `docs/design/ui-redesign-1/`).
 
 ## Concepts
 

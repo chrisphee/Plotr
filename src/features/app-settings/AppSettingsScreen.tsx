@@ -1,17 +1,16 @@
 import { useState } from "react";
-import { ArrowLeft, Plug, RefreshCw } from "lucide-react";
 import { useNav } from "../../app/navStore";
 import { useSettings } from "../../stores/settingsStore";
 import { saveQueue } from "../../lib/saveQueue";
 import { launchUpdate } from "../../tauri/commands";
+import { AppShell } from "../../components/shell/TopBar";
 import { Button } from "../../components/ui/Button";
 import { Field } from "../../components/ui/Field";
 import { ConfirmDialog } from "../../components/ui/Modal";
+import { SegmentedControl } from "../../components/ui/SegmentedControl";
 import type { ThemePref } from "../../app/theme";
-import "../dashboard/dashboard.css";
 
 export function AppSettingsScreen() {
-  const back = useNav((s) => s.back);
   const theme = useSettings((s) => s.theme);
   const setThemePref = useSettings((s) => s.setThemePref);
   const autosave = useSettings((s) => s.autosave);
@@ -31,27 +30,23 @@ export function AppSettingsScreen() {
   };
 
   return (
-    <main className="shell__main" style={{ height: "100%" }}>
-      <div className="dash__main" style={{ maxWidth: 560 }}>
-        <div>
-          <Button variant="ghost" onClick={back}>
-            <ArrowLeft size={15} /> Back
-          </Button>
-        </div>
-        <h1 className="dash__boardtitle">App Settings</h1>
+    <AppShell>
+      <div className="page page--settings">
+        <h1 className="page__title page__title--settings">App settings</h1>
 
         <Field label="Appearance">
           {(id) => (
-            <div id={id} style={{ display: "flex", gap: "var(--sp-4)" }}>
-              {(["light", "dark", "system"] as ThemePref[]).map((t) => (
-                <Button
-                  key={t}
-                  variant={theme === t ? "primary" : "secondary"}
-                  onClick={() => setThemePref(t)}
-                >
-                  {t[0].toUpperCase() + t.slice(1)}
-                </Button>
-              ))}
+            <div id={id}>
+              <SegmentedControl<ThemePref>
+                label="Theme"
+                value={theme}
+                onChange={setThemePref}
+                segments={[
+                  { value: "light", label: "Light" },
+                  { value: "dark", label: "Dark" },
+                  { value: "system", label: "System" },
+                ]}
+              />
             </div>
           )}
         </Field>
@@ -61,10 +56,7 @@ export function AppSettingsScreen() {
           hint="When off, boards and notes show a Save action and prompt before closing unsaved work."
         >
           {(id) => (
-            <label
-              htmlFor={id}
-              style={{ display: "flex", alignItems: "center", gap: "var(--sp-4)" }}
-            >
+            <label htmlFor={id} className="checkrow">
               <input
                 id={id}
                 type="checkbox"
@@ -81,11 +73,8 @@ export function AppSettingsScreen() {
         <Field label="Connectors" hint="Connect Pinterest and other services to import images.">
           {() => (
             <div>
-              <Button
-                variant="secondary"
-                onClick={() => useNav.getState().navigate({ name: "connectors" })}
-              >
-                <Plug size={14} /> Open Connectors
+              <Button onClick={() => useNav.getState().navigate({ name: "connectors" })}>
+                Open connectors
               </Button>
             </div>
           )}
@@ -97,9 +86,7 @@ export function AppSettingsScreen() {
         >
           {() => (
             <div>
-              <Button variant="secondary" onClick={() => setConfirmUpdate(true)}>
-                <RefreshCw size={14} /> Update Plotr
-              </Button>
+              <Button onClick={() => setConfirmUpdate(true)}>Update Plotr</Button>
               {updateError && (
                 <p className="meta" style={{ color: "var(--danger)", marginTop: "var(--sp-3)" }}>
                   {updateError}
@@ -114,11 +101,11 @@ export function AppSettingsScreen() {
         <ConfirmDialog
           title="Update Plotr?"
           message="Your work is saved first, then Plotr closes while the update pulls the latest changes, rebuilds, and reinstalls. This can take a few minutes — the app reopens when it's done."
-          confirmLabel="Update & Restart"
+          confirmLabel="Update and restart"
           onConfirm={() => void runUpdate()}
           onCancel={() => setConfirmUpdate(false)}
         />
       )}
-    </main>
+    </AppShell>
   );
 }

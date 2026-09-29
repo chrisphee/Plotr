@@ -1,0 +1,126 @@
+.settings__grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  gap: 40px 56px;
+  align-items: start;
+}
+
+.settings__col {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.settings__col--right {
+  gap: 28px;
+}
+
+.settings__pair {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.settings__section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.settings__export {
+  padding-top: 6px;
+}
+
+.settings__buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--sp-4);
+}
+
+/* ── Cover ── */
+
+.cover {
+  display: flex;
+  gap: var(--sp-6);
+  align-items: flex-start;
+}
+
+.cover__preview {
+  width: 84px;
+  height: 120px;
+  flex: none;
+  border-radius: var(--r-tag);
+  display: flex;
+  align-items: flex-end;
+  padding: 9px;
+  overflow: hidden;
+  position: relative;
+}
+.cover__preview[data-tone="dark"] {
+  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+}
+.cover__preview img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.cover__rule {
+  width: 26px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.7);
+}
+.cover__preview[data-tone="dark"] .cover__rule {
+  background: #06070e;
+}
+
+.cover__controls {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-width: 0;
+}
+
+/* ── Category rows ── */
+
+.catlist {
+  display: flex;
+  flex-direction: column;
+  gap: var(--sp-3);
+  padding-top: var(--sp-2);
+}
+
+.catlist__row {
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) 30px;
+  gap: 10px;
+  align-items: center;
+}
+
+.catlist__swatch {
+  width: 18px;
+  height: 18px;
+  border-radius: 5px;
+  justify-self: center;
+  transition: box-shadow var(--t-hover) var(--ease);
+}
+.catlist__swatch:hover {
+  box-shadow: 0 0 0 2px var(--surface), 0 0 0 3px var(--hairline-strong);
+}
+
+.catlist__input.input {
+  height: 34px;
+  border-radius: var(--r-segment);
+  font-size: 13.5px;
+  padding: 0 10px;
+}
+
+.catlist__picker {
+  grid-column: 2 / -1;
+  padding: 4px 0 6px;
+}
+
+.catlist__add {
+  align-self: flex-start;
+  margin-top: var(--sp-2);
+}

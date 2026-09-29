@@ -103,6 +103,8 @@ export interface NotesBoard {
   folders: NotesBoardFolder[];
   noteRefs: NoteRef[];
   sort: { by: "manual" | "title" | "createdAt" | "modifiedAt"; dir: "asc" | "desc" };
+  /** Last content edit (not pan/zoom). Absent in boards written before it existed. */
+  modifiedAt?: string;
 }
 
 export interface PlotPoint {
@@ -127,6 +129,7 @@ export interface PlotLineBoard {
   points: PlotPoint[];
   sections: PlotSection[];
   view: { zoom: number; panX: number };
+  modifiedAt?: string;
 }
 
 export type InfoMapItem =
@@ -153,6 +156,7 @@ export interface InfoMapBoard {
   items: InfoMapItem[];
   connections: InfoMapConnection[];
   view: { x: number; y: number; zoom: number };
+  modifiedAt?: string;
 }
 
 export type Board = NotesBoard | PlotLineBoard | InfoMapBoard;

@@ -1,0 +1,115 @@
+/* ── Plotr · Pine UI tokens ───────────────────────────────────────────
+   Drop-in replacement for src/styles/tokens.css. Variable NAMES are kept
+   so existing components pick up the new look; new tokens are marked NEW.
+   Three colours: white #FFFFFF, black #06070E, pine teal #29524A.       */
+
+:root {
+  /* Ink (primary buttons, logo tile, active tool) */
+  --ink: #06070E;
+  --ink-hover: #29524A;           /* primary buttons hover to teal */
+  --ink-text: #FFFFFF;
+  --ink-text-muted: #B5B6BA;
+  --ink-hairline: #2A2C33;
+
+  /* Text & surfaces */
+  --text: #06070E;
+  --text-muted: #64656B;
+  --text-faint: #B5B6BA;          /* NEW: separators "/", preview bars */
+  --paper: #FFFFFF;
+  --paper-band: #FAFAFA;          /* NEW: alternating plot-line sections */
+  --surface: #FFFFFF;
+  --hairline: #E4E4E6;
+  --hairline-strong: #D6D6D9;
+  --hover-wash: #F4F4F5;          /* also chips, segmented-control track, kbd keys */
+
+  /* Accent */
+  --accent: #29524A;
+  --accent-soft: #DFE6E4;         /* NEW: status pill / linked badge background */
+  --accent-strong-text: #1E3B38;  /* NEW: text on --accent-soft */
+  --accent-on-ink: #5E9A8C;       /* NEW: logo dot on the black tile */
+  --danger: #c8503f;
+
+  /* Category presets (unchanged — user data, shown as 7px dots only) */
+  --cat-character: #7c5cbf;
+  --cat-location: #3f9a5a;
+  --cat-conflict: #c8503f;
+  --cat-lore: #3b7dd8;
+  --cat-tint: 13%;
+
+  /* Type — Geist everywhere, Geist Mono for meta/kbd */
+  --font-display: "Geist", system-ui, sans-serif;
+  --font-ui: "Geist", system-ui, sans-serif;
+  --font-mono: "Geist Mono", ui-monospace, monospace;
+
+  --fs-display: 48px;   /* project title, Start, Trash — 600, -0.035em, lh 1.05 */
+  --fs-board: 28px;     /* board titles — 600, -0.03em */
+  --fs-note-title: 30px;/* NEW: note popup title — 600, -0.03em */
+  --fs-settings: 36px;  /* NEW: settings page title */
+  --fs-row: 15px;       /* row / card names — 500 */
+  --fs-body: 15px;      /* note body, lh 1.7 */
+  --fs-ui: 13px;        /* top bar, buttons, menus */
+  --fs-meta: 12px;      /* folder labels, counts, chips */
+  --fs-mono: 11.5px;    /* timestamps, paths, counts */
+  --fs-kbd: 11px;
+
+  /* Shape */
+  --r-kbd: 4px;
+  --r-tag: 6px;         /* type tag in rows */
+  --r-btn: 8px;
+  --r-input: 9px;
+  --r-row: 10px;        /* list rows, popovers, segmented track */
+  --r-segment: 7px;     /* segmented-control thumb */
+  --r-panel: 12px;      /* floating tool rail */
+  --r-popup: 14px;
+  --r-pill: 999px;
+
+  --sp-1: 2px; --sp-2: 4px; --sp-3: 6px; --sp-4: 8px;
+  --sp-5: 12px; --sp-6: 16px; --sp-7: 24px; --sp-8: 32px;
+  --topbar-h: 56px;     /* NEW */
+  --column-w: 720px;    /* NEW: centred content column */
+
+  /* Elevation — hairline ring + one soft drop, never stacked further */
+  --ring: 0 0 0 1px var(--hairline);
+  --shadow-row: 0 0 0 1px var(--hairline), 0 6px 20px -10px rgba(6, 7, 14, 0.22);
+  --shadow-pop: 0 0 0 1px var(--hairline), 0 12px 32px -12px rgba(6, 7, 14, 0.28);
+  --shadow-modal: 0 0 0 1px var(--hairline), 0 40px 90px -30px rgba(6, 7, 14, 0.55);
+  --shadow-segment: 0 1px 2px rgba(6, 7, 14, 0.12), 0 0 0 1px var(--hairline);
+  --shadow-soft: var(--shadow-pop);
+  --shadow-lift: var(--shadow-row);
+  --backdrop: rgba(6, 7, 14, 0.32); /* + backdrop-filter: blur(2px) */
+  --focus-ring: 0 0 0 2px var(--accent);
+
+  /* Motion — unchanged */
+  --ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --t-hover: 180ms;
+  --t-focus: 200ms;
+  --t-enter: 320ms;
+  --t-exit: 160ms;
+
+  color-scheme: light;
+}
+
+/* Dark (explored as option 4h — not yet reviewed screen by screen) */
+[data-theme="dark"] {
+  --ink: #FFFFFF;
+  --ink-hover: #5E9A8C;
+  --ink-text: #06070E;
+  --ink-text-muted: #64656B;
+  --ink-hairline: #D6D6D9;
+  --text: #FFFFFF;
+  --text-muted: #9FA0A6;
+  --text-faint: #4A4C54;
+  --paper: #06070E;
+  --paper-band: #0B0C14;
+  --surface: #10121A;
+  --hairline: #1F2129;
+  --hairline-strong: #2A2C35;
+  --hover-wash: #151720;
+  --accent: #29524A;       /* NOTE: low contrast on black for thin lines/dots — use --accent-on-ink there */
+  --accent-soft: #14231F;
+  --accent-strong-text: #9CC7BC;
+  --shadow-row: 0 0 0 1px var(--hairline), 0 6px 20px -10px rgba(0, 0, 0, 0.6);
+  --shadow-pop: 0 0 0 1px var(--hairline), 0 12px 32px -12px rgba(0, 0, 0, 0.7);
+  --shadow-modal: 0 0 0 1px var(--hairline), 0 40px 90px -30px rgba(0, 0, 0, 0.8);
+  color-scheme: dark;
+}

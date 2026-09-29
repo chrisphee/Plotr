@@ -1,16 +1,15 @@
 import { useState } from "react";
-import { Trash2, Undo2, X } from "lucide-react";
+import { X } from "lucide-react";
 import { useProject } from "../../stores/projectStore";
 import { notesBoard } from "../notes-board/notesBoardActions";
 import { plotline } from "../plotline/plotActions";
 import { infomap } from "../infomap/infomapActions";
 import { emptyTrash, purgeTrashEntry } from "./trashActions";
 import type { TrashEntry } from "../../lib/schema";
-import { Dock } from "../../components/shell/Dock";
-import { EmptyState } from "../../components/ui/EmptyState";
+import { shortDate } from "../../lib/time";
+import { AppShell } from "../../components/shell/TopBar";
 import { Button, IconButton } from "../../components/ui/Button";
 import { ConfirmDialog } from "../../components/ui/Modal";
-import "../dashboard/dashboard.css";
 import "./trash.css";
 
 export function TrashScreen() {
@@ -40,53 +39,52 @@ export function TrashScreen() {
   };
 
   return (
-    <main className="shell__main" style={{ height: "100%" }}>
-      <div className="dash__main" style={{ maxWidth: 720 }}>
-        <div className="dash__header">
-          <h1 className="dash__boardtitle">Trash</h1>
-          {trash.entries.length > 0 && (
-            <Button variant="destructive" onClick={() => setEmptying(true)}>
-              <Trash2 size={14} /> Empty Trash
-            </Button>
-          )}
+    <AppShell
+      actions={
+        trash.entries.length > 0 && (
+          <Button variant="ink" onClick={() => setEmptying(true)}>
+            Empty trash
+          </Button>
+        )
+      }
+    >
+      <div className="page">
+        <div className="page__head trash__head">
+          <h1 className="page__title">Trash</h1>
+          <p className="page__sub">
+            {trash.entries.length === 0 && "Trash is empty. "}
+            Deleted boards, folders and notes wait here until you restore or remove them.
+          </p>
         </div>
-        {trash.entries.length === 0 ? (
-          <EmptyState
-            icon={<Trash2 size={26} strokeWidth={1.5} />}
-            title="Trash is empty"
-            message="Deleted boards, folders and notes wait here until you restore or remove them."
-          />
-        ) : (
-          <div className="trashlist">
+
+        {trash.entries.length > 0 && (
+          <div className="lgroup trash__list">
             {trash.entries.map((e) => (
-              <div key={e.id} className="trashrow">
-                <div>
-                  <div className="trashrow__name">{e.displayName}</div>
-                  <div className="meta">
-                    {e.originPath.length > 0 ? e.originPath.join(" › ") : "Project root"} ·
-                    deleted {new Date(e.deletedAt).toLocaleDateString()}
-                  </div>
+              <div key={e.id} className="lrow trashrow">
+                <div className="trashrow__text">
+                  <span className="lrow__name">{e.displayName}</span>
+                  <span className="lrow__sub">
+                    {e.originPath.length > 0 ? e.originPath.join(" › ") : "Project root"} · deleted{" "}
+                    {deletedWhen(e.deletedAt)}
+                  </span>
                 </div>
-                <div style={{ display: "flex", gap: "var(--sp-3)", alignItems: "center" }}>
-                  <Button variant="secondary" onClick={() => restore(e)}>
-                    <Undo2 size={14} /> Restore
-                  </Button>
-                  <IconButton label="Delete permanently" onClick={() => setPurging(e)}>
-                    <X size={15} />
-                  </IconButton>
-                </div>
+                <Button variant="accent" onClick={() => restore(e)}>
+                  Restore
+                </Button>
+                <IconButton label="Delete permanently" onClick={() => setPurging(e)}>
+                  <X size={16} strokeWidth={1.75} />
+                </IconButton>
               </div>
             ))}
           </div>
         )}
       </div>
-      <Dock />
 
       {purging && (
         <ConfirmDialog
           title="Delete permanently?"
           message={`"${purging.displayName}" will be removed for good. This cannot be undone.`}
-          confirmLabel="Delete Permanently"
+          confirmLabel="Delete permanently"
           destructive
           onConfirm={() => {
             void purgeTrashEntry(purging.id);
@@ -97,9 +95,9 @@ export function TrashScreen() {
       )}
       {emptying && (
         <ConfirmDialog
-          title="Empty Trash?"
+          title="Empty trash?"
           message="Everything in the Trash will be removed for good, including any notes and files no longer used anywhere. This cannot be undone."
-          confirmLabel="Empty Trash"
+          confirmLabel="Empty trash"
           destructive
           onConfirm={() => {
             void emptyTrash();
@@ -108,6 +106,11 @@ export function TrashScreen() {
           onCancel={() => setEmptying(false)}
         />
       )}
-    </main>
+    </AppShell>
   );
+}
+
+function deletedWhen(iso: string) {
+  const d = shortDate(iso);
+  return d === "Yesterday" || d === "Just now" ? d.toLowerCase() : d;
 }

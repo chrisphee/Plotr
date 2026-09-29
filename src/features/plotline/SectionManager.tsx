@@ -1,4 +1,4 @@
-import { Plus, Trash2 } from "lucide-react";
+import { X } from "lucide-react";
 import { Modal } from "../../components/ui/Modal";
 import { Button, IconButton } from "../../components/ui/Button";
 import { TextInput } from "../../components/ui/Field";
@@ -80,14 +80,14 @@ export function SectionManagerModal({
             label={`Delete ${sec.name}`}
             onClick={() => plotline.deleteSection(board.id, sec.id)}
           >
-            <Trash2 size={14} />
+            <X size={15} strokeWidth={1.75} />
           </IconButton>
         </div>
       ))}
       <div>
-        <Button variant="secondary" onClick={addSection}>
-          <Plus size={14} /> Add section
-        </Button>
+        <button className="textbtn textbtn--accent" onClick={addSection}>
+          + Add section
+        </button>
       </div>
     </Modal>
   );

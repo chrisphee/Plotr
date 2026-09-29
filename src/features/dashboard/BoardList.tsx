@@ -1,5 +1,15 @@
-import { createContext, useContext, useState } from "react";
-import { FolderPlus, MoreHorizontal, Pencil, Trash2 } from "lucide-react";
+import { useState } from "react";
+import {
+  ArrowUpRight,
+  ChevronRight,
+  Folder,
+  FolderPlus,
+  LayoutGrid,
+  MoreHorizontal,
+  Pencil,
+  Plus,
+  Trash2,
+} from "lucide-react";
 import { useNav } from "../../app/navStore";
 import { useProject } from "../../stores/projectStore";
 import { useNotes } from "../../stores/notesStore";
@@ -11,96 +21,102 @@ import { ConfirmDialog } from "../../components/ui/Modal";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { RenameModal } from "./RenameModal";
 import { CreateBoardModal } from "./CreateBoardModal";
-import { BoardPreview } from "./BoardPreview";
-import { boardEditedAt, boardItemCount, boardTypeInfo } from "./boardTypes";
+import { BoardPreview, FolderPreview } from "./BoardPreview";
+import { BOARD_TYPES, boardEditedAt, boardItemCount, boardTypeInfo, countLabel } from "./boardTypes";
 import "./dashboard.css";
 
 export type TypeFilter = "all" | BoardType;
 
-/** Contents numbers, counted across every group in display order. */
-const RowNumbers = createContext<Map<string, number>>(new Map());
+type NewBoardTarget = { parentId: string | null; type?: BoardType };
 
-/* The children of `parentId` as grouped list rows: one group per child
-   folder, plus a "Boards" group for loose boards. */
+/* The children of `parentId` as card grids: loose boards first, then one
+   section per child folder. */
 
 export function BoardList({ parentId, filter }: { parentId: string | null; filter: TypeFilter }) {
   const childrenOf = useProject((s) => s.childrenOf);
   useProject((s) => s.treeItems);
+  const [newBoard, setNewBoard] = useState<NewBoardTarget | null>(null);
+  const [newFolderIn, setNewFolderIn] = useState<string | null | undefined>(undefined);
 
   const children = childrenOf(parentId);
   const folders = children.filter((c): c is TreeFolder => c.kind === "folder");
-  const looseBoards = children.filter(
-    (c): c is TreeBoard => c.kind === "board" && matches(c, filter),
+  const looseBoards = children.filter((c): c is TreeBoard => c.kind === "board" && matches(c, filter));
+  const visibleFolders = folders.filter((f) => filter === "all" || hasMatch(f.id, filter, childrenOf));
+
+  const modals = (
+    <>
+      {newBoard && (
+        <CreateBoardModal
+          parentId={newBoard.parentId}
+          initialType={newBoard.type}
+          onClose={() => setNewBoard(null)}
+        />
+      )}
+      {newFolderIn !== undefined && <NewFolderModal parentId={newFolderIn} onClose={() => setNewFolderIn(undefined)} />}
+    </>
   );
 
-  const [newFolder, setNewFolder] = useState(false);
-  const [newBoardIn, setNewBoardIn] = useState<{ parentId: string | null } | null>(null);
-
-  const visibleFolders = folders.filter((f) => filter === "all" || hasMatch(f.id, filter, childrenOf));
-  const isEmpty = children.length === 0;
-
-  const numbers = new Map<string, number>();
-  for (const b of looseBoards) numbers.set(b.id, numbers.size + 1);
-  for (const f of visibleFolders) {
-    for (const c of childrenOf(f.id)) {
-      if (c.kind === "board" ? matches(c, filter) : filter === "all" || hasMatch(c.id, filter, childrenOf)) {
-        numbers.set(c.id, numbers.size + 1);
-      }
-    }
+  if (children.length === 0) {
+    return (
+      <div className="starter">
+        <div className="starter__types">
+          {BOARD_TYPES.map((t) => (
+            <button key={t.type} className="typecard" onClick={() => setNewBoard({ parentId, type: t.type })}>
+              <span className="typecard__icon">{t.icon(20)}</span>
+              <span className="typecard__name">{t.name}</span>
+              <span className="typecard__desc">{t.description}</span>
+            </button>
+          ))}
+        </div>
+        <button className="textbtn" onClick={() => setNewFolderIn(parentId)}>
+          <FolderPlus size={15} strokeWidth={1.75} />
+          Or start with a folder
+        </button>
+        {modals}
+      </div>
+    );
   }
 
   return (
-    <RowNumbers.Provider value={numbers}>
     <div className="boardlist">
-      {isEmpty && (
-        <EmptyState
-          title={parentId ? "This folder is empty" : "No boards yet"}
-          message="Create a board to start — a plot line, an info map, or a library of notes."
-        />
-      )}
-
-      {looseBoards.length > 0 && (
-        <section className="lgroup">
-          <div className="lgroup__label">
-            <span>Boards</span>
-            <button onClick={() => setNewBoardIn({ parentId })}>+ Add</button>
+      {(looseBoards.length > 0 || (filter === "all" && folders.length === 0)) && (
+        <section className="bgroup">
+          {parentId === null && visibleFolders.length > 0 && (
+            <div className="bgroup__head">
+              <span className="bgroup__title bgroup__title--static">
+                <LayoutGrid size={16} strokeWidth={1.75} />
+                <span className="bgroup__name">Not in a folder</span>
+              </span>
+              <span className="bgroup__count">
+                {looseBoards.length} {looseBoards.length === 1 ? "board" : "boards"}
+              </span>
+            </div>
+          )}
+          <div className="bgrid">
+            {looseBoards.map((b) => (
+              <BoardCard key={b.id} board={b} />
+            ))}
+            {filter === "all" && <NewCard onClick={() => setNewBoard({ parentId })} />}
           </div>
-          {looseBoards.map((b) => (
-            <BoardRow key={b.id} board={b} />
-          ))}
         </section>
       )}
 
       {visibleFolders.map((f) => (
-        <FolderGroup
+        <FolderSection
           key={f.id}
           folder={f}
           filter={filter}
-          onNewBoard={() => setNewBoardIn({ parentId: f.id })}
+          onNewBoard={() => setNewBoard({ parentId: f.id })}
+          onNewFolder={() => setNewFolderIn(f.id)}
         />
       ))}
 
-      {!isEmpty && looseBoards.length === 0 && visibleFolders.length === 0 && (
-        <EmptyState title="No boards of this type" />
+      {looseBoards.length === 0 && visibleFolders.length === 0 && (
+        <EmptyState title="No boards of this type" message="Choose another filter, or create a board of this type." />
       )}
 
-      <div className="boardlist__foot">
-        {isEmpty && (
-          <button className="textbtn" onClick={() => setNewBoardIn({ parentId })}>
-            + New board
-          </button>
-        )}
-        <button className="textbtn" onClick={() => setNewFolder(true)}>
-          + New folder
-        </button>
-      </div>
-
-      {newFolder && <NewFolderModal parentId={parentId} onClose={() => setNewFolder(false)} />}
-      {newBoardIn && (
-        <CreateBoardModal parentId={newBoardIn.parentId} onClose={() => setNewBoardIn(null)} />
-      )}
+      {modals}
     </div>
-    </RowNumbers.Provider>
   );
 }
 
@@ -108,79 +124,90 @@ function matches(board: TreeBoard, filter: TypeFilter) {
   return filter === "all" || board.boardType === filter;
 }
 
-function hasMatch(
-  folderId: string,
-  filter: TypeFilter,
-  childrenOf: (id: string | null) => TreeItem[],
-): boolean {
+function hasMatch(folderId: string, filter: TypeFilter, childrenOf: (id: string | null) => TreeItem[]): boolean {
   return childrenOf(folderId).some((c) =>
     c.kind === "board" ? matches(c, filter) : hasMatch(c.id, filter, childrenOf),
   );
 }
 
-function FolderGroup({
+function FolderSection({
   folder,
   filter,
   onNewBoard,
+  onNewFolder,
 }: {
   folder: TreeFolder;
   filter: TypeFilter;
   onNewBoard: () => void;
+  onNewFolder: () => void;
 }) {
   const childrenOf = useProject((s) => s.childrenOf);
   const navigate = useNav((s) => s.navigate);
-  const deleteTreeItem = useProject((s) => s.deleteTreeItem);
-  const createFolder = useProject((s) => s.createFolder);
   const [menu, setMenu] = useState<MenuPosition | null>(null);
   const [renaming, setRenaming] = useState(false);
   const [deleting, setDeleting] = useState(false);
+  const deleteTreeItem = useProject((s) => s.deleteTreeItem);
 
-  const children = childrenOf(folder.id).filter((c) =>
+  const all = childrenOf(folder.id);
+  const shown = all.filter((c) =>
     c.kind === "board" ? matches(c, filter) : filter === "all" || hasMatch(c.id, filter, childrenOf),
   );
+  const open = () => navigate({ name: "folder", folderId: folder.id });
 
   return (
-    <section className="lgroup">
+    <section className="bgroup">
       <div
-        className="lgroup__label"
+        className="bgroup__head"
         onContextMenu={(e) => {
           e.preventDefault();
           setMenu({ x: e.clientX, y: e.clientY });
         }}
       >
-        <button onClick={() => navigate({ name: "folder", folderId: folder.id })}>
-          {folder.name}
+        <button className="bgroup__title" onClick={open}>
+          <Folder size={16} strokeWidth={1.75} />
+          <span className="bgroup__name">{folder.name}</span>
+          <ChevronRight size={15} strokeWidth={2} className="bgroup__chev" />
         </button>
-        <span className="lgroup__tools">
+        <span className="bgroup__count">
+          {all.length} {all.length === 1 ? "item" : "items"}
+        </span>
+        <span className="bgroup__tools">
           <IconButton
-            label="Folder options"
-            className="lgroup__more"
-            onClick={(e) => setMenu({ x: e.clientX, y: e.clientY })}
+            label={`${folder.name} options`}
+            onClick={(e) => {
+              const r = e.currentTarget.getBoundingClientRect();
+              setMenu({ x: r.left, y: r.bottom + 4 });
+            }}
           >
-            <MoreHorizontal size={15} strokeWidth={1.75} />
+            <MoreHorizontal size={16} strokeWidth={1.75} />
           </IconButton>
-          <button onClick={onNewBoard}>+ Add</button>
+          <IconButton label={`New board in ${folder.name}`} onClick={onNewBoard}>
+            <Plus size={16} strokeWidth={2} />
+          </IconButton>
         </span>
       </div>
-      {children.length === 0 && <div className="boardlist__none">No boards yet</div>}
-      {children.map((item) =>
-        item.kind === "board" ? (
-          <BoardRow key={item.id} board={item} />
-        ) : (
-          <SubfolderRow key={item.id} folder={item} />
-        ),
-      )}
+
+      <div className="bgrid">
+        {shown.map((item) =>
+          item.kind === "board" ? <BoardCard key={item.id} board={item} /> : <FolderCard key={item.id} folder={item} />,
+        )}
+        {filter === "all" && shown.length === 0 && <NewCard onClick={onNewBoard} />}
+      </div>
 
       {menu && (
         <Menu position={menu} onClose={() => setMenu(null)}>
-          <MenuItem icon={<Pencil size={14} />} onSelect={() => setRenaming(true)}>
-            Rename
+          <MenuItem icon={<ArrowUpRight size={15} />} onSelect={open}>Open</MenuItem>
+          <MenuItem icon={<Plus size={15} />} onSelect={onNewBoard}>
+            New board here
           </MenuItem>
-          <MenuItem icon={<FolderPlus size={14} />} onSelect={() => createFolder(folder.id, "New folder")}>
+          <MenuItem icon={<FolderPlus size={15} />} onSelect={onNewFolder}>
             New subfolder
           </MenuItem>
+          <MenuItem icon={<Pencil size={15} />} onSelect={() => setRenaming(true)}>
+            Rename
+          </MenuItem>
           <MenuSeparator />
-          <MenuItem icon={<Trash2 size={14} />} danger onSelect={() => setDeleting(true)}>
+          <MenuItem icon={<Trash2 size={15} />} danger onSelect={() => setDeleting(true)}>
             Move to Trash
           </MenuItem>
         </Menu>
@@ -203,7 +230,7 @@ function FolderGroup({
   );
 }
 
-function BoardRow({ board }: { board: TreeBoard }) {
+export function BoardCard({ board }: { board: TreeBoard }) {
   const navigate = useNav((s) => s.navigate);
   const data = useProject((s) => s.boards[board.id]);
   const notes = useNotes((s) => s.notes);
@@ -211,54 +238,49 @@ function BoardRow({ board }: { board: TreeBoard }) {
   const [menu, setMenu] = useState<MenuPosition | null>(null);
   const [renaming, setRenaming] = useState(false);
   const [deleting, setDeleting] = useState(false);
-  const number = useContext(RowNumbers).get(board.id);
 
   const open = () => navigate({ name: "board", boardId: board.id });
+  const edited = shortDate(boardEditedAt(data, notes));
 
   return (
-    <>
-      <div
-        className="lrow boardrow"
-        role="button"
-        tabIndex={0}
-        onClick={open}
-        onKeyDown={(e) => e.key === "Enter" && e.target === e.currentTarget && open()}
-        onContextMenu={(e) => {
-          e.preventDefault();
-          setMenu({ x: e.clientX, y: e.clientY });
-        }}
-      >
-        <span className="lrow__num">{number}</span>
-        <BoardPreview board={data} />
-        <span className="boardrow__line">
-          <span className="lrow__name">{board.name}</span>
-          <span className="leader" />
-          <span className="tag">
-            {boardTypeInfo(board.boardType).name} · {boardItemCount(data)}
+    <div
+      className="bcard"
+      onContextMenu={(e) => {
+        e.preventDefault();
+        setMenu({ x: e.clientX, y: e.clientY });
+      }}
+    >
+      <button className="bcard__hit" onClick={open} aria-label={`Open ${board.name}`} />
+      <BoardPreview board={data} />
+      <div className="bcard__body">
+        <span className="bcard__icon">{boardTypeInfo(board.boardType).icon(16)}</span>
+        <span className="bcard__text">
+          <span className="bcard__name">{board.name}</span>
+          <span className="bcard__meta">
+            {countLabel(board.boardType, boardItemCount(data))}
+            {edited && ` · ${edited}`}
           </span>
         </span>
-        <span className="lrow__mono boardrow__edited">{shortDate(boardEditedAt(data, notes))}</span>
         <IconButton
-          label="Board options"
-          className="lrow__reveal boardrow__more"
+          label={`${board.name} options`}
+          className="bcard__more"
           onClick={(e) => {
-            e.stopPropagation();
             const r = e.currentTarget.getBoundingClientRect();
             setMenu({ x: r.left, y: r.bottom + 4 });
           }}
         >
-          <MoreHorizontal size={15} strokeWidth={1.75} />
+          <MoreHorizontal size={16} strokeWidth={1.75} />
         </IconButton>
       </div>
 
       {menu && (
         <Menu position={menu} onClose={() => setMenu(null)}>
-          <MenuItem onSelect={open}>Open</MenuItem>
-          <MenuItem icon={<Pencil size={14} />} onSelect={() => setRenaming(true)}>
+          <MenuItem icon={<ArrowUpRight size={15} />} onSelect={open}>Open</MenuItem>
+          <MenuItem icon={<Pencil size={15} />} onSelect={() => setRenaming(true)}>
             Rename
           </MenuItem>
           <MenuSeparator />
-          <MenuItem icon={<Trash2 size={14} />} danger onSelect={() => setDeleting(true)}>
+          <MenuItem icon={<Trash2 size={15} />} danger onSelect={() => setDeleting(true)}>
             Move to Trash
           </MenuItem>
         </Menu>
@@ -277,36 +299,45 @@ function BoardRow({ board }: { board: TreeBoard }) {
           onCancel={() => setDeleting(false)}
         />
       )}
-    </>
+    </div>
   );
 }
 
-function SubfolderRow({ folder }: { folder: TreeFolder }) {
+function FolderCard({ folder }: { folder: TreeFolder }) {
   const navigate = useNav((s) => s.navigate);
   const childrenOf = useProject((s) => s.childrenOf);
-  const number = useContext(RowNumbers).get(folder.id);
-  const count = childrenOf(folder.id).length;
-  const open = () => navigate({ name: "folder", folderId: folder.id });
+  const items = childrenOf(folder.id);
   return (
-    <div
-      className="lrow boardrow"
-      role="button"
-      tabIndex={0}
-      onClick={open}
-      onKeyDown={(e) => e.key === "Enter" && open()}
-    >
-      <span className="lrow__num">{number}</span>
-      <BoardPreview board="folder" />
-      <span className="boardrow__line">
-        <span className="lrow__name">{folder.name}</span>
-        <span className="leader" />
-        <span className="tag">
-          Folder · {count} {count === 1 ? "item" : "items"}
+    <div className="bcard">
+      <button
+        className="bcard__hit"
+        onClick={() => navigate({ name: "folder", folderId: folder.id })}
+        aria-label={`Open folder ${folder.name}`}
+      />
+      <FolderPreview items={items} />
+      <div className="bcard__body">
+        <span className="bcard__icon">
+          <Folder size={16} strokeWidth={1.75} />
         </span>
-      </span>
-      <span />
-      <span />
+        <span className="bcard__text">
+          <span className="bcard__name">{folder.name}</span>
+          <span className="bcard__meta">
+            Folder · {items.length} {items.length === 1 ? "item" : "items"}
+          </span>
+        </span>
+      </div>
     </div>
+  );
+}
+
+function NewCard({ onClick }: { onClick: () => void }) {
+  return (
+    <button className="bcard bcard--new" onClick={onClick}>
+      <span className="bcard__plus">
+        <Plus size={18} strokeWidth={2} />
+      </span>
+      New board
+    </button>
   );
 }
 

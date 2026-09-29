@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { openPath } from "@tauri-apps/plugin-opener";
-import { FileText, X } from "lucide-react";
+import { FileText, Paperclip, Pin, X } from "lucide-react";
 import { useNotes } from "../../stores/notesStore";
 import { useProject } from "../../stores/projectStore";
 import { useConnectors } from "../connectors/connectorStore";
@@ -95,11 +95,13 @@ export function AttachmentList({ note, editable }: { note: Note; editable: boole
       {editable && (
         <div className="attachments__add">
           <button className="notepage__add" onClick={() => void attach()}>
-            + Attach file
+            <Paperclip size={13} strokeWidth={2} />
+            Attach file
           </button>
           {pinterestConnected && (
             <button className="notepage__add" onClick={() => setPickerOpen(true)}>
-              + From Pinterest
+              <Pin size={13} strokeWidth={2} />
+              From Pinterest
             </button>
           )}
         </div>

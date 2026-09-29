@@ -24,7 +24,9 @@ function Handles() {
 
 export type NoteNodeType = Node<{ boardId: string; noteId: string }, "note">;
 
-export function NoteNode({ data, selected }: NodeProps<NoteNodeType>) {
+const PREVIEW_LINE = 18.1;
+
+export function NoteNode({ data, selected, height }: NodeProps<NoteNodeType>) {
   const note = useNotes((s) => s.notes[data.noteId]);
   const boards = useProject((s) => s.boards);
   const categories = useProject((s) => s.meta?.categories ?? []);
@@ -35,6 +37,7 @@ export function NoteNode({ data, selected }: NodeProps<NoteNodeType>) {
     .map((id) => categories.find((c) => c.id === id))
     .filter((c): c is NonNullable<typeof c> => Boolean(c));
   const tint = note.color ?? (cats[0]?.color || null);
+  const lines = Math.max(1, Math.floor(((height ?? 160) - 24 - 21 - 5) / PREVIEW_LINE));
 
   return (
     <div
@@ -43,7 +46,7 @@ export function NoteNode({ data, selected }: NodeProps<NoteNodeType>) {
         tint && "imnode--tinted",
         selected && "imnode--selected",
       )}
-      style={tint ? ({ "--node-tint": tint } as React.CSSProperties) : undefined}
+      style={{ "--preview-lines": lines, ...(tint ? { "--node-tint": tint } : {}) } as React.CSSProperties}
       onDoubleClick={(e) => {
         e.stopPropagation();
         useNoteModal.getState().open(note.id, "read");
@@ -55,7 +58,7 @@ export function NoteNode({ data, selected }: NodeProps<NoteNodeType>) {
         <span style={{ overflow: "hidden", textOverflow: "ellipsis", whiteSpace: "nowrap" }}>
           {note.title || "Untitled note"}
         </span>
-        {refcount > 1 && <Link2 size={12} color="var(--text-muted)" style={{ flex: "none" }} />}
+        {refcount > 1 && <Link2 size={12} className="imnode__linked" />}
       </div>
       <div className="imnode__preview">{extractPreview(note.doc)}</div>
       {cats.length > 0 && (

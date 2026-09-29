@@ -1,14 +1,14 @@
 import { useState } from "react";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import { open as openDialog, save as saveDialog } from "@tauri-apps/plugin-dialog";
 import { useProject } from "../../stores/projectStore";
 import { useConnectors } from "../connectors/connectorStore";
 import { PinterestPicker } from "../connectors/PinterestPicker";
-import { importAttachment, assetUrl } from "../../tauri/commands";
-import { readableTextOn } from "../../lib/color";
+import { importAttachment } from "../../tauri/commands";
 import { exportProjectBackup, exportProjectMarkdown } from "./exportProject";
 import { AppShell } from "../../components/shell/TopBar";
-import { Field, TextInput, TextArea } from "../../components/ui/Field";
+import { ProjectCover } from "../../components/shell/ProjectCover";
+import { TextInput, TextArea } from "../../components/ui/Field";
 import { Button, IconButton } from "../../components/ui/Button";
 import { ColorPicker } from "../../components/ui/ColorPicker";
 import { CATEGORY_PRESETS } from "../../lib/schema";
@@ -16,11 +16,14 @@ import "../../components/ui/categories.css";
 import "./projectSettings.css";
 
 const COVER_PRESETS = [
-  { name: "Black", color: "#06070E" },
-  { name: "Pine", color: "#29524A" },
+  { name: "Pine", color: "#227A66" },
+  { name: "Blue", color: "#0066D6" },
+  { name: "Violet", color: "#6A4BD8" },
+  { name: "Rose", color: "#C8365E" },
+  { name: "Orange", color: "#B4570F" },
+  { name: "Graphite", color: "#3A3A40" },
   { name: "White", color: "#FFFFFF" },
 ];
-const DEFAULT_COVER = "#29524A";
 
 export function ProjectSettingsScreen() {
   const meta = useProject((s) => s.meta);
@@ -30,59 +33,69 @@ export function ProjectSettingsScreen() {
   if (!meta) return null;
 
   return (
-    <AppShell saveStatus="always">
-      <div className="page page--wide">
-        <h1 className="page__title page__title--settings">Project settings</h1>
-        <div className="settings__grid">
-          <div className="settings__col">
-            <Field label="Name">
-              {(id) => (
+    <AppShell saveStatus="always" grouped largeTitle>
+      <div className="settings">
+        <h1 className="page__title">Project settings</h1>
+
+        <section className="fgroup">
+          <h2 className="fgroup__title">General</h2>
+          <div className="fgroup__box">
+            <div className="frow">
+              <label className="frow__label" htmlFor="ps-name">
+                Name
+              </label>
+              <div className="frow__control">
                 <TextInput
-                  id={id}
+                  id="ps-name"
                   value={name}
                   onChange={(e) => setName(e.target.value)}
                   onBlur={() => name.trim() && updateMeta({ name: name.trim() })}
                 />
-              )}
-            </Field>
-            <Field label="Description">
-              {(id) => (
-                <TextArea
-                  id={id}
-                  defaultValue={meta.description}
-                  onBlur={(e) => updateMeta({ description: e.target.value })}
-                />
-              )}
-            </Field>
-            <div className="settings__pair">
-              <Field label="Genre">
-                {(id) => (
-                  <TextInput
-                    id={id}
-                    defaultValue={meta.genre}
-                    placeholder="Fantasy"
-                    onBlur={(e) => updateMeta({ genre: e.target.value })}
-                  />
-                )}
-              </Field>
-              <Field label="Status">
-                {(id) => (
-                  <TextInput
-                    id={id}
-                    defaultValue={meta.status}
-                    placeholder="Drafting"
-                    onBlur={(e) => updateMeta({ status: e.target.value })}
-                  />
-                )}
-              </Field>
+              </div>
             </div>
-            <ExportSection />
+            <div className="frow">
+              <label className="frow__label" htmlFor="ps-genre">
+                Genre
+              </label>
+              <div className="frow__control">
+                <TextInput
+                  id="ps-genre"
+                  defaultValue={meta.genre}
+                  placeholder="Fantasy"
+                  onBlur={(e) => updateMeta({ genre: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="frow">
+              <label className="frow__label" htmlFor="ps-status">
+                Status
+              </label>
+              <div className="frow__control">
+                <TextInput
+                  id="ps-status"
+                  defaultValue={meta.status}
+                  placeholder="Drafting"
+                  onBlur={(e) => updateMeta({ status: e.target.value })}
+                />
+              </div>
+            </div>
+            <div className="frow frow--stack">
+              <label className="frow__label" htmlFor="ps-desc">
+                Description
+              </label>
+              <TextArea
+                id="ps-desc"
+                defaultValue={meta.description}
+                placeholder="A sentence or two about this story."
+                onBlur={(e) => updateMeta({ description: e.target.value })}
+              />
+            </div>
           </div>
-          <div className="settings__col settings__col--right">
-            <AppearanceSection />
-            <CategoryManager />
-          </div>
-        </div>
+        </section>
+
+        <AppearanceSection />
+        <CategoryManager />
+        <ExportSection />
       </div>
     </AppShell>
   );
@@ -121,18 +134,30 @@ function ExportSection() {
   };
 
   return (
-    <div className="settings__section settings__export">
-      <div className="field__label">Export</div>
-      <p className="field__hint">
-        A backup keeps everything and can be imported again. Markdown export gives you plain,
-        readable files — your work is never locked in.
-      </p>
-      <div className="settings__buttons">
-        <Button onClick={() => void backup()}>Export backup (.zip)</Button>
-        <Button onClick={() => void markdown()}>Export as Markdown</Button>
+    <section className="fgroup">
+      <h2 className="fgroup__title">Export</h2>
+      <div className="fgroup__box">
+        <div className="frow">
+          <span className="frow__text">
+            <span className="frow__label">Backup</span>
+            <span className="frow__hint">A .zip with everything. You can import it again from the Start screen.</span>
+          </span>
+          <Button onClick={() => void backup()}>Export backup</Button>
+        </div>
+        <div className="frow">
+          <span className="frow__text">
+            <span className="frow__label">Markdown</span>
+            <span className="frow__hint">Plain, readable files. Your work is never locked in.</span>
+          </span>
+          <Button onClick={() => void markdown()}>Export Markdown</Button>
+        </div>
       </div>
-      {status && <p className="field__hint">{status}</p>}
-    </div>
+      {status && (
+        <p className="fgroup__note" role="status">
+          {status}
+        </p>
+      )}
+    </section>
   );
 }
 
@@ -154,43 +179,43 @@ function AppearanceSection() {
     updateMeta({ coverImage: imported.rel_path });
   };
 
-  const color = meta.color ?? DEFAULT_COVER;
-
   return (
-    <div className="settings__section">
-      <div className="field__label">Cover &amp; colour</div>
-      <div className="cover">
-        <div
-          className="cover__preview"
-          style={{ background: color }}
-          data-tone={readableTextOn(color)}
-        >
-          {meta.coverImage ? (
-            <img src={assetUrl(projectPath, meta.coverImage)} alt="Project cover" />
-          ) : (
-            <span className="cover__rule" />
-          )}
-        </div>
-        <div className="cover__controls">
-          <p className="field__hint">
-            Shown on this project's card on the Start screen. Images are copied into the project,
-            so they travel with your backups.
-          </p>
-          <ColorPicker
-            value={color}
-            presets={COVER_PRESETS}
-            onChange={(c) => updateMeta({ color: c })}
+    <section className="fgroup">
+      <h2 className="fgroup__title">Icon</h2>
+      <div className="fgroup__box">
+        <div className="frow cover">
+          <ProjectCover
+            path={projectPath}
+            name={meta.name}
+            coverImage={meta.coverImage}
+            color={meta.color}
+            size={72}
           />
-          <div className="settings__buttons">
-            <Button onClick={() => void pickCover()}>
-              {meta.coverImage ? "Change image…" : "Choose image…"}
-            </Button>
-            {pinterestConnected && <Button onClick={() => setPickerOpen(true)}>From Pinterest</Button>}
-            {meta.coverImage && (
-              <Button variant="ghost" onClick={() => updateMeta({ coverImage: null })}>
-                Remove image
+          <div className="cover__controls">
+            <p className="frow__hint">
+              Shown in the sidebar, on Home and on the Start screen. Images are copied into the project, so they travel
+              with your backups.
+            </p>
+            <ColorPicker
+              value={meta.color ?? ""}
+              presets={COVER_PRESETS}
+              onChange={(c) => updateMeta({ color: c })}
+            />
+            <div className="settings__buttons">
+              <Button size="sm" onClick={() => void pickCover()}>
+                {meta.coverImage ? "Change image…" : "Choose image…"}
               </Button>
-            )}
+              {pinterestConnected && (
+                <Button size="sm" onClick={() => setPickerOpen(true)}>
+                  From Pinterest
+                </Button>
+              )}
+              {meta.coverImage && (
+                <Button size="sm" variant="ghost" onClick={() => updateMeta({ coverImage: null })}>
+                  Remove image
+                </Button>
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -204,7 +229,7 @@ function AppearanceSection() {
           onClose={() => setPickerOpen(false)}
         />
       )}
-    </div>
+    </section>
   );
 }
 
@@ -216,23 +241,25 @@ function CategoryManager() {
   const [editingColorId, setEditingColorId] = useState<string | null>(null);
 
   return (
-    <div className="settings__section">
-      <div className="field__label">Categories</div>
-      <p className="field__hint">
-        Categories belong to the whole project. Changing a colour updates every note using it.
+    <section className="fgroup">
+      <h2 className="fgroup__title">Categories</h2>
+      <p className="fgroup__note">
+        Categories belong to the whole project. Changing a colour updates every note that uses it.
       </p>
-      <div className="catlist">
+      <div className="fgroup__box">
         {categories.map((c) => (
-          <div key={c.id} className="catlist__row">
+          <div key={c.id} className="frow catrow">
             <button
-              className="catlist__swatch"
+              className="catrow__swatch"
               style={{ background: c.color }}
               title="Change colour"
               aria-label={`Change colour of ${c.name}`}
+              aria-expanded={editingColorId === c.id}
               onClick={() => setEditingColorId(editingColorId === c.id ? null : c.id)}
             />
             <TextInput
-              className="catlist__input"
+              className="catrow__input"
+              aria-label="Category name"
               defaultValue={c.name}
               onBlur={(e) => {
                 const name = e.target.value.trim();
@@ -240,10 +267,10 @@ function CategoryManager() {
               }}
             />
             <IconButton label={`Delete ${c.name}`} onClick={() => deleteCategory(c.id)}>
-              <X size={15} strokeWidth={1.75} />
+              <X size={15} strokeWidth={2} />
             </IconButton>
             {editingColorId === c.id && (
-              <div className="catlist__picker">
+              <div className="catrow__picker">
                 <ColorPicker
                   value={c.color}
                   presets={CATEGORY_PRESETS}
@@ -254,16 +281,17 @@ function CategoryManager() {
           </div>
         ))}
         <button
-          className="textbtn textbtn--accent catlist__add"
+          className="frow catrow__add"
           onClick={() => {
             const used = new Set(categories.map((c) => c.color));
             const preset = CATEGORY_PRESETS.find((p) => !used.has(p.color));
             addCategory("New category", preset?.color ?? "#7c5cbf");
           }}
         >
-          + Add category
+          <Plus size={15} strokeWidth={2} />
+          Add category
         </button>
       </div>
-    </div>
+    </section>
   );
 }

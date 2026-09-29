@@ -1,14 +1,12 @@
 /* ── Editor body ── */
 
-/* Prose is set like the book: serif, 18px, a 66-character measure. */
 .note-editor {
-  font-family: var(--font-serif);
   font-size: var(--fs-body);
-  font-variation-settings: "opsz" 18;
-  line-height: 1.65;
-  max-width: 66ch;
-  user-select: text;
+  line-height: 1.7;
+  letter-spacing: -0.011em;
+  max-width: 68ch;
   color: var(--text);
+  user-select: text;
 }
 
 .note-editor .tiptap {
@@ -16,34 +14,42 @@
   min-height: 240px;
 }
 
-
-
 .note-editor .tiptap > * + * {
-  margin-top: 0.75em;
+  margin-top: 0.7em;
+}
+
+.note-editor .tiptap p.is-editor-empty:first-child::before {
+  content: attr(data-placeholder);
+  float: left;
+  height: 0;
+  color: var(--text-3);
+  pointer-events: none;
 }
 
 .note-editor h1,
 .note-editor h2,
 .note-editor h3 {
-  line-height: 1.25;
-  letter-spacing: -0.01em;
-  margin-top: 1.4em;
+  line-height: 1.3;
+  margin-top: 1.5em;
 }
-.note-editor h1 { font-size: 26px; }
-.note-editor h2 { font-size: 21px; }
-.note-editor h3 { font-size: 18px; font-style: italic; font-weight: 600; }
+.note-editor h1 { font-size: 24px; font-weight: 700; letter-spacing: -0.022em; }
+.note-editor h2 { font-size: 19.5px; font-weight: 680; letter-spacing: -0.018em; }
+.note-editor h3 { font-size: 16.5px; font-weight: 650; letter-spacing: -0.012em; }
 
 .note-editor blockquote {
-  margin: 0.8em 0;
-  padding: 0 0 0 1.6em;
-  font-style: italic;
-  color: var(--text-muted);
+  margin: 0.9em 0;
+  padding: 2px 0 2px 16px;
+  box-shadow: inset 3px 0 0 var(--separator-strong);
+  color: var(--text-2);
 }
 
 .note-editor ul,
 .note-editor ol {
   padding-left: 1.4em;
   margin: 0.4em 0;
+}
+.note-editor li::marker {
+  color: var(--text-2);
 }
 
 /* Checklist */
@@ -67,49 +73,59 @@
 }
 .note-editor ul[data-type="taskList"] input[type="checkbox"] {
   appearance: none;
-  width: 15px;
-  height: 15px;
+  width: 17px;
+  height: 17px;
   margin: 0;
-  border-radius: var(--r-kbd);
-  box-shadow: inset 0 0 0 1.5px var(--text-faint);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1.5px var(--text-3);
   cursor: pointer;
   transition:
-    background var(--t-hover) var(--ease),
-    box-shadow var(--t-hover) var(--ease);
+    background var(--t-fast) var(--ease),
+    box-shadow var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
+}
+.note-editor ul[data-type="taskList"] input[type="checkbox"]:active {
+  transform: scale(0.9);
 }
 .note-editor ul[data-type="taskList"] input[type="checkbox"]:checked {
   background: var(--accent)
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4 8.5l2.6 2.5L12 5.5' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
-    center / 11px no-repeat;
+    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16'%3E%3Cpath d='M4.2 8.4l2.5 2.4L11.8 5.6' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E")
+    center / 12px no-repeat;
   box-shadow: none;
 }
 .note-editor li[data-checked="true"] > div {
-  color: var(--text-muted);
+  color: var(--text-2);
   text-decoration: line-through;
+  text-decoration-color: var(--text-3);
 }
 
 .note-editor a {
-  color: var(--accent);
+  color: var(--accent-text);
   text-decoration: underline;
+  text-decoration-color: color-mix(in srgb, var(--accent-text) 35%, transparent);
   text-underline-offset: 3px;
+}
+.note-editor a:hover {
+  text-decoration-color: currentColor;
 }
 
 .note-editor img {
   max-width: 100%;
-  border-radius: var(--r-kbd);
+  border-radius: var(--r-lg);
+  box-shadow: 0 0 0 1px var(--separator);
 }
 
 .note-editor code {
   font-family: var(--font-mono);
-  font-size: 0.85em;
-  background: var(--hover-wash);
-  padding: 1px 5px;
-  border-radius: var(--r-kbd);
+  font-size: 0.86em;
+  background: var(--fill);
+  padding: 2px 5px;
+  border-radius: var(--r-xs);
 }
 
 .note-editor pre {
-  background: var(--hover-wash);
-  border-radius: var(--r-btn);
+  background: var(--bg-sunken);
+  border-radius: var(--r-lg);
   padding: var(--sp-5) var(--sp-6);
   overflow-x: auto;
 }
@@ -118,49 +134,63 @@
   padding: 0;
 }
 
-/* ── Wiki links ── */
+.note-editor hr {
+  border: none;
+  height: 1px;
+  background: var(--separator);
+  margin: 1.6em 0;
+}
+
+/* ── Wiki links: mention chips ── */
 
 .wikilink {
-  color: var(--accent);
-  border-bottom: 1px dotted var(--accent);
+  padding: 1px 5px;
+  margin: 0 1px;
+  border-radius: var(--r-xs);
+  background: var(--accent-soft);
+  color: var(--accent-text);
+  font-weight: 550;
   cursor: pointer;
-  transition: color var(--t-hover) var(--ease);
+  transition: background var(--t-fast) var(--ease);
 }
 .wikilink:hover {
-  color: var(--text);
+  background: var(--accent-soft-2);
 }
 
 .wikilink-menu {
   position: fixed;
   z-index: 300;
-  background: var(--surface);
-  border-radius: var(--r-panel);
+  min-width: 210px;
+  max-width: 300px;
+  padding: 5px;
+  border-radius: var(--r-lg);
+  background: var(--material);
+  backdrop-filter: blur(24px) saturate(180%);
   box-shadow: var(--shadow-pop);
-  padding: var(--sp-2);
-  min-width: 200px;
-  max-width: 280px;
-  animation: popup-enter 200ms var(--ease);
+  animation: pop-in 170ms var(--ease);
 }
 .wikilink-menu__item {
   display: block;
   width: 100%;
-  text-align: left;
-  padding: 7px 10px;
-  border-radius: var(--r-btn);
-  font-size: var(--fs-ui);
+  height: 29px;
+  padding: 0 10px;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-base);
   color: var(--text);
+  text-align: left;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
 .wikilink-menu__item--active,
 .wikilink-menu__item:hover {
-  background: var(--hover-wash);
+  background: var(--accent);
+  color: var(--on-accent);
 }
 .wikilink-menu__empty {
   padding: 7px 10px;
-  font-size: var(--fs-meta);
-  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
 }
 
 /* ── Toolbar ── */
@@ -168,7 +198,7 @@
 .rt-toolbar {
   display: flex;
   align-items: center;
-  gap: var(--sp-1);
+  gap: 1px;
   flex-wrap: wrap;
   min-width: 0;
 }
@@ -178,26 +208,26 @@
   align-items: center;
   justify-content: center;
   width: 30px;
-  height: 28px;
-  border-radius: var(--r-tag);
-  color: var(--text-muted);
+  height: 30px;
+  border-radius: var(--r-sm);
+  color: var(--text-2);
   transition:
-    background var(--t-hover) var(--ease),
-    color var(--t-hover) var(--ease);
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
 }
 .rt-toolbar__btn:hover {
-  background: var(--hover-wash);
+  background: var(--hover);
   color: var(--text);
 }
 .rt-toolbar__btn--active,
 .rt-toolbar__btn--active:hover {
   background: var(--accent-soft);
-  color: var(--accent-strong-text);
+  color: var(--accent-text);
 }
 
 .rt-toolbar__sep {
   width: 1px;
-  height: 16px;
-  background: var(--hairline);
-  margin: 0 var(--sp-2);
+  height: 18px;
+  margin: 0 5px;
+  background: var(--separator-strong);
 }

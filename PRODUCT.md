@@ -22,7 +22,7 @@ Plotr joins three views of one story over a shared pool of reusable notes: a Plo
 
 - Desktop app (Tauri 2 webview + React 19) on Windows and Linux. Keyboard and mouse. Desktop windows from about 860px wide upwards.
 - A project is a folder `Name.plotr/` with project.json, tree.json, boards/, notes/, assets/, trash.json. It can be zipped, moved, or synced like any folder.
-- Navigation is Project → Folders → Boards, with a breadcrumb as the persistent navigation.
+- Navigation is Project → Folders → Boards. A left sidebar holds the project tree as the persistent navigation; the header shows the path.
 - The dashboard is for orientation and navigation, never analytics.
 
 ## Capabilities and Constraints
@@ -38,6 +38,7 @@ Plotr joins three views of one story over a shared pool of reusable notes: a Plo
 
 - Name: Plotr. Tagline in use: "A quiet workspace for stories".
 - The application should not feel like enterprise project management software, a database editor, or an IDE.
+- Look and feel (standing preference, 2026-09-29): a smooth, clean, modern desktop app at the craft level of Craft and Apple's own apps. Convention is the goal, done at full fidelity; no themed costume (the "Galley Proof" book look was rejected).
 
 ## Evidence on Hand
 

@@ -1,101 +1,232 @@
-.start {
-  padding-top: 64px;
-  gap: 40px;
+/* The welcome window: brand and actions on the left, recent projects on the right. */
+
+.welcome {
+  --welcome-top: clamp(48px, 14vh, 128px);
+  display: grid;
+  grid-template-columns: minmax(360px, 44%) minmax(0, 1fr);
+  height: 100%;
+  view-transition-name: content;
 }
 
-.start__actions {
+.welcome__intro {
   display: flex;
-  flex-wrap: wrap;
-  gap: var(--sp-4);
-  margin-top: var(--sp-5);
+  flex-direction: column;
+  justify-content: flex-start;
+  gap: 36px;
+  padding: var(--welcome-top) clamp(32px, 6vw, 80px) 48px;
+  background: var(--bg);
+  overflow-y: auto;
 }
 
-.start__error {
-  font-size: var(--fs-ui);
-  color: var(--danger);
-}
-
-/* The cover sits in the proof margin, like a thumbnail beside a galley line. */
-.start__row {
-  grid-template-columns: minmax(0, 1fr) auto;
-  gap: 18px;
-  padding: 12px 0;
-}
-.start__row .minicover {
-  position: absolute;
-  left: calc(-1 * var(--margin-w));
-  top: 50%;
-  transform: translateY(-50%);
-}
-.start__row::before {
-  left: -14px;
-}
-
-/* The remove button takes the place of the time on hover. */
-.start__when {
-  position: relative;
+.welcome__brand {
   display: flex;
-  justify-content: flex-end;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 6px;
+}
+.welcome__icon {
+  display: grid;
+  place-items: center;
+  width: 72px;
+  height: 72px;
+  margin-bottom: 14px;
+  margin-top: -2px;
+  border-radius: 18px;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1px var(--separator),
+    0 2px 4px rgba(0, 0, 0, 0.05),
+    0 12px 28px -10px rgba(0, 0, 0, 0.22);
+}
+[data-theme="dark"] .welcome__icon {
+  background: var(--surface-raised);
+}
+.welcome__logo {
+  width: 38px;
+  height: 42px;
+  display: block;
+}
+.welcome__name {
+  font-size: 34px;
+  font-weight: 750;
+  letter-spacing: -0.03em;
+  line-height: 1.05;
+}
+.welcome__tagline {
+  font-size: var(--fs-lg);
+  color: var(--text-2);
+  letter-spacing: -0.01em;
+}
+
+.welcome__actions {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  width: min(100%, 400px);
+}
+
+.action {
+  display: flex;
   align-items: center;
-  min-height: 30px;
+  gap: 14px;
+  padding: 10px 12px;
+  border-radius: var(--r-lg);
+  text-align: left;
+  transition:
+    background var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
 }
-.start__when .lrow__mono {
-  transition: opacity var(--t-hover) var(--ease);
+.action:hover {
+  background: var(--hover);
 }
-.start__when .iconbtn {
-  position: absolute;
-  right: -6px;
+.action:active {
+  transform: scale(0.99);
 }
-.start__row:hover .start__when .lrow__mono,
-.start__row:focus-within .start__when .lrow__mono {
-  opacity: 0;
+.action__icon {
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  flex: none;
+  border-radius: 10px;
+  background: var(--fill);
+  color: var(--text);
+}
+.action--primary .action__icon {
+  background: var(--accent);
+  color: var(--on-accent);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.16),
+    0 2px 6px -1px color-mix(in srgb, var(--accent) 50%, transparent);
+}
+.action__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.action__title {
+  font-size: var(--fs-md);
+  font-weight: 600;
+}
+.action__desc {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+}
+.action__hint {
+  flex: none;
 }
 
-.start__text {
+.welcome__links {
+  display: flex;
+  gap: 20px;
+}
+
+/* ── Recents ── */
+
+.welcome__recents {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: var(--welcome-top) clamp(24px, 4vw, 48px) 48px;
+  background: var(--bg-sidebar);
+  box-shadow: inset 1px 0 0 var(--separator);
+  overflow-y: auto;
+}
+.welcome__recents > * {
+  width: min(100%, 640px);
+}
+.welcome__heading {
+  padding: 0 12px;
+  font-size: var(--fs-sm);
+  font-weight: 600;
+  color: var(--text-2);
+}
+.welcome__error {
+  margin: 0 12px;
+  padding: 10px 12px;
+  border-radius: var(--r-md);
+  background: var(--danger-soft);
+  font-size: var(--fs-base);
+  color: var(--danger-text);
+}
+
+.recents {
   display: flex;
   flex-direction: column;
   gap: 2px;
-  min-width: 0;
 }
 
-.start__name {
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.start__path {
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-/* Project cover: a book spine, drawn small */
-.minicover {
-  width: 30px;
-  height: 42px;
-  border-radius: 1px 3px 3px 1px;
-  background: #29524a;
-  display: flex;
-  align-items: flex-end;
-  padding: 5px 4px;
-  overflow: hidden;
+.recent {
   position: relative;
-  box-shadow: inset 3px 0 0 rgba(0, 0, 0, 0.18);
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 9px 8px 9px 12px;
+  border-radius: var(--r-lg);
+  transition: background var(--t-fast) var(--ease);
 }
-.minicover[data-tone="dark"] {
-  box-shadow: inset 3px 0 0 rgba(0, 0, 0, 0.1), inset 0 0 0 1px var(--hairline);
+.recent:hover {
+  background: var(--hover);
 }
-.minicover img {
+.recent:has(.recent__hit:focus-visible) {
+  box-shadow: 0 0 0 2px color-mix(in srgb, var(--accent) 80%, transparent);
+}
+.recent__hit {
   position: absolute;
   inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
+  z-index: 1;
+  border-radius: inherit;
 }
-.minicover__rule {
-  width: 12px;
-  height: 1.5px;
-  background: rgba(255, 255, 255, 0.7);
+.recent__hit:focus-visible {
+  outline: none;
 }
-.minicover[data-tone="dark"] .minicover__rule {
-  background: #141414;
+.recent .pcover {
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.06),
+    0 1px 3px rgba(0, 0, 0, 0.12);
+}
+.recent__text {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.recent__name {
+  font-size: var(--fs-md);
+  font-weight: 600;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recent__sub {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.recent__when {
+  flex: none;
+  font-size: var(--fs-sm);
+  color: var(--text-2);
+  transition: opacity var(--t-fast) var(--ease);
+}
+.recent__remove {
+  position: relative;
+  z-index: 2;
+  margin-left: -4px;
+  opacity: 0;
+}
+.recent:hover .recent__remove,
+.recent:focus-within .recent__remove {
+  opacity: 1;
+}
+
+@media (max-width: 960px) {
+  .welcome {
+    grid-template-columns: minmax(320px, 46%) minmax(0, 1fr);
+  }
 }

@@ -1,749 +1,97 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-09-29T12:43:21.323Z",
+  "generatedAt": "2026-09-29T18:00:00.000Z",
   "title": "Design System: Plotr",
   "extensions": {
     "colorMeta": {
-      "pine": {
-        "role": "primary",
-        "displayName": "Pine Pencil",
-        "canonical": "oklch(40.6% 0.048 179.6)",
-        "tonalRamp": [
-          "oklch(15% 0.048 179.6)",
-          "oklch(26% 0.048 179.6)",
-          "oklch(37% 0.048 179.6)",
-          "oklch(48% 0.048 179.6)",
-          "oklch(59% 0.048 179.6)",
-          "oklch(70% 0.048 179.6)",
-          "oklch(82% 0.048 179.6)",
-          "oklch(95% 0.019 179.6)"
-        ],
-        "theme": "light",
-        "cssVar": "--accent"
-      },
-      "pine-deep": {
-        "role": "primary",
-        "displayName": "Deep Pine",
-        "canonical": "oklch(33.0% 0.039 179.8)",
-        "tonalRamp": [
-          "oklch(15% 0.039 179.8)",
-          "oklch(26% 0.039 179.8)",
-          "oklch(37% 0.039 179.8)",
-          "oklch(48% 0.039 179.8)",
-          "oklch(59% 0.039 179.8)",
-          "oklch(70% 0.039 179.8)",
-          "oklch(82% 0.039 179.8)",
-          "oklch(95% 0.015 179.8)"
-        ],
-        "theme": "light",
-        "cssVar": "--accent-hover"
-      },
-      "pine-wash": {
-        "role": "primary",
-        "displayName": "Pine Wash",
-        "canonical": "oklch(93.8% 0.010 174.3)",
-        "tonalRamp": [
-          "oklch(15% 0.010 174.3)",
-          "oklch(26% 0.010 174.3)",
-          "oklch(37% 0.010 174.3)",
-          "oklch(48% 0.010 174.3)",
-          "oklch(59% 0.010 174.3)",
-          "oklch(70% 0.010 174.3)",
-          "oklch(82% 0.010 174.3)",
-          "oklch(95% 0.004 174.3)"
-        ],
-        "theme": "light",
-        "cssVar": "--accent-soft"
-      },
-      "pine-ink": {
-        "role": "primary",
-        "displayName": "Pine Ink",
-        "canonical": "oklch(32.9% 0.036 187.1)",
-        "tonalRamp": [
-          "oklch(15% 0.036 187.1)",
-          "oklch(26% 0.036 187.1)",
-          "oklch(37% 0.036 187.1)",
-          "oklch(48% 0.036 187.1)",
-          "oklch(59% 0.036 187.1)",
-          "oklch(70% 0.036 187.1)",
-          "oklch(82% 0.036 187.1)",
-          "oklch(95% 0.014 187.1)"
-        ],
-        "theme": "light",
-        "cssVar": "--accent-strong-text"
-      },
-      "galley-white": {
-        "role": "neutral",
-        "displayName": "Galley White",
-        "canonical": "oklch(100.0% 0.000 89.9)",
-        "tonalRamp": [
-          "oklch(15% 0.000 89.9)",
-          "oklch(26% 0.000 89.9)",
-          "oklch(37% 0.000 89.9)",
-          "oklch(48% 0.000 89.9)",
-          "oklch(59% 0.000 89.9)",
-          "oklch(70% 0.000 89.9)",
-          "oklch(82% 0.000 89.9)",
-          "oklch(95% 0.000 89.9)"
-        ],
-        "theme": "light",
-        "cssVar": "--paper / --surface"
-      },
-      "proof-band": {
-        "role": "neutral",
-        "displayName": "Proof Band",
-        "canonical": "oklch(97.6% 0.003 106.4)",
-        "tonalRamp": [
-          "oklch(15% 0.003 106.4)",
-          "oklch(26% 0.003 106.4)",
-          "oklch(37% 0.003 106.4)",
-          "oklch(48% 0.003 106.4)",
-          "oklch(59% 0.003 106.4)",
-          "oklch(70% 0.003 106.4)",
-          "oklch(82% 0.003 106.4)",
-          "oklch(95% 0.003 106.4)"
-        ],
-        "theme": "light",
-        "cssVar": "--paper-band"
-      },
-      "desk": {
-        "role": "neutral",
-        "displayName": "Desk",
-        "canonical": "oklch(96.3% 0.004 106.5)",
-        "tonalRamp": [
-          "oklch(15% 0.004 106.5)",
-          "oklch(26% 0.004 106.5)",
-          "oklch(37% 0.004 106.5)",
-          "oklch(48% 0.004 106.5)",
-          "oklch(59% 0.004 106.5)",
-          "oklch(70% 0.004 106.5)",
-          "oklch(82% 0.004 106.5)",
-          "oklch(95% 0.004 106.5)"
-        ],
-        "theme": "light",
-        "cssVar": "--desk / --hover-wash"
-      },
-      "ink": {
-        "role": "neutral",
-        "displayName": "Ink",
-        "canonical": "oklch(19.1% 0.000 89.9)",
-        "tonalRamp": [
-          "oklch(15% 0.000 89.9)",
-          "oklch(26% 0.000 89.9)",
-          "oklch(37% 0.000 89.9)",
-          "oklch(48% 0.000 89.9)",
-          "oklch(59% 0.000 89.9)",
-          "oklch(70% 0.000 89.9)",
-          "oklch(82% 0.000 89.9)",
-          "oklch(95% 0.000 89.9)"
-        ],
-        "theme": "light",
-        "cssVar": "--text"
-      },
-      "graphite": {
-        "role": "neutral",
-        "displayName": "Graphite",
-        "canonical": "oklch(48.8% 0.011 286.0)",
-        "tonalRamp": [
-          "oklch(15% 0.011 286.0)",
-          "oklch(26% 0.011 286.0)",
-          "oklch(37% 0.011 286.0)",
-          "oklch(48% 0.011 286.0)",
-          "oklch(59% 0.011 286.0)",
-          "oklch(70% 0.011 286.0)",
-          "oklch(82% 0.011 286.0)",
-          "oklch(95% 0.004 286.0)"
-        ],
-        "theme": "light",
-        "cssVar": "--text-muted"
-      },
-      "faint-graphite": {
-        "role": "neutral",
-        "displayName": "Faint Graphite",
-        "canonical": "oklch(71.7% 0.007 286.2)",
-        "tonalRamp": [
-          "oklch(15% 0.007 286.2)",
-          "oklch(26% 0.007 286.2)",
-          "oklch(37% 0.007 286.2)",
-          "oklch(48% 0.007 286.2)",
-          "oklch(59% 0.007 286.2)",
-          "oklch(70% 0.007 286.2)",
-          "oklch(82% 0.007 286.2)",
-          "oklch(95% 0.007 286.2)"
-        ],
-        "theme": "light",
-        "cssVar": "--text-faint"
-      },
-      "hairline": {
-        "role": "neutral",
-        "displayName": "Hairline",
-        "canonical": "oklch(91.8% 0.005 106.5)",
-        "tonalRamp": [
-          "oklch(15% 0.005 106.5)",
-          "oklch(26% 0.005 106.5)",
-          "oklch(37% 0.005 106.5)",
-          "oklch(48% 0.005 106.5)",
-          "oklch(59% 0.005 106.5)",
-          "oklch(70% 0.005 106.5)",
-          "oklch(82% 0.005 106.5)",
-          "oklch(95% 0.005 106.5)"
-        ],
-        "theme": "light",
-        "cssVar": "--hairline"
-      },
-      "hairline-strong": {
-        "role": "neutral",
-        "displayName": "Strong Hairline",
-        "canonical": "oklch(85.3% 0.007 106.5)",
-        "tonalRamp": [
-          "oklch(15% 0.007 106.5)",
-          "oklch(26% 0.007 106.5)",
-          "oklch(37% 0.007 106.5)",
-          "oklch(48% 0.007 106.5)",
-          "oklch(59% 0.007 106.5)",
-          "oklch(70% 0.007 106.5)",
-          "oklch(82% 0.007 106.5)",
-          "oklch(95% 0.007 106.5)"
-        ],
-        "theme": "light",
-        "cssVar": "--hairline-strong"
-      },
-      "leader": {
-        "role": "neutral",
-        "displayName": "Leader",
-        "canonical": "oklch(79.7% 0.007 106.6)",
-        "tonalRamp": [
-          "oklch(15% 0.007 106.6)",
-          "oklch(26% 0.007 106.6)",
-          "oklch(37% 0.007 106.6)",
-          "oklch(48% 0.007 106.6)",
-          "oklch(59% 0.007 106.6)",
-          "oklch(70% 0.007 106.6)",
-          "oklch(82% 0.007 106.6)",
-          "oklch(95% 0.007 106.6)"
-        ],
-        "theme": "light",
-        "cssVar": "--leader"
-      },
-      "red-pencil": {
-        "role": "danger",
-        "displayName": "Red Pencil",
-        "canonical": "oklch(51.9% 0.162 28.9)",
-        "tonalRamp": [
-          "oklch(15% 0.120 28.9)",
-          "oklch(26% 0.120 28.9)",
-          "oklch(37% 0.120 28.9)",
-          "oklch(48% 0.120 28.9)",
-          "oklch(59% 0.120 28.9)",
-          "oklch(70% 0.120 28.9)",
-          "oklch(82% 0.120 28.9)",
-          "oklch(95% 0.048 28.9)"
-        ],
-        "theme": "light",
-        "cssVar": "--danger"
-      },
-      "pine-negative": {
-        "role": "primary",
-        "displayName": "Negative Pine",
-        "canonical": "oklch(71.1% 0.068 177.3)",
-        "tonalRamp": [
-          "oklch(15% 0.068 177.3)",
-          "oklch(26% 0.068 177.3)",
-          "oklch(37% 0.068 177.3)",
-          "oklch(48% 0.068 177.3)",
-          "oklch(59% 0.068 177.3)",
-          "oklch(70% 0.068 177.3)",
-          "oklch(82% 0.068 177.3)",
-          "oklch(95% 0.027 177.3)"
-        ],
-        "theme": "dark",
-        "cssVar": "--accent (dark)"
-      },
-      "pine-negative-hover": {
-        "role": "primary",
-        "displayName": "Negative Pine Hover",
-        "canonical": "oklch(77.5% 0.061 177.1)",
-        "tonalRamp": [
-          "oklch(15% 0.061 177.1)",
-          "oklch(26% 0.061 177.1)",
-          "oklch(37% 0.061 177.1)",
-          "oklch(48% 0.061 177.1)",
-          "oklch(59% 0.061 177.1)",
-          "oklch(70% 0.061 177.1)",
-          "oklch(82% 0.061 177.1)",
-          "oklch(95% 0.024 177.1)"
-        ],
-        "theme": "dark",
-        "cssVar": "--accent-hover (dark)"
-      },
-      "pine-negative-wash": {
-        "role": "primary",
-        "displayName": "Negative Pine Wash",
-        "canonical": "oklch(26.9% 0.023 177.2)",
-        "tonalRamp": [
-          "oklch(15% 0.023 177.2)",
-          "oklch(26% 0.023 177.2)",
-          "oklch(37% 0.023 177.2)",
-          "oklch(48% 0.023 177.2)",
-          "oklch(59% 0.023 177.2)",
-          "oklch(70% 0.023 177.2)",
-          "oklch(82% 0.023 177.2)",
-          "oklch(95% 0.009 177.2)"
-        ],
-        "theme": "dark",
-        "cssVar": "--accent-soft (dark)"
-      },
-      "pine-negative-ink": {
-        "role": "primary",
-        "displayName": "Negative Pine Ink",
-        "canonical": "oklch(83.4% 0.047 177.4)",
-        "tonalRamp": [
-          "oklch(15% 0.047 177.4)",
-          "oklch(26% 0.047 177.4)",
-          "oklch(37% 0.047 177.4)",
-          "oklch(48% 0.047 177.4)",
-          "oklch(59% 0.047 177.4)",
-          "oklch(70% 0.047 177.4)",
-          "oklch(82% 0.047 177.4)",
-          "oklch(95% 0.019 177.4)"
-        ],
-        "theme": "dark",
-        "cssVar": "--accent-strong-text (dark)"
-      },
-      "film-black": {
-        "role": "neutral",
-        "displayName": "Film Black",
-        "canonical": "oklch(18.2% 0.004 264.5)",
-        "tonalRamp": [
-          "oklch(15% 0.004 264.5)",
-          "oklch(26% 0.004 264.5)",
-          "oklch(37% 0.004 264.5)",
-          "oklch(48% 0.004 264.5)",
-          "oklch(59% 0.004 264.5)",
-          "oklch(70% 0.004 264.5)",
-          "oklch(82% 0.004 264.5)",
-          "oklch(95% 0.004 264.5)"
-        ],
-        "theme": "dark",
-        "cssVar": "--paper (dark)"
-      },
-      "film-band": {
-        "role": "neutral",
-        "displayName": "Film Band",
-        "canonical": "oklch(20.0% 0.006 271.1)",
-        "tonalRamp": [
-          "oklch(15% 0.006 271.1)",
-          "oklch(26% 0.006 271.1)",
-          "oklch(37% 0.006 271.1)",
-          "oklch(48% 0.006 271.1)",
-          "oklch(59% 0.006 271.1)",
-          "oklch(70% 0.006 271.1)",
-          "oklch(82% 0.006 271.1)",
-          "oklch(95% 0.006 271.1)"
-        ],
-        "theme": "dark",
-        "cssVar": "--paper-band (dark)"
-      },
-      "film-surface": {
-        "role": "neutral",
-        "displayName": "Film Surface",
-        "canonical": "oklch(20.9% 0.006 271.1)",
-        "tonalRamp": [
-          "oklch(15% 0.006 271.1)",
-          "oklch(26% 0.006 271.1)",
-          "oklch(37% 0.006 271.1)",
-          "oklch(48% 0.006 271.1)",
-          "oklch(59% 0.006 271.1)",
-          "oklch(70% 0.006 271.1)",
-          "oklch(82% 0.006 271.1)",
-          "oklch(95% 0.006 271.1)"
-        ],
-        "theme": "dark",
-        "cssVar": "--surface (dark)"
-      },
-      "film-desk": {
-        "role": "neutral",
-        "displayName": "Film Desk",
-        "canonical": "oklch(15.8% 0.003 248.0)",
-        "tonalRamp": [
-          "oklch(15% 0.003 248.0)",
-          "oklch(26% 0.003 248.0)",
-          "oklch(37% 0.003 248.0)",
-          "oklch(48% 0.003 248.0)",
-          "oklch(59% 0.003 248.0)",
-          "oklch(70% 0.003 248.0)",
-          "oklch(82% 0.003 248.0)",
-          "oklch(95% 0.003 248.0)"
-        ],
-        "theme": "dark",
-        "cssVar": "--desk / --on-accent (dark)"
-      },
-      "film-hover": {
-        "role": "neutral",
-        "displayName": "Film Hover",
-        "canonical": "oklch(23.4% 0.007 258.4)",
-        "tonalRamp": [
-          "oklch(15% 0.007 258.4)",
-          "oklch(26% 0.007 258.4)",
-          "oklch(37% 0.007 258.4)",
-          "oklch(48% 0.007 258.4)",
-          "oklch(59% 0.007 258.4)",
-          "oklch(70% 0.007 258.4)",
-          "oklch(82% 0.007 258.4)",
-          "oklch(95% 0.007 258.4)"
-        ],
-        "theme": "dark",
-        "cssVar": "--hover-wash (dark)"
-      },
-      "negative-type": {
-        "role": "neutral",
-        "displayName": "Negative Type",
-        "canonical": "oklch(93.9% 0.007 97.4)",
-        "tonalRamp": [
-          "oklch(15% 0.007 97.4)",
-          "oklch(26% 0.007 97.4)",
-          "oklch(37% 0.007 97.4)",
-          "oklch(48% 0.007 97.4)",
-          "oklch(59% 0.007 97.4)",
-          "oklch(70% 0.007 97.4)",
-          "oklch(82% 0.007 97.4)",
-          "oklch(95% 0.007 97.4)"
-        ],
-        "theme": "dark",
-        "cssVar": "--text (dark)"
-      },
-      "negative-graphite": {
-        "role": "neutral",
-        "displayName": "Negative Graphite",
-        "canonical": "oklch(71.4% 0.009 286.2)",
-        "tonalRamp": [
-          "oklch(15% 0.009 286.2)",
-          "oklch(26% 0.009 286.2)",
-          "oklch(37% 0.009 286.2)",
-          "oklch(48% 0.009 286.2)",
-          "oklch(59% 0.009 286.2)",
-          "oklch(70% 0.009 286.2)",
-          "oklch(82% 0.009 286.2)",
-          "oklch(95% 0.009 286.2)"
-        ],
-        "theme": "dark",
-        "cssVar": "--text-muted (dark)"
-      },
-      "negative-faint": {
-        "role": "neutral",
-        "displayName": "Negative Faint",
-        "canonical": "oklch(46.1% 0.010 271.2)",
-        "tonalRamp": [
-          "oklch(15% 0.010 271.2)",
-          "oklch(26% 0.010 271.2)",
-          "oklch(37% 0.010 271.2)",
-          "oklch(48% 0.010 271.2)",
-          "oklch(59% 0.010 271.2)",
-          "oklch(70% 0.010 271.2)",
-          "oklch(82% 0.010 271.2)",
-          "oklch(95% 0.004 271.2)"
-        ],
-        "theme": "dark",
-        "cssVar": "--text-faint (dark)"
-      },
-      "negative-hairline": {
-        "role": "neutral",
-        "displayName": "Negative Hairline",
-        "canonical": "oklch(27.2% 0.008 264.4)",
-        "tonalRamp": [
-          "oklch(15% 0.008 264.4)",
-          "oklch(26% 0.008 264.4)",
-          "oklch(37% 0.008 264.4)",
-          "oklch(48% 0.008 264.4)",
-          "oklch(59% 0.008 264.4)",
-          "oklch(70% 0.008 264.4)",
-          "oklch(82% 0.008 264.4)",
-          "oklch(95% 0.008 264.4)"
-        ],
-        "theme": "dark",
-        "cssVar": "--hairline (dark)"
-      },
-      "negative-hairline-strong": {
-        "role": "neutral",
-        "displayName": "Negative Strong Hairline",
-        "canonical": "oklch(33.3% 0.009 268.4)",
-        "tonalRamp": [
-          "oklch(15% 0.009 268.4)",
-          "oklch(26% 0.009 268.4)",
-          "oklch(37% 0.009 268.4)",
-          "oklch(48% 0.009 268.4)",
-          "oklch(59% 0.009 268.4)",
-          "oklch(70% 0.009 268.4)",
-          "oklch(82% 0.009 268.4)",
-          "oklch(95% 0.009 268.4)"
-        ],
-        "theme": "dark",
-        "cssVar": "--hairline-strong (dark)"
-      },
-      "negative-leader": {
-        "role": "neutral",
-        "displayName": "Negative Leader",
-        "canonical": "oklch(37.1% 0.009 268.4)",
-        "tonalRamp": [
-          "oklch(15% 0.009 268.4)",
-          "oklch(26% 0.009 268.4)",
-          "oklch(37% 0.009 268.4)",
-          "oklch(48% 0.009 268.4)",
-          "oklch(59% 0.009 268.4)",
-          "oklch(70% 0.009 268.4)",
-          "oklch(82% 0.009 268.4)",
-          "oklch(95% 0.009 268.4)"
-        ],
-        "theme": "dark",
-        "cssVar": "--leader (dark)"
-      },
-      "red-pencil-negative": {
-        "role": "danger",
-        "displayName": "Red Pencil Negative",
-        "canonical": "oklch(56.6% 0.154 28.7)",
-        "tonalRamp": [
-          "oklch(15% 0.120 28.7)",
-          "oklch(26% 0.120 28.7)",
-          "oklch(37% 0.120 28.7)",
-          "oklch(48% 0.120 28.7)",
-          "oklch(59% 0.120 28.7)",
-          "oklch(70% 0.120 28.7)",
-          "oklch(82% 0.120 28.7)",
-          "oklch(95% 0.048 28.7)"
-        ],
-        "theme": "dark",
-        "cssVar": "--danger (dark)"
-      },
-      "category-character": {
-        "role": "data",
-        "displayName": "Category: Character",
-        "canonical": "oklch(55.4% 0.150 296.1)",
-        "tonalRamp": [
-          "oklch(15% 0.120 296.1)",
-          "oklch(26% 0.120 296.1)",
-          "oklch(37% 0.120 296.1)",
-          "oklch(48% 0.120 296.1)",
-          "oklch(59% 0.120 296.1)",
-          "oklch(70% 0.120 296.1)",
-          "oklch(82% 0.120 296.1)",
-          "oklch(95% 0.048 296.1)"
-        ],
-        "theme": "both",
-        "cssVar": "--cat-character"
-      },
-      "category-location": {
-        "role": "data",
-        "displayName": "Category: Location",
-        "canonical": "oklch(61.5% 0.130 150.6)",
-        "tonalRamp": [
-          "oklch(15% 0.120 150.6)",
-          "oklch(26% 0.120 150.6)",
-          "oklch(37% 0.120 150.6)",
-          "oklch(48% 0.120 150.6)",
-          "oklch(59% 0.120 150.6)",
-          "oklch(70% 0.120 150.6)",
-          "oklch(82% 0.120 150.6)",
-          "oklch(95% 0.048 150.6)"
-        ],
-        "theme": "both",
-        "cssVar": "--cat-location"
-      },
-      "category-conflict": {
-        "role": "data",
-        "displayName": "Category: Conflict",
-        "canonical": "oklch(58.6% 0.157 30.5)",
-        "tonalRamp": [
-          "oklch(15% 0.120 30.5)",
-          "oklch(26% 0.120 30.5)",
-          "oklch(37% 0.120 30.5)",
-          "oklch(48% 0.120 30.5)",
-          "oklch(59% 0.120 30.5)",
-          "oklch(70% 0.120 30.5)",
-          "oklch(82% 0.120 30.5)",
-          "oklch(95% 0.048 30.5)"
-        ],
-        "theme": "both",
-        "cssVar": "--cat-conflict"
-      },
-      "category-lore": {
-        "role": "data",
-        "displayName": "Category: Lore",
-        "canonical": "oklch(59.3% 0.155 257.2)",
-        "tonalRamp": [
-          "oklch(15% 0.120 257.2)",
-          "oklch(26% 0.120 257.2)",
-          "oklch(37% 0.120 257.2)",
-          "oklch(48% 0.120 257.2)",
-          "oklch(59% 0.120 257.2)",
-          "oklch(70% 0.120 257.2)",
-          "oklch(82% 0.120 257.2)",
-          "oklch(95% 0.048 257.2)"
-        ],
-        "theme": "both",
-        "cssVar": "--cat-lore"
-      }
+      "pine": { "role": "primary", "displayName": "Modern Pine", "canonical": "#227A66", "tonalRamp": ["#0B2A23", "#12402F", "#18564A", "#1E705D", "#227A66", "#3F9A84", "#86C7B6", "#DCEFEA"] },
+      "pine-hover": { "role": "primary", "displayName": "Pine Hover", "canonical": "#1C6B59" },
+      "pine-text": { "role": "primary", "displayName": "Pine Text", "canonical": "#1E705D" },
+      "pine-soft": { "role": "primary", "displayName": "Pine Wash", "canonical": "rgba(34, 122, 102, 0.12)" },
+      "pine-soft-strong": { "role": "primary", "displayName": "Pine Wash Strong", "canonical": "rgba(34, 122, 102, 0.2)" },
+      "accent-blue": { "role": "secondary", "displayName": "Blue Accent", "canonical": "#0066D6", "tonalRamp": ["#002049", "#003A80", "#0052B0", "#0066D6", "#2F86E8", "#6AB0FF", "#A9D0FF", "#E3F0FF"] },
+      "accent-violet": { "role": "secondary", "displayName": "Violet Accent", "canonical": "#6A4BD8", "tonalRamp": ["#1E1446", "#33237A", "#4C34AA", "#6A4BD8", "#846BE4", "#B3A4FF", "#D3CAFF", "#EFEBFF"] },
+      "accent-rose": { "role": "secondary", "displayName": "Rose Accent", "canonical": "#C8365E", "tonalRamp": ["#3E0C1B", "#6B1630", "#962446", "#C8365E", "#DD5A7F", "#FF8AAE", "#FFC0D2", "#FFE9EF"] },
+      "accent-orange": { "role": "secondary", "displayName": "Orange Accent", "canonical": "#B4570F", "tonalRamp": ["#381903", "#5E2C06", "#86400A", "#B4570F", "#D47526", "#FFAE5E", "#FFD1A3", "#FFF0E1"] },
+      "accent-graphite": { "role": "secondary", "displayName": "Graphite Accent", "canonical": "#4B4B52", "tonalRamp": ["#161618", "#26262A", "#3A3A40", "#4B4B52", "#6A6A73", "#9A9AA2", "#D1D1D6", "#F0F0F2"] },
+      "content-white": { "role": "neutral", "displayName": "Content White", "canonical": "#FFFFFF" },
+      "sidebar-grey": { "role": "neutral", "displayName": "Sidebar Grey", "canonical": "#F5F5F7" },
+      "canvas": { "role": "neutral", "displayName": "Canvas", "canonical": "#FAFAFB" },
+      "sunken": { "role": "neutral", "displayName": "Sunken Well", "canonical": "#F3F3F5" },
+      "material": { "role": "neutral", "displayName": "Material", "canonical": "rgba(252, 252, 253, 0.8)" },
+      "fill": { "role": "neutral", "displayName": "Fill", "canonical": "rgba(0, 0, 0, 0.045)" },
+      "fill-strong": { "role": "neutral", "displayName": "Fill Strong", "canonical": "rgba(0, 0, 0, 0.075)" },
+      "pressed": { "role": "neutral", "displayName": "Pressed", "canonical": "rgba(0, 0, 0, 0.085)" },
+      "ink": { "role": "neutral", "displayName": "Ink", "canonical": "#1D1D1F", "tonalRamp": ["#1D1D1F", "#3A3A3F", "#56565B", "#6E6E73", "#8A8A8F", "#A1A1A6", "#D2D2D7", "#F5F5F7"] },
+      "secondary-grey": { "role": "neutral", "displayName": "Secondary Grey", "canonical": "#6E6E73" },
+      "tertiary-grey": { "role": "neutral", "displayName": "Tertiary Grey", "canonical": "#A1A1A6" },
+      "separator": { "role": "neutral", "displayName": "Separator", "canonical": "rgba(0, 0, 0, 0.08)" },
+      "separator-strong": { "role": "neutral", "displayName": "Separator Strong", "canonical": "rgba(0, 0, 0, 0.14)" },
+      "backdrop": { "role": "neutral", "displayName": "Backdrop", "canonical": "rgba(24, 24, 28, 0.22)" },
+      "danger": { "role": "neutral", "displayName": "Danger", "canonical": "#D70015" },
+      "danger-text": { "role": "neutral", "displayName": "Danger Text", "canonical": "#C4000F" },
+      "danger-soft": { "role": "neutral", "displayName": "Danger Wash", "canonical": "rgba(215, 0, 21, 0.09)" },
+      "warning": { "role": "neutral", "displayName": "Warning", "canonical": "#C77700" },
+      "dark-content": { "role": "neutral", "displayName": "Dark Content", "canonical": "#1B1B1D", "tonalRamp": ["#161618", "#19191B", "#1B1B1D", "#212124", "#232326", "#252528", "#2A2A2E", "#3A3A3F"] },
+      "dark-sidebar": { "role": "neutral", "displayName": "Dark Sidebar", "canonical": "#232326" },
+      "dark-canvas": { "role": "neutral", "displayName": "Dark Canvas", "canonical": "#19191B" },
+      "dark-grouped": { "role": "neutral", "displayName": "Dark Grouped", "canonical": "#161618" },
+      "dark-surface": { "role": "neutral", "displayName": "Dark Surface", "canonical": "#252528" },
+      "dark-surface-raised": { "role": "neutral", "displayName": "Dark Surface Raised", "canonical": "#2A2A2E" },
+      "dark-material": { "role": "neutral", "displayName": "Dark Material", "canonical": "rgba(44, 44, 48, 0.8)" },
+      "dark-ink": { "role": "neutral", "displayName": "Dark Ink", "canonical": "#F2F2F4" },
+      "dark-secondary": { "role": "neutral", "displayName": "Dark Secondary", "canonical": "#A1A1A8" },
+      "dark-tertiary": { "role": "neutral", "displayName": "Dark Tertiary", "canonical": "#6C6C72" },
+      "dark-pine": { "role": "primary", "displayName": "Dark Pine", "canonical": "#29806C" },
+      "dark-pine-text": { "role": "primary", "displayName": "Dark Pine Text", "canonical": "#62C4AC" },
+      "dark-danger": { "role": "neutral", "displayName": "Dark Danger", "canonical": "#D2332A" },
+      "dark-danger-text": { "role": "neutral", "displayName": "Dark Danger Text", "canonical": "#FF6961" },
+      "dark-warning": { "role": "neutral", "displayName": "Dark Warning", "canonical": "#FFB340" }
     },
     "typographyMeta": {
-      "display": {
-        "displayName": "Display",
-        "purpose": "Project and page titles; settings pages use 34px."
-      },
-      "headline": {
-        "displayName": "Headline",
-        "purpose": "The note title on the note page."
-      },
-      "board-title": {
-        "displayName": "Board title",
-        "purpose": "Board names over canvases and the Notes list."
-      },
-      "title": {
-        "displayName": "Title",
-        "purpose": "Modal titles."
-      },
-      "lede": {
-        "displayName": "Lede",
-        "purpose": "Italic project logline under the display title, max 56ch."
-      },
-      "body": {
-        "displayName": "Body",
-        "purpose": "Note prose, 66ch measure."
-      },
-      "group-label": {
-        "displayName": "Group label",
-        "purpose": "Serif heads of galley groups, on a hairline rule."
-      },
-      "row": {
-        "displayName": "Row",
-        "purpose": "Names in galley lists."
-      },
-      "running-head": {
-        "displayName": "Running head",
-        "purpose": "The breadcrumb; current item 600."
-      },
-      "label": {
-        "displayName": "Label",
-        "purpose": "Franklin: buttons, tabs, menus, field labels."
-      },
-      "meta": {
-        "displayName": "Meta",
-        "purpose": "Franklin: hints, palette group labels, margin-note labels."
-      },
-      "slug": {
-        "displayName": "Slug",
-        "purpose": "Courier Prime: slug lines, row numbers, dates, counts."
-      },
-      "key": {
-        "displayName": "Key",
-        "purpose": "Courier Prime: keyboard keys."
-      }
+      "display": { "displayName": "Display", "purpose": "The Plotr name in the welcome window only." },
+      "headline": { "displayName": "Headline", "purpose": "Page titles and the note title in the sheet." },
+      "title": { "displayName": "Title", "purpose": "Section, modal, empty-state and plot card titles." },
+      "title-sm": { "displayName": "Title Small", "purpose": "Board, type and Info Map card names; sidebar project name; current breadcrumb." },
+      "body": { "displayName": "Body", "purpose": "All UI text; buttons at 550." },
+      "body-prose": { "displayName": "Body Prose", "purpose": "Note editor text, max 68ch." },
+      "label": { "displayName": "Label", "purpose": "Meta lines, field labels, sidebar section heads, pills, segments. Sentence case." },
+      "caption": { "displayName": "Caption", "purpose": "Plot label numbers, plot card location, key caps." },
+      "mono": { "displayName": "Mono", "purpose": "Inline code in notes only." }
     },
     "shadows": [
-      {
-        "name": "ring",
-        "value": "0 0 0 1px var(--hairline)",
-        "purpose": "Hairline ring instead of a border on raised objects."
-      },
-      {
-        "name": "shadow-pop",
-        "value": "0 0 0 1px var(--hairline), 0 12px 28px -14px rgba(20, 20, 20, 0.28)",
-        "darkValue": "0 0 0 1px var(--hairline), 0 12px 28px -14px rgba(0, 0, 0, 0.7)",
-        "purpose": "Menus, category picker, wiki-link menu, Plot Line list panel."
-      },
-      {
-        "name": "shadow-rail",
-        "value": "0 0 0 1px var(--hairline), 0 8px 22px -14px rgba(20, 20, 20, 0.25)",
-        "darkValue": "0 0 0 1px var(--hairline), 0 8px 22px -14px rgba(0, 0, 0, 0.6)",
-        "purpose": "Info Map tool rail and zoom control."
-      },
-      {
-        "name": "shadow-modal",
-        "value": "0 0 0 1px var(--hairline), 0 30px 70px -30px rgba(20, 20, 20, 0.45)",
-        "darkValue": "0 0 0 1px var(--hairline), 0 30px 70px -30px rgba(0, 0, 0, 0.85)",
-        "purpose": "Modals and the search palette."
-      },
-      {
-        "name": "shadow-sheet",
-        "value": "-1px 0 0 var(--hairline), -24px 0 60px -30px rgba(20, 20, 20, 0.35)",
-        "darkValue": "-1px 0 0 var(--hairline), -24px 0 60px -30px rgba(0, 0, 0, 0.8)",
-        "purpose": "Left edge of the note page sheet."
-      },
-      {
-        "name": "shadow-selected",
-        "value": "0 0 0 2px var(--accent), 0 8px 22px -14px rgba(41, 82, 74, 0.45)",
-        "darkValue": "0 0 0 2px var(--accent), 0 8px 22px -14px rgba(0, 0, 0, 0.6)",
-        "purpose": "Selected Info Map slip or image."
-      },
-      {
-        "name": "focus-ring",
-        "value": "outline: 2px solid var(--accent); outline-offset: 2px",
-        "purpose": "Global :focus-visible. Inputs use inset 0 0 0 2px var(--accent)."
-      },
-      {
-        "name": "backdrop",
-        "value": "rgba(20, 20, 20, 0.22)",
-        "darkValue": "rgba(0, 0, 0, 0.5)",
-        "purpose": "Behind modals, the search palette and the note page."
-      }
+      { "name": "ring", "value": "0 0 0 1px rgba(0, 0, 0, 0.07)", "purpose": "Bare outline where a surface needs an edge but no lift." },
+      { "name": "shadow-xs", "value": "0 1px 2px rgba(0, 0, 0, 0.06)", "purpose": "Small contact shadow." },
+      { "name": "shadow-card", "value": "0 0 0 1px rgba(0, 0, 0, 0.06), 0 1px 2px rgba(0, 0, 0, 0.04), 0 3px 10px -4px rgba(0, 0, 0, 0.06)", "purpose": "Board, type and Info Map cards, settings groups, plot labels and act chips at rest." },
+      { "name": "shadow-card-hover", "value": "0 0 0 1px rgba(0, 0, 0, 0.07), 0 2px 4px rgba(0, 0, 0, 0.04), 0 14px 30px -10px rgba(0, 0, 0, 0.16)", "purpose": "Hovered cards, paired with a 1-2px lift." },
+      { "name": "shadow-float", "value": "0 0 0 0.5px rgba(0, 0, 0, 0.1), 0 2px 6px rgba(0, 0, 0, 0.05), 0 8px 24px -6px rgba(0, 0, 0, 0.14)", "purpose": "Floating canvas controls such as the zoom capsule." },
+      { "name": "shadow-pop", "value": "0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 2px 6px rgba(0, 0, 0, 0.06), 0 14px 36px -6px rgba(0, 0, 0, 0.2)", "purpose": "Menus and popovers." },
+      { "name": "shadow-modal", "value": "0 0 0 0.5px rgba(0, 0, 0, 0.12), 0 4px 14px rgba(0, 0, 0, 0.06), 0 28px 80px -16px rgba(0, 0, 0, 0.32)", "purpose": "Modals, the search panel, the note sheet." },
+      { "name": "button-filled", "value": "inset 0 1px 0 rgba(255, 255, 255, 0.14), 0 1px 2px rgba(0, 0, 0, 0.12)", "purpose": "Primary and destructive buttons." },
+      { "name": "focus-field", "value": "0 0 0 1px var(--accent), 0 0 0 4px var(--accent-soft)", "purpose": "Focused inputs and search fields." },
+      { "name": "focus-card", "value": "0 0 0 2px var(--bg), 0 0 0 4px color-mix(in srgb, var(--accent) 80%, transparent)", "purpose": "Keyboard focus on board cards." },
+      { "name": "dark-shadow-card", "value": "0 0 0 1px rgba(255, 255, 255, 0.07), 0 1px 2px rgba(0, 0, 0, 0.3), 0 4px 12px -4px rgba(0, 0, 0, 0.4)", "purpose": "Card shadow in dark mode." },
+      { "name": "dark-shadow-modal", "value": "0 0 0 0.5px rgba(255, 255, 255, 0.14), 0 4px 14px rgba(0, 0, 0, 0.35), 0 30px 90px -16px rgba(0, 0, 0, 0.75)", "purpose": "Modal shadow in dark mode." }
     ],
     "motion": [
-      {
-        "name": "ease",
-        "value": "cubic-bezier(0.16, 1, 0.3, 1)",
-        "purpose": "The one exponential ease-out curve for every transition and entrance."
-      },
-      {
-        "name": "t-hover",
-        "value": "140ms",
-        "purpose": "Hover colour, wash and change-bar transitions."
-      },
-      {
-        "name": "t-focus",
-        "value": "160ms",
-        "purpose": "Input focus ring."
-      },
-      {
-        "name": "t-enter",
-        "value": "360ms",
-        "purpose": "Modal, search palette, query card and note page entrances."
-      },
-      {
-        "name": "popup-enter",
-        "value": "translateY(4px) + fade",
-        "purpose": "Menus (180ms), pickers (200ms), modals and query card (360ms)."
-      },
-      {
-        "name": "sheet-in",
-        "value": "translateX(48px) + fade, 360ms",
-        "purpose": "The note page slides in once from the right."
-      },
-      {
-        "name": "sheet-rise",
-        "value": "translateY(8px) + fade, 240ms",
-        "purpose": "Info Map tool rail and Plot Line list panel."
-      },
-      {
-        "name": "reduced-motion",
-        "value": "durations forced to 1ms",
-        "purpose": "prefers-reduced-motion: reduce turns motion off."
-      }
+      { "name": "ease", "value": "cubic-bezier(0.22, 1, 0.36, 1)", "purpose": "Default ease for state changes, fades and pop-ins." },
+      { "name": "ease-glide", "value": "cubic-bezier(0.32, 0.72, 0, 1)", "purpose": "Sliding and rising motion: segmented thumb, switch knob, sidebar collapse, sheets, modals." },
+      { "name": "t-fast", "value": "140ms", "purpose": "Hover, colour and press feedback." },
+      { "name": "t-base", "value": "200ms", "purpose": "Card lift, chevron rotation, header rule." },
+      { "name": "t-slow", "value": "340ms", "purpose": "Note sheet rise." },
+      { "name": "segmented-thumb", "value": "300ms ease-glide", "purpose": "Thumb slide and width change." },
+      { "name": "switch-knob", "value": "260ms ease-glide", "purpose": "Switch knob travel." },
+      { "name": "sidebar-collapse", "value": "280ms ease-glide", "purpose": "Ctrl+\\ sidebar collapse on the grid column." },
+      { "name": "screen-crossfade", "value": "old 120ms fade-out, new 240ms rise-in (8px)", "purpose": "View transition on the content area only; sidebar and header stay put." },
+      { "name": "reduced-motion", "value": "1ms", "purpose": "All animations and transitions collapse under prefers-reduced-motion." }
     ],
     "breakpoints": [
-      {
-        "name": "notes-tree-narrow",
-        "value": "960px"
-      },
-      {
-        "name": "search-collapse",
-        "value": "1000px"
-      },
-      {
-        "name": "margin-under",
-        "value": "1060px"
-      },
-      {
-        "name": "note-margin-under",
-        "value": "1100px"
-      }
+      { "name": "header-subtitle", "value": "1180px" },
+      { "name": "header-icons", "value": "1100px" },
+      { "name": "page-narrow", "value": "1080px" },
+      { "name": "compact", "value": "1000px" },
+      { "name": "type-cards-stack", "value": "980px" },
+      { "name": "narrow", "value": "960px" }
     ]
   },
   "components": [
@@ -751,149 +99,117 @@
       "name": "Primary Button",
       "kind": "button",
       "refersTo": "button-primary",
-      "description": "The one pine action on a screen, with its single-key shortcut.",
-      "html": "<button class=\"ds-btn ds-btn-primary\">New board <span class=\"ds-kbd ds-kbd-on\">N</span></button>",
-      "css": ".ds-btn{display:inline-flex;align-items:center;gap:8px;font-family:var(--font-ui);font-size:13px;font-weight:500;line-height:1.4;border:none;border-radius:4px;padding:6px 12px;cursor:pointer;transition:background 140ms cubic-bezier(0.16,1,0.3,1),color 140ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-primary{background:var(--accent,#29524A);color:var(--on-accent,#fff);padding-right:7px}.ds-btn-primary:hover{background:var(--accent-hover,#1D3C36)}.ds-btn:focus-visible{outline:2px solid var(--accent,#29524A);outline-offset:2px}.ds-kbd{display:inline-block;font-family:var(--font-mono,'Courier Prime',monospace);font-size:11.5px;line-height:1.35;padding:0 5px;border-radius:2px;box-shadow:inset 0 0 0 1px var(--hairline-strong,#CFCFCA);color:var(--text-muted,#5F5F66)}.ds-kbd-on{box-shadow:inset 0 0 0 1px rgba(255,255,255,0.35);color:inherit}"
+      "description": "The one filled action per header or dialog, in the accent.",
+      "html": "<button class=\"ds-btn ds-btn-primary\"><svg width=\"14\" height=\"14\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"2.2\" stroke-linecap=\"round\"><path d=\"M12 5v14M5 12h14\"/></svg>New board</button>",
+      "css": ".ds-btn { display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 13px; border: none; border-radius: var(--r-md, 9px); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); font-size: 13.5px; font-weight: 550; line-height: 1; cursor: pointer; transition: background 140ms cubic-bezier(0.22, 1, 0.36, 1), transform 140ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn-primary { background: var(--accent, #227A66); color: var(--on-accent, #FFFFFF); box-shadow: inset 0 1px 0 rgba(255,255,255,0.14), 0 1px 2px rgba(0,0,0,0.12); } .ds-btn-primary:hover { background: var(--accent-hover, #1C6B59); } .ds-btn-primary:active { transform: scale(0.97); } .ds-btn-primary:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent, #227A66) 80%, transparent); outline-offset: 2px; }"
     },
     {
-      "name": "Secondary and Ghost Buttons",
+      "name": "Secondary Button",
       "kind": "button",
       "refersTo": "button-secondary",
-      "description": "Outlined secondary action and a quiet ghost action.",
-      "html": "<div style=\"display:flex;gap:8px\"><button class=\"ds-btn2 ds-btn-secondary\">Browse</button><button class=\"ds-btn2 ds-btn-ghost\">Trash</button></div>",
-      "css": ".ds-btn2{font-family:var(--font-ui);font-size:13px;font-weight:500;line-height:1.4;border:none;border-radius:4px;padding:6px 12px;background:transparent;cursor:pointer;transition:background 140ms cubic-bezier(0.16,1,0.3,1),color 140ms cubic-bezier(0.16,1,0.3,1)}.ds-btn-secondary{box-shadow:inset 0 0 0 1px var(--hairline-strong,#CFCFCA);color:var(--text,#141414)}.ds-btn-ghost{color:var(--text-muted,#5F5F66);font-weight:450;padding:6px 10px}.ds-btn2:hover{background:var(--hover-wash,#F3F3F0);color:var(--text,#141414)}.ds-btn2:focus-visible{outline:2px solid var(--accent,#29524A);outline-offset:2px}"
+      "description": "White button with a hairline ring for secondary actions.",
+      "html": "<button class=\"ds-btn2\">Cancel</button>",
+      "css": ".ds-btn2 { display: inline-flex; align-items: center; height: 32px; padding: 0 13px; border: none; border-radius: var(--r-md, 9px); background: var(--surface, #FFFFFF); color: var(--text, #1D1D1F); box-shadow: 0 0 0 1px var(--separator-strong, rgba(0,0,0,0.14)), 0 1px 2px rgba(0,0,0,0.05); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); font-size: 13.5px; font-weight: 550; cursor: pointer; transition: background 140ms cubic-bezier(0.22, 1, 0.36, 1), transform 140ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-btn2:hover { background: color-mix(in srgb, var(--surface, #FFFFFF), var(--text, #1D1D1F) 5%); } .ds-btn2:active { transform: scale(0.97); } .ds-btn2:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent, #227A66) 80%, transparent); outline-offset: 2px; }"
+    },
+    {
+      "name": "Ghost Button",
+      "kind": "button",
+      "refersTo": "button-ghost",
+      "description": "Header view toggles and quiet actions; the on state uses the accent wash.",
+      "html": "<div style=\"display:flex;gap:4px\"><button class=\"ds-ghost\">List</button><button class=\"ds-ghost ds-ghost--on\">Sections</button></div>",
+      "css": ".ds-ghost { height: 32px; padding: 0 10px; border: none; border-radius: var(--r-md, 9px); background: transparent; color: var(--text-2, #6E6E73); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); font-size: 13.5px; font-weight: 500; cursor: pointer; transition: background 140ms cubic-bezier(0.22, 1, 0.36, 1), color 140ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-ghost:hover { background: var(--hover, rgba(0,0,0,0.045)); color: var(--text, #1D1D1F); } .ds-ghost--on, .ds-ghost--on:hover { background: var(--accent-soft, rgba(34,122,102,0.12)); color: var(--accent-text, #1E705D); } .ds-ghost:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent, #227A66) 80%, transparent); outline-offset: 2px; }"
     },
     {
       "name": "Text Field",
       "kind": "input",
       "refersTo": "input",
-      "description": "Outlined field; focus becomes a 2px inset pine ring.",
-      "html": "<label class=\"ds-field\"><span class=\"ds-field-label\">Board name</span><input class=\"ds-input\" placeholder=\"Main plot\"></label>",
-      "css": ".ds-field{display:flex;flex-direction:column;gap:7px;width:320px}.ds-field-label{font-family:var(--font-ui);font-size:13px;font-weight:500;color:var(--text,#141414)}.ds-input{height:36px;padding:0 11px;background:var(--surface,#fff);border:none;border-radius:4px;box-shadow:inset 0 0 0 1px var(--hairline-strong,#CFCFCA);font-family:var(--font-ui);font-size:14px;color:var(--text,#141414);transition:box-shadow 160ms cubic-bezier(0.16,1,0.3,1)}.ds-input::placeholder{color:var(--text-muted,#5F5F66)}.ds-input:focus{outline:none;box-shadow:inset 0 0 0 2px var(--accent,#29524A)}"
+      "description": "Ringed white field with an accent ring and halo on focus.",
+      "html": "<input class=\"ds-input\" placeholder=\"Board name\" />",
+      "css": ".ds-input { width: 260px; height: 34px; padding: 0 11px; border: none; border-radius: var(--r-md, 9px); background: var(--surface, #FFFFFF); color: var(--text, #1D1D1F); box-shadow: 0 0 0 1px var(--separator-strong, rgba(0,0,0,0.14)); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); font-size: 14.5px; transition: box-shadow 140ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-input::placeholder { color: var(--text-2, #6E6E73); } .ds-input:focus { outline: none; box-shadow: 0 0 0 1px var(--accent, #227A66), 0 0 0 4px var(--accent-soft, rgba(34,122,102,0.12)); }"
     },
     {
-      "name": "Running Head",
-      "kind": "nav",
-      "refersTo": "search-field",
-      "description": "Top bar: serif breadcrumb and a centred search field with keys.",
-      "html": "<header class=\"ds-topbar\"><nav class=\"ds-crumbs\"><button class=\"ds-crumb\">Projects</button><span class=\"ds-sep\">/</span><span class=\"ds-crumb ds-crumb-on\">The Salt Road</span></nav><button class=\"ds-cmd\"><span class=\"ds-cmd-t\">Search notes and boards</span><span class=\"ds-k\">Ctrl</span><span class=\"ds-k\">K</span></button></header>",
-      "css": ".ds-topbar{height:52px;display:flex;align-items:center;justify-content:space-between;gap:16px;padding:0 16px 0 20px;border-bottom:1px solid var(--hairline,#E4E4E0);background:var(--paper,#fff)}.ds-crumbs{display:flex;align-items:baseline;gap:8px;font-family:var(--font-serif);font-size:15px}.ds-crumb{background:none;border:none;padding:0;font:inherit;color:var(--text-muted,#5F5F66);cursor:pointer;transition:color 140ms cubic-bezier(0.16,1,0.3,1)}button.ds-crumb:hover{color:var(--accent,#29524A)}.ds-crumb-on{color:var(--text,#141414);font-weight:600}.ds-sep{color:var(--text-faint,#A3A3A8)}.ds-cmd{width:300px;height:32px;display:flex;align-items:center;gap:4px;padding:0 7px 0 10px;border:none;background:transparent;border-radius:4px;box-shadow:inset 0 0 0 1px var(--hairline-strong,#CFCFCA);font-family:var(--font-ui);font-size:13px;color:var(--text-muted,#5F5F66);cursor:pointer}.ds-cmd-t{flex:1;text-align:left}.ds-cmd:hover{box-shadow:inset 0 0 0 1px var(--text-faint,#A3A3A8);color:var(--text,#141414)}.ds-cmd:focus-visible,.ds-crumb:focus-visible{outline:2px solid var(--accent,#29524A);outline-offset:2px}.ds-k{font-family:var(--font-mono,'Courier Prime',monospace);font-size:11.5px;padding:0 5px;border-radius:2px;box-shadow:inset 0 0 0 1px var(--hairline-strong,#CFCFCA)}"
-    },
-    {
-      "name": "Segmented Tabs",
-      "kind": "nav",
-      "refersTo": "segment-tab",
-      "description": "Words with a 2px pine underline on the active one.",
-      "html": "<div class=\"ds-seg\"><button class=\"ds-seg-item\">Dots</button><button class=\"ds-seg-item ds-seg-on\">Titles</button><button class=\"ds-seg-item\">Cards</button></div>",
-      "css": ".ds-seg{display:inline-flex;gap:12px}.ds-seg-item{background:none;border:none;padding:4px 0;font-family:var(--font-ui);font-size:13px;font-weight:500;color:var(--text-muted,#5F5F66);box-shadow:inset 0 -2px 0 transparent;cursor:pointer;transition:color 140ms cubic-bezier(0.16,1,0.3,1),box-shadow 140ms cubic-bezier(0.16,1,0.3,1)}.ds-seg-item:hover{color:var(--text,#141414)}.ds-seg-on{color:var(--text,#141414);box-shadow:inset 0 -2px 0 var(--accent,#29524A)}.ds-seg-item:focus-visible{outline:2px solid var(--accent,#29524A);outline-offset:2px}"
-    },
-    {
-      "name": "Galley List Row",
+      "name": "Segmented Control",
       "kind": "custom",
-      "refersTo": "list-row",
-      "description": "Contents line: margin number, serif name, dot leaders, typed details, change bar.",
-      "html": "<div class=\"ds-page\"><div class=\"ds-group\">Story <span class=\"ds-tool\">+ Add</span></div><button class=\"ds-row\"><span class=\"ds-num\">2</span><span class=\"ds-name\">Main plot</span><span class=\"ds-leader\"></span><span class=\"ds-mono\">Plot Line · 11</span></button><button class=\"ds-row ds-row-on\"><span class=\"ds-num\">3</span><span class=\"ds-name\">Tomas subplot</span><span class=\"ds-leader\"></span><span class=\"ds-mono\">Plot Line · 3</span></button></div>",
-      "css": ".ds-page{padding-left:56px;width:520px}.ds-group{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:6px;margin-bottom:4px;border-bottom:1px solid var(--hairline,#E4E4E0);font-family:var(--font-serif);font-size:17px;font-weight:600;color:var(--text,#141414)}.ds-tool{font-family:var(--font-ui);font-size:13px;font-weight:400;color:var(--text-muted,#5F5F66)}.ds-row{position:relative;display:flex;align-items:baseline;gap:12px;width:100%;padding:9px 0;background:none;border:none;text-align:left;cursor:pointer;outline:none;color:var(--text,#141414)}.ds-row::before{content:\"\";position:absolute;left:-22px;top:8px;bottom:8px;width:2px;background:transparent;transition:background 140ms cubic-bezier(0.16,1,0.3,1)}.ds-row:hover::before{background:var(--hairline-strong,#CFCFCA)}.ds-row-on::before,.ds-row:focus-visible::before{background:var(--accent,#29524A)}.ds-row:focus-visible .ds-name{color:var(--accent,#29524A)}.ds-num{position:absolute;left:-56px;width:26px;text-align:right;font-family:var(--font-mono,'Courier Prime',monospace);font-size:12.5px;color:var(--text-muted,#5F5F66)}.ds-name{font-family:var(--font-serif);font-size:16px;font-weight:500}.ds-leader{flex:1;min-width:24px;height:1em;background:radial-gradient(circle,var(--leader,#BDBDB8) 0.9px,transparent 1.3px) left 100%/6px 4px repeat-x;transform:translateY(-3px)}.ds-mono{font-family:var(--font-mono,'Courier Prime',monospace);font-size:12.5px;color:var(--text-muted,#5F5F66)}"
+      "refersTo": "segmented-track",
+      "description": "Fill track with a white thumb that slides under the active item.",
+      "html": "<div class=\"ds-seg\"><span class=\"ds-seg__thumb\"></span><button class=\"ds-seg__item ds-seg__item--on\">All <span class=\"ds-seg__n\">5</span></button><button class=\"ds-seg__item\">Plot Lines <span class=\"ds-seg__n\">2</span></button><button class=\"ds-seg__item\">Notes <span class=\"ds-seg__n\">2</span></button></div>",
+      "css": ".ds-seg { position: relative; display: inline-flex; gap: 2px; height: 30px; padding: 2px; border-radius: var(--r-md, 9px); background: var(--fill, rgba(0,0,0,0.045)); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); } .ds-seg__thumb { position: absolute; left: 2px; top: 2px; bottom: 2px; width: 52px; border-radius: var(--r-sm, 7px); background: var(--surface, #FFFFFF); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.06), 0 1px 3px rgba(0,0,0,0.12); transition: transform 300ms cubic-bezier(0.32, 0.72, 0, 1), width 300ms cubic-bezier(0.32, 0.72, 0, 1); } .ds-seg__item { position: relative; z-index: 1; display: inline-flex; align-items: center; gap: 5px; padding: 0 11px; border: none; background: none; border-radius: var(--r-sm, 7px); font: inherit; font-size: 12.5px; font-weight: 550; color: var(--text-2, #6E6E73); cursor: pointer; transition: color 140ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-seg__item:hover, .ds-seg__item--on { color: var(--text, #1D1D1F); } .ds-seg__n { font-weight: 500; color: var(--text-2, #6E6E73); font-variant-numeric: tabular-nums; } .ds-seg__item:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent, #227A66) 80%, transparent); outline-offset: -1px; }"
     },
     {
-      "name": "Accent Pill and Category Flag",
+      "name": "Sidebar Rows",
+      "kind": "nav",
+      "refersTo": "sidebar-row",
+      "description": "Grey sidebar tree; the active row takes the accent wash and an accent-text icon.",
+      "html": "<nav class=\"ds-sb\"><button class=\"ds-sb__row ds-sb__row--on\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M3 17l6-6 4 4 8-8\"/></svg><span>Main plot</span></button><button class=\"ds-sb__row\"><svg width=\"16\" height=\"16\" viewBox=\"0 0 24 24\" fill=\"none\" stroke=\"currentColor\" stroke-width=\"1.8\" stroke-linejoin=\"round\"><path d=\"M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v8a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z\"/></svg><span>Worldbuilding</span></button></nav>",
+      "css": ".ds-sb { display: flex; flex-direction: column; gap: 1px; width: 228px; padding: 10px; background: var(--bg-sidebar, #F5F5F7); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); } .ds-sb__row { display: flex; align-items: center; gap: 8px; height: 30px; padding: 0 8px; border: none; border-radius: var(--r-sm, 7px); background: transparent; color: var(--text, #1D1D1F); font-size: 13.5px; font-weight: 450; text-align: left; cursor: pointer; transition: background 140ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-sb__row svg { color: var(--text-2, #6E6E73); flex: none; } .ds-sb__row:hover { background: var(--hover, rgba(0,0,0,0.045)); } .ds-sb__row--on, .ds-sb__row--on:hover { background: var(--accent-soft, rgba(34,122,102,0.12)); font-weight: 560; } .ds-sb__row--on svg { color: var(--accent-text, #1E705D); } .ds-sb__row:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent, #227A66) 80%, transparent); outline-offset: -2px; }"
+    },
+    {
+      "name": "Accent Pill",
       "kind": "chip",
       "refersTo": "pill-accent",
-      "description": "Typed labels, not capsules; category colour only as a small flag.",
-      "html": "<div style=\"display:flex;gap:16px;align-items:center\"><span class=\"ds-pill\">Pinned</span><span class=\"ds-cat\"><span class=\"ds-flag\" style=\"--chip-color:#7c5cbf\"></span>Character</span></div>",
-      "css": ".ds-pill{display:inline-flex;font-family:var(--font-mono,'Courier Prime',monospace);font-size:12.5px;line-height:1.4;padding:1px 6px;border-radius:2px;background:var(--accent-soft,#E4EDEA);color:var(--accent-strong-text,#1E3B38)}.ds-cat{display:inline-flex;align-items:center;gap:6px;font-family:var(--font-ui);font-size:12px;font-weight:500;color:var(--text-muted,#5F5F66)}.ds-flag{width:5px;height:11px;border-radius:1px;background:var(--chip-color)}"
+      "description": "Capsule tag in the accent wash; neutral variant uses the fill.",
+      "html": "<span class=\"ds-pill\">Drafting</span> <span class=\"ds-pill ds-pill--neutral\">3 items</span>",
+      "css": ".ds-pill { display: inline-flex; align-items: center; height: 22px; padding: 0 9px; border-radius: 999px; background: var(--accent-soft, rgba(34,122,102,0.12)); color: var(--accent-text, #1E705D); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); font-size: 12.5px; font-weight: 500; } .ds-pill--neutral { background: var(--fill, rgba(0,0,0,0.045)); color: var(--text-2, #6E6E73); }"
     },
     {
-      "name": "Plot Line Query Card",
+      "name": "Board Card",
       "kind": "card",
-      "refersTo": "query-card",
-      "description": "The selected moment's card, hung from its dot on a pine leader line.",
-      "html": "<div class=\"ds-q\"><div class=\"ds-q-where\">Act II · The Ledger · 5 of 11</div><div class=\"ds-q-title\">Fire on the salt flats</div><div class=\"ds-q-prev\">Someone burns the drying sheds. Tomas is seen running from the smoke.</div><button class=\"ds-q-open\">Open note <span class=\"ds-q-k\">Enter</span></button></div>",
-      "css": ".ds-q{width:248px;display:flex;flex-direction:column;gap:5px;padding:12px 14px;border-radius:6px;background:var(--surface,#fff);box-shadow:0 0 0 1px var(--accent,#29524A),0 14px 30px -16px rgba(20,20,20,0.35)}.ds-q-where{font-family:var(--font-mono,'Courier Prime',monospace);font-size:12px;color:var(--text-muted,#5F5F66)}.ds-q-title{font-family:var(--font-serif);font-size:17px;font-weight:600;line-height:1.25;color:var(--text,#141414)}.ds-q-prev{font-family:var(--font-serif);font-size:14px;line-height:1.45;color:var(--text-muted,#5F5F66)}.ds-q-open{display:flex;align-items:center;gap:6px;margin-top:2px;background:none;border:none;padding:0;font-family:var(--font-ui);font-size:12px;font-weight:500;color:var(--accent,#29524A);cursor:pointer}.ds-q-open:hover{text-decoration:underline}.ds-q-open:focus-visible{outline:2px solid var(--accent,#29524A);outline-offset:2px}.ds-q-k{font-family:var(--font-mono,'Courier Prime',monospace);font-size:11.5px;padding:0 5px;border-radius:2px;box-shadow:inset 0 0 0 1px var(--hairline-strong,#CFCFCA);color:var(--text-muted,#5F5F66)}"
+      "refersTo": "board-card",
+      "description": "Soft card with a live preview well; lifts on hover.",
+      "html": "<button class=\"ds-bcard\"><div class=\"ds-bcard__prev\"><svg viewBox=\"0 0 180 90\" preserveAspectRatio=\"none\"><defs><linearGradient id=\"ds-g\" x1=\"0\" y1=\"0\" x2=\"0\" y2=\"1\"><stop offset=\"0\" stop-color=\"#227A66\" stop-opacity=\"0.16\"/><stop offset=\"1\" stop-color=\"#227A66\" stop-opacity=\"0\"/></linearGradient></defs><path d=\"M10 70 C40 60 50 40 70 45 S110 20 130 25 S160 70 170 80 L170 90 L10 90 Z\" fill=\"url(#ds-g)\"/><path d=\"M10 70 C40 60 50 40 70 45 S110 20 130 25 S160 70 170 80\" fill=\"none\" stroke=\"#227A66\" stroke-width=\"2\" stroke-linecap=\"round\"/></svg></div><div class=\"ds-bcard__body\"><span class=\"ds-bcard__name\">Main plot</span><span class=\"ds-bcard__meta\">11 moments · 2h ago</span></div></button>",
+      "css": ".ds-bcard { display: flex; flex-direction: column; width: 220px; padding: 0; border: none; border-radius: 14px; background: var(--surface, #FFFFFF); box-shadow: 0 0 0 1px rgba(0,0,0,0.06), 0 1px 2px rgba(0,0,0,0.04), 0 3px 10px -4px rgba(0,0,0,0.06); text-align: left; cursor: pointer; font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); transition: box-shadow 200ms cubic-bezier(0.22, 1, 0.36, 1), transform 200ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-bcard:hover { box-shadow: 0 0 0 1px rgba(0,0,0,0.07), 0 2px 4px rgba(0,0,0,0.04), 0 14px 30px -10px rgba(0,0,0,0.16); transform: translateY(-2px); } .ds-bcard:active { transform: scale(0.99); } .ds-bcard:focus-visible { outline: none; box-shadow: 0 0 0 2px #FFFFFF, 0 0 0 4px color-mix(in srgb, #227A66 80%, transparent); } .ds-bcard__prev { height: 116px; margin: 6px 6px 0; border-radius: 9px; background: var(--bg-sunken, #F3F3F5); overflow: hidden; } .ds-bcard__prev svg { width: 100%; height: 100%; display: block; } .ds-bcard__body { display: flex; flex-direction: column; gap: 1px; padding: 11px 8px 12px 13px; } .ds-bcard__name { font-size: 14.5px; font-weight: 600; letter-spacing: -0.01em; color: var(--text, #1D1D1F); } .ds-bcard__meta { font-size: 12.5px; color: var(--text-2, #6E6E73); }"
     },
     {
       "name": "Menu",
       "kind": "custom",
       "refersTo": "menu",
-      "description": "Floating popover with Franklin items; keyboard focus shows a pine bar.",
-      "html": "<div class=\"ds-menu\"><button class=\"ds-mi\">Rename</button><button class=\"ds-mi\">Duplicate</button><div class=\"ds-msep\"></div><button class=\"ds-mi ds-mi-danger\">Move to trash</button></div>",
-      "css": ".ds-menu{width:200px;padding:4px;border-radius:6px;background:var(--surface,#fff);box-shadow:0 0 0 1px var(--hairline,#E4E4E0),0 12px 28px -14px rgba(20,20,20,0.28)}.ds-mi{display:flex;width:100%;padding:7px 10px;border:none;background:none;border-radius:4px;text-align:left;font-family:var(--font-ui);font-size:13px;color:var(--text,#141414);cursor:pointer;outline:none;transition:background 140ms cubic-bezier(0.16,1,0.3,1)}.ds-mi:hover,.ds-mi:focus-visible{background:var(--hover-wash,#F3F3F0)}.ds-mi:focus-visible{box-shadow:inset 2px 0 0 var(--accent,#29524A)}.ds-mi-danger{color:var(--danger,#B3372C)}.ds-msep{height:1px;background:var(--hairline,#E4E4E0);margin:4px 6px}"
+      "description": "Blurred material popover; rows fill with the accent on hover and focus.",
+      "html": "<div class=\"ds-menu\"><button class=\"ds-menu__item\">Rename</button><button class=\"ds-menu__item\">Duplicate</button><div class=\"ds-menu__sep\"></div><button class=\"ds-menu__item ds-menu__item--danger\">Move to Trash</button></div>",
+      "css": ".ds-menu { display: flex; flex-direction: column; min-width: 190px; padding: 5px; border-radius: 12px; background: var(--material, rgba(252,252,253,0.8)); backdrop-filter: blur(24px) saturate(180%); box-shadow: 0 0 0 0.5px rgba(0,0,0,0.12), 0 2px 6px rgba(0,0,0,0.06), 0 14px 36px -6px rgba(0,0,0,0.2); font-family: var(--font, 'Inter Variable', Inter, system-ui, sans-serif); } .ds-menu__item { height: 29px; padding: 0 10px; border: none; border-radius: 7px; background: none; color: var(--text, #1D1D1F); font: inherit; font-size: 13.5px; text-align: left; cursor: pointer; outline: none; } .ds-menu__item:hover, .ds-menu__item:focus-visible { background: var(--accent, #227A66); color: var(--on-accent, #FFFFFF); } .ds-menu__item--danger { color: var(--danger-text, #C4000F); } .ds-menu__item--danger:hover, .ds-menu__item--danger:focus-visible { background: var(--danger, #D70015); color: #FFFFFF; } .ds-menu__sep { height: 1px; margin: 5px 8px; background: var(--separator, rgba(0,0,0,0.08)); }"
+    },
+    {
+      "name": "Switch",
+      "kind": "custom",
+      "refersTo": "switch-on",
+      "description": "Capsule switch; the knob glides and the track fills with the accent.",
+      "html": "<button class=\"ds-switch\" role=\"switch\" aria-checked=\"true\" onclick=\"this.setAttribute('aria-checked', this.getAttribute('aria-checked') === 'true' ? 'false' : 'true')\"><span class=\"ds-switch__knob\"></span></button>",
+      "css": ".ds-switch { position: relative; width: 38px; height: 22px; padding: 0; border: none; border-radius: 999px; background: var(--fill-strong, rgba(0,0,0,0.075)); cursor: pointer; transition: background 200ms cubic-bezier(0.22, 1, 0.36, 1); } .ds-switch[aria-checked='true'] { background: var(--accent, #227A66); } .ds-switch__knob { position: absolute; top: 2px; left: 2px; width: 18px; height: 18px; border-radius: 50%; background: #FFFFFF; box-shadow: 0 0 0 0.5px rgba(0,0,0,0.06), 0 2px 4px rgba(0,0,0,0.2); transition: transform 260ms cubic-bezier(0.32, 0.72, 0, 1); } .ds-switch[aria-checked='true'] .ds-switch__knob { transform: translateX(16px); } .ds-switch:focus-visible { outline: 2px solid color-mix(in srgb, var(--accent, #227A66) 80%, transparent); outline-offset: 2px; }"
     }
   ],
   "narrative": {
-    "northStar": "The Galley Proof",
-    "overview": "Plotr is a book in proof. Every screen is a galley page with a margin. The writer's words are the typeset text. Every tool is a proofreader's mark: a change bar, a number in the margin, a pencilled query, a typed slug line. The interface stays quiet so the story's own titles, loglines and moments are the first things the eye reads.\n\nThe page is white galley stock with ink type and hairline rules. One pine pencil marks what is selected, current, or about to act. Parts of a page are divided by space and rules, not by boxes. Density is that of a book's contents page: long lines of serif names, dot leaders, and typed details at the right edge. Dark mode is the negative of the same proof, not a separate theme.\n\nThe system rejects the centred dev-tool column with black pill buttons that it replaced (\"Pine\", Geist). It also rejects the cream-and-lamplight notebook. It must never read as project-management software, a database editor, or an IDE.",
+    "northStar": "The Sidebar and the Sheet",
+    "overview": "Plotr is a modern desktop app in the Craft and Apple Notes family. A cool grey sidebar holds the whole project tree at all times. Beside it, a white content area carries boards as soft rounded cards, and notes rise as a centred document sheet over a blurred board. The writer never loses place: the tree stays put while only the content area crossfades.\n\nThe system is quiet and dense in the way a good Mac app is dense. Text is small (13.5px UI), grey is used for everything secondary, and one accent does all the pointing. Depth comes from soft, layered, offset shadows with a hairline ring, never from borders alone. Motion is short and eased, and the two signature motions are a sliding segmented thumb and a smooth plot curve. It rejects the editorial book costume and the flat developer-tool column.",
     "keyCharacteristics": [
-      "White galley stock, ink type, hairline rules, one pine accent.",
-      "Three typefaces with fixed jobs: serif for words, Franklin for controls, Courier for numbers and keys.",
-      "A proof margin on the left of every page carries numbers and change bars.",
-      "Selection is a 2px change bar, not a filled box.",
-      "Flat paper at rest; only things that float above the page cast a soft shadow.",
-      "Small paper corners (2px to 6px).",
-      "Dark mode is the film negative, with a lighter pine."
+      "Two-pane frame: 248px grey sidebar, 52px header, white content column (max 1080px for pages).",
+      "Inter Variable for every word, including note prose; negative tracking on all headings.",
+      "One user-switchable accent (Pine default; Blue, Violet, Rose, Orange, Graphite).",
+      "Soft layered shadows with a 0.5-1px ring; cards lift 2px on hover.",
+      "Capsule chips, capsule zoom control, 9px controls, 14px cards, 16-18px sheets.",
+      "Blurred material on menus, the search panel, floating canvas controls and the sheet backdrop.",
+      "Full dark mode with a lighter accent text tone."
     ],
     "rules": [
-      {
-        "name": "The Pine Pencil Rule",
-        "body": "Pine means selected, current, act, or link. Nothing decorative is pine. One primary (pine) button per screen, and it carries its single-key shortcut.",
-        "section": "colors"
-      },
-      {
-        "name": "The Flag Rule",
-        "body": "Category colours appear only as small flags (5×11px tabs) and 24px swatches beside a typed name. They never fill a card, a row, or a background.",
-        "section": "colors"
-      },
-      {
-        "name": "The Negative Rule",
-        "body": "Dark mode re-inks the same proof. Every role keeps its job; pine lightens to hold contrast, and text on pine turns to Film Desk.",
-        "section": "colors"
-      },
-      {
-        "name": "The Three Hands Rule",
-        "body": "Words the writer wrote are serif. Controls are Franklin. Numbers, dates, keys and slug lines are Courier Prime. Do not cross the hands.",
-        "section": "typography"
-      },
-      {
-        "name": "The Sentence Case Rule",
-        "body": "Every label is sentence case with normal tracking. There are no uppercase or letter-spaced labels anywhere in the build.",
-        "section": "typography"
-      },
-      {
-        "name": "The Fixed Column Rule",
-        "body": "The galley column starts at the same x on every page. Numbers and marks live in the proof margin, left of that line, never inside the column.",
-        "section": "layout"
-      },
-      {
-        "name": "The Paper on Desk Rule",
-        "body": "Flat at rest. A shadow means the object floats above the page. No hard offset shadows.",
-        "section": "elevation"
-      },
-      {
-        "name": "The Paper Corners Rule",
-        "body": "Nothing is rounder than 6px except a dot. There are no capsule buttons or capsule pills.",
-        "section": "shapes"
-      }
+      { "name": "The One Accent Rule", "body": "The chrome has one saturated colour: the accent. Status, selection, the curve and the primary action all share it. Category colours are user data and live only on user content.", "section": "colors" },
+      { "name": "The Two-Tone Accent Rule", "body": "Accent as a fill uses the accent tone; accent as text or icon uses the accent text tone. Never set text in the fill tone.", "section": "colors" },
+      { "name": "The Sentence Case Rule", "body": "No uppercase, no letter-spaced small caps anywhere. Section heads such as \"Boards\" are sentence case at 12.5px/600 in secondary grey.", "section": "typography" },
+      { "name": "The Tabular Count Rule", "body": "Counts, zoom values and plot numbers use tabular figures.", "section": "typography" },
+      { "name": "The Ring, Not Border Rule", "body": "Surfaces outline with a box-shadow ring (1px at rest, 0.5px on floating layers), not a CSS border. The dashed \"New board\" tile and Info Map groups are the only bordered shapes.", "section": "elevation" },
+      { "name": "The Blur Means Floating Rule", "body": "Backdrop blur appears only on layers above the content: menus, search, the zoom capsule, tool rails, and modal and sheet backdrops.", "section": "elevation" }
     ],
     "dos": [
-      "Do keep pine for selected, current, act and link, and give each screen one pine primary button with its shortcut key.",
-      "Do mark selection and focus with a 2px change bar in the margin: Strong Hairline on hover, pine when selected or focused.",
-      "Do set the writer's content in Source Serif 4, controls in Libre Franklin, and numbers, dates, keys and slug lines in Courier Prime.",
-      "Do start the galley column at the same x on every page and put numbers in the 56px proof margin.",
-      "Do divide page parts with space and hairline rules (#E4E4E0), with serif group heads on the rule.",
-      "Do use dot leaders between a row name and its right-edge details.",
-      "Do keep every corner at 6px or less, and use hairline rings instead of borders on raised objects.",
-      "Do give every new colour role a dark (negative) value in the same token set.",
-      "Do use the one ease-out curve (cubic-bezier(0.16, 1, 0.3, 1)) at 140ms for hover, 160ms for focus, and 360ms for entrances, and respect reduced motion."
+      "Do use the accent role tokens for every accent use, so all six accents and dark mode follow.",
+      "Do outline surfaces with the ring inside the shadow stack, and lift hoverable cards 1-2px with the Card Hover shadow.",
+      "Do keep UI text at 13.5px and meta at 12.5px in secondary grey; add hierarchy with weight and tight negative tracking.",
+      "Do use capsules for chips, pills, switches and floating controls, and keep nested radii concentric.",
+      "Do put blurred material only on layers that float above content.",
+      "Do ease state changes in 140-200ms on `cubic-bezier(0.22, 1, 0.36, 1)` and sliding or rising motion in 260-340ms on `cubic-bezier(0.32, 0.72, 0, 1)`; crossfade only the content area between screens; drop all motion under reduced motion."
     ],
     "donts": [
-      "Don't box galley list rows or page sections into cards. Cards exist only as objects on a canvas: Info Map slips, Plot Line cards, and the query card.",
-      "Don't use category colours as fills, washes or large backgrounds; they are flags only.",
-      "Don't use capsule shapes, black pill buttons, or a centred dev-tool column (the replaced \"Pine\" look).",
-      "Don't use cream paper, lamplight warmth, or a notebook texture.",
-      "Don't use uppercase or letter-spaced labels, or small labels above headings.",
-      "Don't use hard offset shadows or shadows on objects that rest on the page.",
-      "Don't use Faint Graphite (#A3A3A8) for readable text.",
-      "Don't add a second accent colour; red pencil is for danger only."
+      "Don't use a serif, a typewriter face, or a second sans; Inter carries every word, prose included.",
+      "Don't set labels in uppercase or letter-spaced small caps.",
+      "Don't add a second saturated chrome colour; category colours stay on user content.",
+      "Don't draw hard, zero-blur offset shadows or solid 1px borders around cards.",
+      "Don't hard-code the pine hex in new components."
     ]
   }
 }

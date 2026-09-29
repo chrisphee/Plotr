@@ -12,12 +12,13 @@ body,
 }
 
 body {
-  background: var(--paper);
+  background: var(--bg);
   color: var(--text);
-  font-family: var(--font-ui);
-  font-size: var(--fs-ui);
-  line-height: 1.5;
-  font-variant-numeric: tabular-nums;
+  font-family: var(--font);
+  font-size: var(--fs-base);
+  line-height: 1.45;
+  letter-spacing: -0.006em;
+  font-feature-settings: "cv11", "calt";
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   overflow: hidden;
@@ -26,8 +27,7 @@ body {
 }
 
 h1, h2, h3, h4 {
-  font-family: var(--font-display);
-  font-weight: 600;
+  font-weight: 650;
   margin: 0;
   text-wrap: balance;
 }
@@ -38,6 +38,7 @@ p {
 
 button {
   font: inherit;
+  letter-spacing: inherit;
   color: inherit;
   background: none;
   border: none;
@@ -49,6 +50,7 @@ input,
 textarea,
 select {
   font: inherit;
+  letter-spacing: inherit;
   color: inherit;
 }
 
@@ -66,30 +68,35 @@ a {
   text-underline-offset: 3px;
 }
 
+.tnum {
+  font-variant-numeric: tabular-nums;
+}
+
 ::selection {
-  background: color-mix(in srgb, var(--accent) 22%, transparent);
+  background: var(--accent-soft-2);
   color: inherit;
 }
 
 ::-webkit-scrollbar {
-  width: 10px;
-  height: 10px;
+  width: 12px;
+  height: 12px;
 }
 ::-webkit-scrollbar-thumb {
-  background: color-mix(in srgb, var(--text-muted) 30%, transparent);
-  border-radius: 0;
-  border: 3px solid transparent;
+  background: color-mix(in srgb, var(--text) 18%, transparent);
+  border-radius: var(--r-full);
+  border: 3.5px solid transparent;
   background-clip: content-box;
 }
 ::-webkit-scrollbar-thumb:hover {
-  background-color: color-mix(in srgb, var(--text-muted) 55%, transparent);
+  background-color: color-mix(in srgb, var(--text) 32%, transparent);
 }
-::-webkit-scrollbar-track {
+::-webkit-scrollbar-track,
+::-webkit-scrollbar-corner {
   background: transparent;
 }
 
 :focus-visible {
-  outline: 2px solid var(--accent);
+  outline: 2px solid color-mix(in srgb, var(--accent) 80%, transparent);
   outline-offset: 2px;
 }
 
@@ -103,38 +110,54 @@ a {
 }
 
 .meta {
-  font-size: var(--fs-meta);
-  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--text-2);
 }
 
-.mono {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  color: var(--text-muted);
-}
-
-/* Shared enter animations */
-@keyframes popup-enter {
-  from { opacity: 0; transform: translateY(4px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes sheet-rise {
-  from { opacity: 0; transform: translateY(8px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-@keyframes sheet-in {
-  from { transform: translateX(48px); opacity: 0; }
-  to   { transform: translateX(0); opacity: 1; }
-}
-@keyframes backdrop-fade {
+/* Shared motion */
+@keyframes fade-in {
   from { opacity: 0; }
   to   { opacity: 1; }
+}
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(4px) scale(0.97); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes rise-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+@keyframes sheet-in {
+  from { opacity: 0; transform: translateY(22px) scale(0.985); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Screen changes crossfade the content area only; the sidebar stays put. */
+::view-transition-old(root),
+::view-transition-new(root) {
+  animation: none;
+}
+::view-transition-old(content) {
+  animation: fade-out 120ms var(--ease) both;
+}
+::view-transition-new(content) {
+  animation: rise-in 240ms var(--ease) both;
+}
+::view-transition-group(header) {
+  animation-duration: 160ms;
+}
+@keyframes fade-out {
+  to { opacity: 0; }
 }
 
 @media (prefers-reduced-motion: reduce) {
   *,
   *::before,
-  *::after {
+  *::after,
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
     animation-duration: 1ms !important;
     animation-iteration-count: 1 !important;
     transition-duration: 1ms !important;

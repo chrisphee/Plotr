@@ -9,7 +9,24 @@ import {
   useSensors,
   type DragEndEvent,
 } from "@dnd-kit/core";
-import { Copy, FolderPlus, Link2, Pencil, Pin, PinOff, Scissors, Trash2 } from "lucide-react";
+import {
+  ArrowUpDown,
+  ArrowUpRight,
+  Copy,
+  Folder,
+  FolderPlus,
+  Inbox,
+  LayoutGrid,
+  Link2,
+  List,
+  Pencil,
+  Pin,
+  PinOff,
+  Scissors,
+  Search,
+  StickyNote,
+  Trash2,
+} from "lucide-react";
 import clsx from "clsx";
 import { useProject } from "../../stores/projectStore";
 import { useNotes, refcountOf } from "../../stores/notesStore";
@@ -17,12 +34,13 @@ import { useNoteModal } from "../note-editor/noteModalStore";
 import { notesBoard } from "./notesBoardActions";
 import type { NoteRef, NotesBoard, NotesBoardFolder, TreeBoard } from "../../lib/schema";
 import { AppShell, PrimaryAction } from "../../components/shell/TopBar";
-import { Button } from "../../components/ui/Button";
+import { Button, IconButton } from "../../components/ui/Button";
+import { SegmentedControl } from "../../components/ui/SegmentedControl";
 import { TextInput } from "../../components/ui/Field";
 import { Menu, MenuItem, MenuSeparator, type MenuPosition } from "../../components/ui/Menu";
 import { ConfirmDialog } from "../../components/ui/Modal";
 import { RenameModal } from "../dashboard/RenameModal";
-import { CategoryDot } from "../../components/ui/CategoryChip";
+import { CategoryChip } from "../../components/ui/CategoryChip";
 import { shortDate } from "../../lib/time";
 import { EmptyState } from "../../components/ui/EmptyState";
 import { extractPreview } from "./preview";
@@ -31,11 +49,31 @@ import "./notesBoard.css";
 /** Tree selection that lists pinned notes from every folder. */
 const PINNED = "__pinned__";
 
+type View = "list" | "gallery";
+const VIEW_KEY = "plotr.notesView";
+
+function readView(): View {
+  try {
+    return localStorage.getItem(VIEW_KEY) === "gallery" ? "gallery" : "list";
+  } catch {
+    return "list";
+  }
+}
+
 export function NotesBoardScreen({ treeItem }: { treeItem: TreeBoard }) {
   const board = useProject((s) => s.boards[treeItem.id]) as NotesBoard | undefined;
   const [activeFolderId, setActiveFolderId] = useState<string | null>(null);
   const [filter, setFilter] = useState("");
   const [dragRefId, setDragRefId] = useState<string | null>(null);
+  const [view, setViewState] = useState<View>(readView);
+  const setView = (v: View) => {
+    setViewState(v);
+    try {
+      localStorage.setItem(VIEW_KEY, v);
+    } catch {
+      /* per-viewer convenience only */
+    }
+  };
   const sensors = useSensors(useSensor(PointerSensor, { activationConstraint: { distance: 6 } }));
 
   if (!board) return null;
@@ -66,17 +104,15 @@ export function NotesBoardScreen({ treeItem }: { treeItem: TreeBoard }) {
         onDragCancel={() => setDragRefId(null)}
       >
         <div className="nb">
-          <FolderTreePane
-            board={board}
-            boardName={treeItem.name}
-            activeFolderId={activeFolderId}
-            onSelect={setActiveFolderId}
-          />
+          <FolderTreePane board={board} activeFolderId={activeFolderId} onSelect={setActiveFolderId} />
           <NoteListPane
             board={board}
             activeFolderId={activeFolderId}
             filter={filter}
             setFilter={setFilter}
+            view={view}
+            setView={setView}
+            onNewNote={newNote}
           />
         </div>
         <DragOverlay>
@@ -91,12 +127,10 @@ export function NotesBoardScreen({ treeItem }: { treeItem: TreeBoard }) {
 
 function FolderTreePane({
   board,
-  boardName,
   activeFolderId,
   onSelect,
 }: {
   board: NotesBoard;
-  boardName: string;
   activeFolderId: string | null;
   onSelect: (id: string | null) => void;
 }) {
@@ -107,17 +141,27 @@ function FolderTreePane({
     .sort((a, b) => a.order - b.order);
 
   return (
-    <aside className="nb__tree">
-      <div className="nb__boardname">{boardName}</div>
+    <aside className="nb__tree" aria-label="Note folders">
       <AllNotesRow board={board} active={activeFolderId === null} onSelect={() => onSelect(null)} />
       <button
         className={clsx("nb-folder", activeFolderId === PINNED && "nb-folder--active")}
         onClick={() => onSelect(PINNED)}
       >
+        <Pin size={15} strokeWidth={1.75} className="nb-folder__icon" />
         <span className="nb-folder__name">Pinned</span>
         <span className="nb-folder__count">{board.noteRefs.filter((r) => r.pinned).length}</span>
       </button>
-      {roots.length > 0 && <div className="nb__treesep" />}
+      <div className="nb__treehead">
+        <span>Folders</span>
+        <IconButton label="New folder" onClick={() => setCreating({ parentId: null })}>
+          <FolderPlus size={15} strokeWidth={1.75} />
+        </IconButton>
+      </div>
+      {roots.length === 0 && (
+        <button className="nb__newfolder" onClick={() => setCreating({ parentId: null })}>
+          Add a folder to sort notes
+        </button>
+      )}
       {roots.map((f) => (
         <FolderNode
           key={f.id}
@@ -129,9 +173,6 @@ function FolderTreePane({
           onNewSubfolder={(parentId) => setCreating({ parentId })}
         />
       ))}
-      <button className="textbtn nb__newfolder" onClick={() => setCreating({ parentId: null })}>
-        + New folder
-      </button>
       {creating && (
         <RenameModal
           item={null}
@@ -165,6 +206,7 @@ function AllNotesRow({
       className={clsx("nb-folder", active && "nb-folder--active", isOver && "nb-folder--droptarget")}
       onClick={onSelect}
     >
+      <Inbox size={15} strokeWidth={1.75} className="nb-folder__icon" />
       <span className="nb-folder__name">All notes</span>
       <span className="nb-folder__count">{board.noteRefs.length}</span>
     </button>
@@ -208,13 +250,14 @@ function FolderNode({
           activeFolderId === folder.id && "nb-folder--active",
           isOver && "nb-folder--droptarget",
         )}
-        style={{ paddingLeft: 10 + depth * 16 }}
+        style={{ paddingLeft: 10 + depth * 14 }}
         onClick={() => onSelect(folder.id)}
         onContextMenu={(e) => {
           e.preventDefault();
           setMenu({ x: e.clientX, y: e.clientY });
         }}
       >
+        <Folder size={15} strokeWidth={1.75} className="nb-folder__icon" />
         <span className="nb-folder__name">{folder.name}</span>
         <span className="nb-folder__count">{count}</span>
       </button>
@@ -275,11 +318,17 @@ function NoteListPane({
   activeFolderId,
   filter,
   setFilter,
+  view,
+  setView,
+  onNewNote,
 }: {
   board: NotesBoard;
   activeFolderId: string | null;
   filter: string;
   setFilter: (v: string) => void;
+  view: View;
+  setView: (v: View) => void;
+  onNewNote: () => void;
 }) {
   const notes = useNotes((s) => s.notes);
   const [sortMenu, setSortMenu] = useState<MenuPosition | null>(null);
@@ -326,44 +375,81 @@ function NoteListPane({
   }, [board.noteRefs, board.sort, activeFolderId, filter, notes]);
 
   const sortLabel = {
-    manual: "Manual order",
+    manual: "Manual",
     title: "Title",
-    createdAt: "Date created",
-    modifiedAt: "Date modified",
+    createdAt: "Created",
+    modifiedAt: "Modified",
   }[board.sort.by];
 
   return (
     <section className="nb__list">
       <div className="nb__listhead">
-        <h1 className="nb__listtitle">{folderName}</h1>
-        <TextInput
-          className="input--sm nb__filter"
-          placeholder="Filter notes"
-          value={filter}
-          onChange={(e) => setFilter(e.target.value)}
-        />
-        <Button onClick={(e) => setSortMenu({ x: e.clientX, y: e.clientY })}>
-          {sortLabel} ▾
+        <div className="nb__heading">
+          <h1 className="nb__listtitle">{folderName}</h1>
+          <span className="nb__listcount">
+            {refs.length} {refs.length === 1 ? "note" : "notes"}
+          </span>
+        </div>
+        <div className="searchfield nb__filter">
+          <Search size={14} strokeWidth={2} />
+          <TextInput
+            placeholder="Filter notes"
+            aria-label="Filter notes"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value)}
+          />
+        </div>
+        <Button
+          variant="ghost"
+          size="sm"
+          onClick={(e) => {
+            const r = e.currentTarget.getBoundingClientRect();
+            setSortMenu({ x: r.left, y: r.bottom + 4 });
+          }}
+        >
+          <ArrowUpDown size={14} strokeWidth={1.75} />
+          {sortLabel}
         </Button>
+        <SegmentedControl<View>
+          label="Layout"
+          value={view}
+          onChange={setView}
+          segments={[
+            { value: "list", label: <List size={15} strokeWidth={1.75} />, title: "List" },
+            { value: "gallery", label: <LayoutGrid size={15} strokeWidth={1.75} />, title: "Gallery" },
+          ]}
+        />
       </div>
 
       {refs.length === 0 ? (
         <EmptyState
-          title={
-            filter ? "No matching notes" : activeFolderId === PINNED ? "No pinned notes" : "No notes here yet"
+          icon={
+            activeFolderId === PINNED ? (
+              <Pin size={22} strokeWidth={1.75} />
+            ) : (
+              <StickyNote size={22} strokeWidth={1.75} />
+            )
           }
+          title={filter ? "No matching notes" : activeFolderId === PINNED ? "No pinned notes" : "No notes here yet"}
           message={
             filter
               ? "Try a different filter."
               : activeFolderId === PINNED
                 ? "Pin a note from its right-click menu to keep it here."
-                : "Create a note to start filling this folder. Press N."
+                : "Create a note to start filling this folder."
+          }
+          action={
+            !filter && activeFolderId !== PINNED ? (
+              <Button variant="secondary" onClick={onNewNote}>
+                New note
+              </Button>
+            ) : undefined
           }
         />
       ) : (
-        <div className="nb__rows">
-          {refs.map((r, i) => (
-            <NoteRow key={r.id} board={board} noteRef={r} number={i + 1} />
+        <div className={view === "gallery" ? "nb__gallery" : "nb__rows"}>
+          {refs.map((r) => (
+            <NoteRow key={r.id} board={board} noteRef={r} view={view} />
           ))}
         </div>
       )}
@@ -381,11 +467,7 @@ function NoteListPane({
             <MenuItem
               key={by}
               onSelect={() =>
-                notesBoard.setSort(
-                  board.id,
-                  by,
-                  board.sort.by === by && board.sort.dir === "asc" ? "desc" : "asc",
-                )
+                notesBoard.setSort(board.id, by, board.sort.by === by && board.sort.dir === "asc" ? "desc" : "asc")
               }
             >
               {label}
@@ -398,9 +480,9 @@ function NoteListPane({
   );
 }
 
-/* ── Note row ── */
+/* ── Note row / card ── */
 
-function NoteRow({ board, noteRef, number }: { board: NotesBoard; noteRef: NoteRef; number: number }) {
+function NoteRow({ board, noteRef, view }: { board: NotesBoard; noteRef: NoteRef; view: View }) {
   const note = useNotes((s) => s.notes[noteRef.noteId]);
   const boards = useProject((s) => s.boards);
   const categories = useProject((s) => s.meta?.categories ?? []);
@@ -411,6 +493,10 @@ function NoteRow({ board, noteRef, number }: { board: NotesBoard; noteRef: NoteR
     id: `ref-${noteRef.id}`,
     data: { refId: noteRef.id },
   });
+
+  // Delay single-click open so a double-click can win and go straight to edit
+  // (otherwise the popup from click 1 swallows click 2).
+  const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
 
   if (!note) return null;
 
@@ -423,9 +509,6 @@ function NoteRow({ board, noteRef, number }: { board: NotesBoard; noteRef: NoteR
   const openNote = (mode: "read" | "edit") =>
     useNoteModal.getState().open(note.id, mode, { boardId: board.id, refId: noteRef.id });
 
-  // Delay single-click open so a double-click can win and go straight to edit
-  // (otherwise the popup from click 1 swallows click 2).
-  const clickTimer = useRef<ReturnType<typeof setTimeout> | null>(null);
   const onRowClick = () => {
     if (clickTimer.current) clearTimeout(clickTimer.current);
     clickTimer.current = setTimeout(() => openNote("read"), 220);
@@ -435,18 +518,37 @@ function NoteRow({ board, noteRef, number }: { board: NotesBoard; noteRef: NoteR
     openNote("edit");
   };
 
+  const title = (
+    <span className="nrow__title">
+      {noteRef.pinned && <Pin size={12} strokeWidth={2.25} className="nrow__pin" aria-label="Pinned" />}
+      {note.color && <span className="nrow__color" style={{ background: note.color }} />}
+      <span className="nrow__name">{note.title || "Untitled note"}</span>
+      {refcount > 1 && (
+        <Link2 size={13} strokeWidth={2} className="nrow__linked" aria-label={`Linked in ${refcount} places`} />
+      )}
+    </span>
+  );
+
+  const catList = cats.length > 0 && (
+    <span className="nrow__cats">
+      {cats.slice(0, view === "gallery" ? 3 : 2).map((c) => (
+        <CategoryChip key={c.id} category={c} />
+      ))}
+      {cats.length > (view === "gallery" ? 3 : 2) && (
+        <span className="nrow__more">+{cats.length - (view === "gallery" ? 3 : 2)}</span>
+      )}
+    </span>
+  );
+
   return (
     <>
       <div
         ref={setNodeRef}
         {...attributes}
         {...listeners}
-        className={clsx(
-          "lrow noterow",
-          isDragging && "noterow--dragging",
-          note.color && "noterow--tinted",
-        )}
-        style={note.color ? ({ "--row-tint": note.color } as React.CSSProperties) : undefined}
+        className={clsx(view === "gallery" ? "ncard" : "nrow", isDragging && "nrow--dragging")}
+        style={note.color ? ({ "--tint": note.color } as React.CSSProperties) : undefined}
+        data-tinted={note.color ? "" : undefined}
         onClick={onRowClick}
         onDoubleClick={onRowDoubleClick}
         onKeyDown={(e) => {
@@ -464,55 +566,54 @@ function NoteRow({ board, noteRef, number }: { board: NotesBoard; noteRef: NoteR
         role="button"
         tabIndex={0}
       >
-        <span className="lrow__num">{number}</span>
-        <div className="noterow__main">
-          <div className="noterow__title">
-            <span className="lrow__name">{note.title || "Untitled note"}</span>
-            {noteRef.pinned && <span className="noterow__pinned">Pinned</span>}
-            {refcount > 1 && (
-              <Link2 size={13} className="noterow__linked" aria-label={`Linked in ${refcount} places`} />
-            )}
-          </div>
-          {preview && <div className="noterow__preview">{preview}</div>}
-        </div>
-        <div className="noterow__side">
-          <span className="lrow__mono">{shortDate(note.modifiedAt)}</span>
-          {cats[0] && (
-            <span className="noterow__cat">
-              <CategoryDot color={cats[0].color} />
-              {cats[0].name}
-              {cats.length > 1 && ` +${cats.length - 1}`}
+        {view === "gallery" ? (
+          <>
+            {title}
+            <span className="ncard__preview">{preview || "No text yet"}</span>
+            <span className="ncard__foot">
+              {catList}
+              <span className="nrow__date">{shortDate(note.modifiedAt)}</span>
             </span>
-          )}
-        </div>
+          </>
+        ) : (
+          <>
+            <span className="nrow__main">
+              {title}
+              {preview && <span className="nrow__preview">{preview}</span>}
+            </span>
+            <span className="nrow__side">
+              <span className="nrow__date">{shortDate(note.modifiedAt)}</span>
+              {catList}
+            </span>
+          </>
+        )}
       </div>
 
       {menu && (
         <Menu position={menu} onClose={() => setMenu(null)}>
-          <MenuItem onSelect={() => openNote("read")}>Open</MenuItem>
-          <MenuItem icon={<Pencil size={14} />} onSelect={() => openNote("edit")}>
+          <MenuItem icon={<ArrowUpRight size={15} />} onSelect={() => openNote("read")}>
+            Open
+          </MenuItem>
+          <MenuItem icon={<Pencil size={15} />} onSelect={() => openNote("edit")}>
             Edit
           </MenuItem>
           <MenuItem
-            icon={noteRef.pinned ? <PinOff size={14} /> : <Pin size={14} />}
+            icon={noteRef.pinned ? <PinOff size={15} /> : <Pin size={15} />}
             onSelect={() => notesBoard.togglePin(board.id, noteRef.id)}
           >
             {noteRef.pinned ? "Unpin" : "Pin"}
           </MenuItem>
           <MenuSeparator />
-          <MenuItem
-            icon={<Copy size={14} />}
-            onSelect={() => notesBoard.addRef(board.id, noteRef.folderId, note.id)}
-          >
+          <MenuItem icon={<Copy size={15} />} onSelect={() => notesBoard.addRef(board.id, noteRef.folderId, note.id)}>
             Duplicate (linked)
           </MenuItem>
           {refcount > 1 && (
-            <MenuItem icon={<Scissors size={14} />} onSelect={() => setConfirmIndependent(true)}>
+            <MenuItem icon={<Scissors size={15} />} onSelect={() => setConfirmIndependent(true)}>
               Make Independent
             </MenuItem>
           )}
           <MenuSeparator />
-          <MenuItem icon={<Trash2 size={14} />} danger onSelect={() => setConfirmTrash(true)}>
+          <MenuItem icon={<Trash2 size={15} />} danger onSelect={() => setConfirmTrash(true)}>
             Move to Trash
           </MenuItem>
         </Menu>
@@ -554,12 +655,11 @@ function DragPreview({ board, refId }: { board: NotesBoard; refId: string }) {
   const note = ref ? notes[ref.noteId] : null;
   if (!note) return null;
   return (
-    <div className="lrow noterow noterow--ghost">
-      <div className="noterow__main">
-        <div className="noterow__title">
-          <span className="lrow__name">{note.title || "Untitled note"}</span>
-        </div>
-      </div>
+    <div className="nrow nrow--ghost">
+      <span className="nrow__title">
+        <StickyNote size={14} strokeWidth={1.75} />
+        <span className="nrow__name">{note.title || "Untitled note"}</span>
+      </span>
     </div>
   );
 }

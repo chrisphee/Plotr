@@ -6,30 +6,41 @@ export const BOARD_TYPES: {
   type: BoardType;
   name: string;
   description: string;
+  /** Singular and plural name of what the board holds. */
+  unit: [string, string];
   icon: (size?: number) => ReactNode;
 }[] = [
   {
     type: "plotline",
     name: "Plot Line",
     description: "Arrange story moments along a timeline and shape pacing by feel.",
+    unit: ["moment", "moments"],
     icon: (size = 18) => <TrendingUp size={size} strokeWidth={1.75} />,
   },
   {
     type: "infomap",
     name: "Info Map",
     description: "A freeform canvas for characters, places, and how they connect.",
+    unit: ["item", "items"],
     icon: (size = 18) => <Network size={size} strokeWidth={1.75} />,
   },
   {
     type: "notes",
     name: "Notes",
     description: "A structured library of notes, organised into folders.",
+    unit: ["note", "notes"],
     icon: (size = 18) => <StickyNote size={size} strokeWidth={1.75} />,
   },
 ];
 
 export function boardTypeInfo(type: BoardType) {
   return BOARD_TYPES.find((t) => t.type === type)!;
+}
+
+/** "12 moments", "1 note". */
+export function countLabel(type: BoardType, n: number) {
+  const [one, many] = boardTypeInfo(type).unit;
+  return `${n} ${n === 1 ? one : many}`;
 }
 
 export function boardItemCount(board: Board | undefined): number {

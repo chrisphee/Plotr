@@ -4,45 +4,49 @@
 }
 
 .im .react-flow {
-  background: var(--paper);
+  background: var(--bg-canvas);
 }
 
 .im .react-flow__attribution {
   display: none;
 }
 
-/* ── Tool rail ── */
+/* ── Tool rail: a floating capsule of icons ── */
 
 .im__rail {
   position: absolute;
-  left: 24px;
+  left: 16px;
   top: 50%;
   transform: translateY(-50%);
   z-index: 20;
   display: flex;
   flex-direction: column;
-  gap: var(--sp-1);
-  padding: 4px;
-  border-radius: var(--r-panel);
-  background: var(--surface);
-  box-shadow: var(--shadow-rail);
-  animation: sheet-rise 240ms var(--ease);
+  gap: 2px;
+  padding: 5px;
+  border-radius: var(--r-xl);
+  background: var(--material);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-float);
 }
 
 .im__tool {
-  padding: 6px 12px;
-  border-radius: var(--r-btn);
-  font-size: var(--fs-ui);
-  color: var(--text-muted);
-  text-align: left;
-  white-space: nowrap;
+  display: grid;
+  place-items: center;
+  width: 36px;
+  height: 36px;
+  border-radius: var(--r-md);
+  color: var(--text-2);
   transition:
-    background var(--t-hover) var(--ease),
-    color var(--t-hover) var(--ease);
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
 }
 .im__tool:hover {
-  background: var(--hover-wash);
+  background: var(--hover);
   color: var(--text);
+}
+.im__tool:active {
+  transform: scale(0.94);
 }
 .im__tool--on,
 .im__tool--on:hover {
@@ -52,98 +56,105 @@
 
 .im__railsep {
   height: 1px;
-  background: var(--hairline);
-  margin: 3px 8px;
+  margin: 3px 7px;
+  background: var(--separator-strong);
 }
 
-/* ── Nodes: slips pasted onto the board ── */
+/* ── Nodes ── */
 
 .imnode {
   width: 100%;
   height: 100%;
-  border-radius: var(--r-btn);
-  transition: box-shadow var(--t-hover) var(--ease);
+  border-radius: var(--r-lg);
+  transition: box-shadow var(--t-base) var(--ease);
 }
 
 .imnode--note {
-  background: var(--surface);
-  box-shadow: 0 0 0 1px var(--hairline-strong), var(--shadow-card);
-  padding: 12px 14px 12px;
-  overflow: hidden;
+  position: relative;
   display: flex;
   flex-direction: column;
   gap: 5px;
-  position: relative;
+  padding: 12px 14px;
+  overflow: hidden;
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
 }
 .imnode--note:hover {
-  box-shadow: 0 0 0 1px var(--text-faint), var(--shadow-card);
+  box-shadow: var(--shadow-card-hover);
+}
+.imnode--tinted {
+  background: color-mix(in srgb, var(--surface), var(--node-tint) 11%);
 }
 .imnode--note.imnode--selected,
 .imnode--image.imnode--selected {
-  box-shadow: var(--shadow-selected);
+  box-shadow:
+    0 0 0 2px var(--accent),
+    var(--shadow-card-hover);
 }
-.imnode--text.imnode--selected,
+.imnode--text.imnode--selected {
+  box-shadow: 0 0 0 2px var(--accent);
+}
 .imnode--group.imnode--selected {
   box-shadow: 0 0 0 2px var(--accent);
+  border-color: transparent;
 }
 
 .imnode__title {
-  font-family: var(--font-serif);
-  font-size: 16px;
-  font-weight: 600;
-  line-height: 1.25;
   display: flex;
   align-items: center;
-  gap: var(--sp-3);
+  gap: 6px;
+  padding-right: 34px;
+  font-size: var(--fs-md);
+  font-weight: 650;
+  letter-spacing: -0.01em;
+  line-height: 1.3;
+}
+.imnode__linked {
+  flex: none;
+  color: var(--text-2);
 }
 
 .imnode__preview {
-  font-family: var(--font-serif);
-  font-size: 13.5px;
-  color: var(--text-muted);
-  line-height: 1.4;
-  overflow: hidden;
   flex: 0 1 auto;
+  min-height: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.45;
+  color: var(--text-2);
+  overflow: hidden;
   display: -webkit-box;
   -webkit-box-orient: vertical;
-  -webkit-line-clamp: var(--preview-lines, 3);
-  min-height: 0;
+  -webkit-line-clamp: var(--preview-lines, 4);
 }
 
 .imnode__cats {
-  display: flex;
-  gap: 3px;
   position: absolute;
-  top: 0;
-  right: 12px;
-}
-.imnode__cats .catdot {
-  height: 12px;
-  border-radius: 0 0 1px 1px;
+  top: 15px;
+  right: 13px;
+  display: flex;
+  gap: 4px;
 }
 
 .imnode--image {
   overflow: hidden;
-  box-shadow: 0 0 0 1px var(--hairline-strong);
   background: var(--surface);
+  box-shadow: var(--shadow-card);
 }
 .imnode--image img {
+  display: block;
   width: 100%;
   height: 100%;
   object-fit: cover;
-  display: block;
   pointer-events: none;
 }
 
 .imnode--text {
   display: flex;
   align-items: center;
-  background: transparent;
-  font-family: var(--font-serif);
-  font-weight: 600;
-  letter-spacing: -0.01em;
-  color: var(--text);
   padding: var(--sp-2) var(--sp-3);
+  background: transparent;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  color: var(--text);
 }
 .imnode--text textarea {
   width: 100%;
@@ -152,27 +163,28 @@
   background: transparent;
   resize: none;
   font: inherit;
+  letter-spacing: inherit;
   color: inherit;
   outline: none;
   overflow: hidden;
 }
 
-/* Groups: keylines on the paste-up board */
+/* Groups: a soft tinted frame with its name above */
 .imnode--group {
-  border: 1px dashed var(--text-faint);
-  background: color-mix(in srgb, var(--paper) 55%, transparent);
-  border-radius: var(--r-btn);
+  border: 1px solid var(--separator);
+  border-radius: 20px;
+  background: var(--band);
 }
 .imnode--group .imnode__grouptitle {
   position: absolute;
-  top: -27px;
-  left: 0;
-  font-family: var(--font-serif);
-  font-size: 15px;
-  font-style: italic;
-  color: var(--text-muted);
-  background: transparent;
+  top: -28px;
+  left: 6px;
+  padding: 0;
   border: none;
+  background: transparent;
+  font-size: var(--fs-base);
+  font-weight: 650;
+  color: var(--text-2);
   outline: none;
   white-space: nowrap;
 }
@@ -180,15 +192,15 @@ input.imnode__grouptitle:focus {
   color: var(--text);
 }
 
-/* Handles: pine dots, shown on hover and selection (always while drawing links) */
+/* Handles: accent dots, shown on hover and selection (always while drawing links) */
 .im .react-flow__handle {
-  width: 9px;
-  height: 9px;
-  background: var(--accent);
+  width: 10px;
+  height: 10px;
   border: none;
-  box-shadow: 0 0 0 2px var(--paper);
+  background: var(--accent);
+  box-shadow: 0 0 0 2px var(--surface);
   opacity: 0;
-  transition: opacity var(--t-hover) var(--ease);
+  transition: opacity var(--t-fast) var(--ease);
 }
 .im .react-flow__node:hover .react-flow__handle,
 .im .react-flow__node.selected .react-flow__handle,
@@ -200,19 +212,21 @@ input.imnode__grouptitle:focus {
 .im .react-flow__resize-control.handle {
   width: 9px;
   height: 9px;
-  border-radius: 1px;
-  background: var(--surface);
   border: none;
-  box-shadow: 0 0 0 1.5px var(--accent);
+  border-radius: 3px;
+  background: var(--surface);
+  box-shadow:
+    0 0 0 1.5px var(--accent),
+    0 1px 2px rgba(0, 0, 0, 0.15);
 }
 .im .react-flow__resize-control.line {
   border-color: transparent;
 }
 
-/* Edges: graphite pencil lines */
+/* Edges */
 .im .react-flow__edge-path {
-  stroke: var(--text-muted);
-  stroke-width: 1.25;
+  stroke: var(--text-3);
+  stroke-width: 1.5;
 }
 .im .react-flow__edge.selected .react-flow__edge-path {
   stroke: var(--accent);
@@ -220,38 +234,43 @@ input.imnode__grouptitle:focus {
 }
 .im .react-flow__connection-path {
   stroke: var(--accent);
-  stroke-width: 1.5;
+  stroke-width: 2;
 }
 
-/* Edge labels sit above the slips so a short link never hides its label. */
+/* Edge labels sit above the cards so a short link never hides its label. */
 .im .react-flow__edgelabel-renderer {
   z-index: 1001;
 }
 .imedge__label {
   position: absolute;
   transform: translate(-50%, -50%);
-  font-family: var(--font-serif);
-  font-size: 13.5px;
-  font-style: italic;
-  color: var(--text-muted);
-  background: var(--paper);
-  padding: 0 6px;
-  border-radius: var(--r-kbd);
+  display: inline-flex;
+  align-items: center;
+  height: 22px;
+  padding: 0 9px;
+  border-radius: var(--r-full);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  font-size: var(--fs-xs);
+  font-weight: 550;
+  color: var(--text-2);
   pointer-events: all;
   white-space: nowrap;
 }
 .imedge__label--selected {
   color: var(--text);
-  box-shadow: 0 0 0 1px var(--accent);
+  box-shadow:
+    0 0 0 1.5px var(--accent),
+    var(--shadow-card);
 }
 .imedge__label input {
+  width: 120px;
   border: none;
   background: transparent;
   font: inherit;
   color: var(--text);
-  outline: none;
-  width: 120px;
   text-align: center;
+  outline: none;
 }
 
 /* ── Drag-preview ghosts ─────────────────────────────────────────────
@@ -272,14 +291,14 @@ input.imnode__grouptitle:focus {
 .im__ghostline {
   height: 8px;
   border-radius: 4px;
-  background: var(--hover-wash);
+  background: var(--fill);
 }
 
 .im__ghost--image {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--text-muted);
+  color: var(--text-2);
 }
 
 .im__ghost--group {
@@ -296,4 +315,11 @@ input.imnode__grouptitle:focus {
   place-items: center;
   pointer-events: none;
   z-index: 5;
+}
+.im__emptycard {
+  padding: 28px 32px;
+  border-radius: var(--r-xl);
+  background: var(--material);
+  backdrop-filter: blur(20px) saturate(180%);
+  box-shadow: var(--shadow-float);
 }

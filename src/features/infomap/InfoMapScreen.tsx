@@ -14,7 +14,20 @@ import {
   type Connection,
 } from "@xyflow/react";
 import "@xyflow/react/dist/style.css";
-import { Image as ImageIcon, Minus, Plus } from "lucide-react";
+import {
+  FolderOpen,
+  Frame,
+  Image as ImageIcon,
+  Maximize2,
+  Minus,
+  MousePointer2,
+  Pin,
+  MoveUpRight,
+  Plus,
+  Slash,
+  StickyNote,
+  Type,
+} from "lucide-react";
 import clsx from "clsx";
 import { open as openDialog } from "@tauri-apps/plugin-dialog";
 import { useProject } from "../../stores/projectStore";
@@ -25,7 +38,6 @@ import type { InfoMapBoard, TreeBoard } from "../../lib/schema";
 import { infomap, ITEM_SIZES } from "./infomapActions";
 import { isTypingTarget } from "../../app/shortcuts";
 import { AppShell } from "../../components/shell/TopBar";
-import { Button } from "../../components/ui/Button";
 import { ConfirmDialog } from "../../components/ui/Modal";
 import { Menu, MenuItem, type MenuPosition } from "../../components/ui/Menu";
 import { EmptyState } from "../../components/ui/EmptyState";
@@ -137,7 +149,7 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
       data: { boardId, label: c.label },
       markerEnd:
         c.kind === "arrow"
-          ? { type: MarkerType.ArrowClosed, width: 14, height: 14, color: "var(--text-muted)" }
+          ? { type: MarkerType.ArrowClosed, width: 14, height: 14, color: "var(--text-3)" }
           : undefined,
     }));
   }, [board, boardId, sel]);
@@ -317,14 +329,7 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
   if (!board) return null;
 
   return (
-    <AppShell
-      canvas
-      actions={
-        <Button variant="ghost" onClick={() => void rf.fitView({ padding: 0.2, duration: 300 })}>
-          Fit to screen
-        </Button>
-      }
-    >
+    <AppShell canvas subtitle={`${board.items.length} ${board.items.length === 1 ? "item" : "items"}`}>
       <div
         className={clsx("im", tool !== "select" && "im--connecting")}
         onDragOver={onCanvasDragOver}
@@ -348,37 +353,35 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
           maxZoom={2.5}
           proOptions={{ hideAttribution: true }}
         >
-          <Background id="minor" variant={BackgroundVariant.Lines} gap={24} lineWidth={1} color="var(--grid-line)" />
-          <Background id="major" variant={BackgroundVariant.Lines} gap={120} lineWidth={1} color="var(--grid-line)" />
+          <Background variant={BackgroundVariant.Dots} gap={22} size={1.6} color="var(--grid-dot)" />
         </ReactFlow>
 
-        <div className="boardtitle">
-          <h1 className="boardtitle__name">{treeItem.name}</h1>
-          <span className="boardtitle__meta">
-            {board.items.length} {board.items.length === 1 ? "item" : "items"}
-          </span>
-        </div>
+        <h1 className="sr-only">{treeItem.name}</h1>
 
         {/* Tool rail: click an item type to place it at the centre, or drag it onto the canvas */}
-        <div className="im__rail">
+        <div className="im__rail" role="toolbar" aria-label="Canvas tools" aria-orientation="vertical">
           <button
             className={clsx("im__tool", tool === "select" && "im__tool--on")}
             onClick={() => setTool("select")}
+            aria-label="Select and move"
+            aria-pressed={tool === "select"}
             title="Select and move (Esc)"
           >
-            Select
+            <MousePointer2 {...TOOL_ICON} />
           </button>
+          <div className="im__railsep" />
           {(
             [
-              ["note", "Note"],
-              ["image", "Image"],
-              ["text", "Text"],
-              ["group", "Group"],
+              ["note", "Note", <StickyNote key="i" {...TOOL_ICON} />],
+              ["image", "Image", <ImageIcon key="i" {...TOOL_ICON} />],
+              ["text", "Text", <Type key="i" {...TOOL_ICON} />],
+              ["group", "Group", <Frame key="i" {...TOOL_ICON} />],
             ] as const
-          ).map(([kind, label]) => (
+          ).map(([kind, label, icon]) => (
             <button
               key={kind}
               className="im__tool"
+              aria-label={`Add ${label.toLowerCase()}`}
               draggable
               onDragStart={(e) => {
                 e.dataTransfer.setData("application/plotr-item", kind);
@@ -396,31 +399,39 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
                   createAt(kind, centerWorld());
                 }
               }}
-              title="Click to add, or drag onto the canvas"
+              title={`${label}: click to add, or drag onto the canvas`}
             >
-              {label}
+              {icon}
             </button>
           ))}
           <div className="im__railsep" />
           <button
             className={clsx("im__tool", tool === "line" && "im__tool--on")}
             onClick={() => setTool("line")}
-            title="Drag between items to draw lines"
+            aria-label="Draw lines"
+            aria-pressed={tool === "line"}
+            title="Line: drag between items to connect them"
           >
-            Line
+            <Slash {...TOOL_ICON} />
           </button>
           <button
             className={clsx("im__tool", tool === "arrow" && "im__tool--on")}
             onClick={() => setTool("arrow")}
-            title="Drag between items to draw arrows"
+            aria-label="Draw arrows"
+            aria-pressed={tool === "arrow"}
+            title="Arrow: drag between items to connect them"
           >
-            Arrow
+            <MoveUpRight {...TOOL_ICON} />
           </button>
 
           {imageMenu && (
             <Menu position={imageMenu} onClose={() => setImageMenu(null)}>
-              <MenuItem onSelect={() => createAt("image", centerWorld())}>From file…</MenuItem>
-              <MenuItem onSelect={() => setPinPickerOpen(true)}>From Pinterest…</MenuItem>
+              <MenuItem icon={<FolderOpen size={15} />} onSelect={() => createAt("image", centerWorld())}>
+                From file…
+              </MenuItem>
+              <MenuItem icon={<Pin size={15} />} onSelect={() => setPinPickerOpen(true)}>
+                From Pinterest…
+              </MenuItem>
             </Menu>
           )}
           {pinPickerOpen && (
@@ -485,8 +496,10 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
         {board.items.length === 0 && (
           <div className="im__empty">
             <EmptyState
+              icon={<Frame size={22} strokeWidth={1.75} />}
               title="An empty canvas"
-              message="Add a note, image, text or group from the rail on the left, then drag between items to connect them."
+              message="Add a note, image, text or group from the toolbar on the left, then drag between items to connect them."
+              className="im__emptycard"
             />
           </div>
         )}
@@ -522,17 +535,28 @@ function InfoMapInner({ treeItem }: { treeItem: TreeBoard }) {
   );
 }
 
+const TOOL_ICON = { size: 18, strokeWidth: 1.75 };
+
 function ZoomControl() {
   const rf = useReactFlow();
   const zoom = useStore((s) => s.transform[2]);
   return (
     <div className="zoompill">
-      <button className="zoompill__btn" aria-label="Zoom out" onClick={() => void rf.zoomOut()}>
-        <Minus size={14} />
+      <button className="zoompill__btn" aria-label="Zoom out" onClick={() => void rf.zoomOut({ duration: 200 })}>
+        <Minus size={14} strokeWidth={2} />
       </button>
       <span className="zoompill__val">{Math.round(zoom * 100)}%</span>
-      <button className="zoompill__btn" aria-label="Zoom in" onClick={() => void rf.zoomIn()}>
-        <Plus size={14} />
+      <button className="zoompill__btn" aria-label="Zoom in" onClick={() => void rf.zoomIn({ duration: 200 })}>
+        <Plus size={14} strokeWidth={2} />
+      </button>
+      <span className="zoompill__sep" />
+      <button
+        className="zoompill__btn"
+        aria-label="Fit to screen"
+        title="Fit to screen"
+        onClick={() => void rf.fitView({ padding: 0.2, duration: 300 })}
+      >
+        <Maximize2 size={14} strokeWidth={2} />
       </button>
     </div>
   );

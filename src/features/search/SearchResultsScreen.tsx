@@ -1,4 +1,5 @@
 import { useMemo, useState } from "react";
+import { Search } from "lucide-react";
 import { useSearch, type SearchResult } from "./searchStore";
 import { useNav } from "../../app/navStore";
 import { useNoteModal } from "../note-editor/noteModalStore";
@@ -22,29 +23,36 @@ export function SearchResultsScreen({ initialQuery }: { initialQuery: string }) 
 
   return (
     <AppShell>
-      <div className="page">
-        <div className="page__head">
-          <h1 className="page__title page__title--settings">Search</h1>
+      <div className="page page--narrow">
+        <div className="searchscreen__field">
+          <Search size={17} strokeWidth={2} />
+          <TextInput
+            autoFocus
+            aria-label="Search this project"
+            placeholder="Search this project"
+            value={text}
+            onChange={(e) => setText(e.target.value)}
+          />
         </div>
-        <TextInput
-          autoFocus
-          placeholder="Search this project…"
-          value={text}
-          onChange={(e) => setText(e.target.value)}
-        />
         {text.trim() && groups.length === 0 && (
-          <EmptyState title="Nothing found" message={`No matches for “${text}”.`} />
+          <EmptyState
+            icon={<Search size={22} strokeWidth={1.75} />}
+            title="Nothing found"
+            message={`No notes, boards or folders match “${text}”.`}
+          />
         )}
         <div className="searchscreen__groups">
           {groups.map(([label, rs]) => (
-            <section key={label} className="lgroup">
-              <div className="lgroup__label">
+            <section key={label} className="searchscreen__group">
+              <h2 className="searchscreen__label">
                 <span>{label}</span>
                 <span>{rs.length}</span>
+              </h2>
+              <div className="searchscreen__box">
+                {rs.map((r) => (
+                  <ResultRow key={r.id} result={r} onSelect={() => choose(r)} />
+                ))}
               </div>
-              {rs.map((r) => (
-                <ResultRow key={r.id} result={r} onSelect={() => choose(r)} />
-              ))}
             </section>
           ))}
         </div>

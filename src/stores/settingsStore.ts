@@ -1,7 +1,7 @@
 import { create } from "zustand";
 import { LazyStore } from "@tauri-apps/plugin-store";
 import { documentDir, join } from "@tauri-apps/api/path";
-import { setTheme, type ThemePref } from "../app/theme";
+import { setAccent, setTheme, type AccentPref, type ThemePref } from "../app/theme";
 import { saveQueue } from "../lib/saveQueue";
 
 const store = new LazyStore("settings.json");
@@ -19,11 +19,13 @@ export interface RecentProject {
 interface SettingsState {
   loaded: boolean;
   theme: ThemePref;
+  accent: AccentPref;
   autosave: boolean;
   defaultProjectDir: string | null;
   recents: RecentProject[];
   init: () => Promise<void>;
   setThemePref: (t: ThemePref) => void;
+  setAccentPref: (a: AccentPref) => void;
   setAutosave: (v: boolean) => void;
   setDefaultProjectDir: (dir: string | null) => void;
   touchRecent: (
@@ -36,6 +38,7 @@ interface SettingsState {
 
 function persist(state: SettingsState) {
   void store.set("theme", state.theme);
+  void store.set("accent", state.accent);
   void store.set("autosave", state.autosave);
   void store.set("defaultProjectDir", state.defaultProjectDir);
   void store.set("recents", state.recents);
@@ -45,23 +48,27 @@ function persist(state: SettingsState) {
 export const useSettings = create<SettingsState>((set, get) => ({
   loaded: false,
   theme: "system",
+  accent: "pine",
   autosave: true,
   defaultProjectDir: null,
   recents: [],
 
   init: async () => {
-    const [theme, autosave, defaultProjectDir, recents] = await Promise.all([
+    const [theme, accent, autosave, defaultProjectDir, recents] = await Promise.all([
       store.get<ThemePref>("theme"),
+      store.get<AccentPref>("accent"),
       store.get<boolean>("autosave"),
       store.get<string | null>("defaultProjectDir"),
       store.get<RecentProject[]>("recents"),
     ]);
     const t = theme ?? "system";
     setTheme(t);
+    setAccent(accent ?? "pine");
     saveQueue.setAutosave(autosave ?? true);
     set({
       loaded: true,
       theme: t,
+      accent: accent ?? "pine",
       autosave: autosave ?? true,
       defaultProjectDir: defaultProjectDir ?? (await join(await documentDir(), "Plotr")),
       recents: recents ?? [],
@@ -71,6 +78,12 @@ export const useSettings = create<SettingsState>((set, get) => ({
   setThemePref: (t) => {
     setTheme(t);
     set({ theme: t });
+    persist(get());
+  },
+
+  setAccentPref: (a) => {
+    setAccent(a);
+    set({ accent: a });
     persist(get());
   },
 

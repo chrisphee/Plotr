@@ -4,7 +4,7 @@ An offline-first desktop workspace for writers — organise projects, story
 structure, research, worldbuilding and notes. Windows + Linux.
 
 Built with **Tauri 2** (Rust) + **React 19 / TypeScript / Vite**, styled by the
-"Galley Proof" design system (see `DESIGN.md`).
+"Sidebar and Sheet" design system (see `DESIGN.md`).
 
 ## Concepts
 

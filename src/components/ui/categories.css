@@ -1,22 +1,25 @@
-/* Category colours appear only as index flags: small tabs of colour beside
-   a typed name, never as large backgrounds. */
+/* Categories are tags: a coloured dot on a soft capsule of the same hue. */
 
 .catchip {
   display: inline-flex;
   align-items: center;
-  gap: var(--sp-3);
-  font-size: var(--fs-meta);
-  font-weight: 500;
-  line-height: 1.5;
-  color: var(--text-muted);
+  gap: 6px;
+  height: 24px;
+  padding: 0 10px 0 8px;
+  border-radius: var(--r-full);
+  background: color-mix(in srgb, var(--chip-color) 13%, transparent);
+  font-size: var(--fs-sm);
+  font-weight: 550;
+  line-height: 1;
+  color: var(--text);
   white-space: nowrap;
 }
 
 .catchip__dot,
 .catdot {
-  width: 5px;
-  height: 11px;
-  border-radius: 1px;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
   background: var(--chip-color);
   flex: none;
 }
@@ -24,62 +27,72 @@
 .catpicker {
   position: fixed;
   z-index: 220;
-  background: var(--surface);
-  border-radius: var(--r-panel);
+  min-width: 210px;
+  padding: 5px;
+  border-radius: var(--r-lg);
+  background: var(--material);
+  backdrop-filter: blur(24px) saturate(180%);
   box-shadow: var(--shadow-pop);
-  padding: var(--sp-2);
-  min-width: 200px;
-  animation: popup-enter 200ms var(--ease);
+  animation: pop-in 170ms var(--ease);
 }
 
 .catpicker__row {
   display: flex;
   align-items: center;
-  gap: var(--sp-4);
+  gap: 9px;
   width: 100%;
-  text-align: left;
-  padding: 7px 10px;
-  border-radius: var(--r-btn);
-  font-size: var(--fs-ui);
+  height: 30px;
+  padding: 0 10px;
+  border-radius: var(--r-sm);
+  font-size: var(--fs-base);
   color: var(--text);
-  transition: background var(--t-hover) var(--ease);
+  text-align: left;
+  transition: background var(--t-fast) var(--ease);
 }
-.catpicker__row:hover {
-  background: var(--hover-wash);
+.catpicker__row:hover,
+.catpicker__row:focus-visible {
+  background: var(--hover);
+  outline: none;
 }
 .catpicker__check {
   margin-left: auto;
-  color: var(--accent);
+  color: var(--accent-text);
 }
 .catpicker__empty {
   padding: 7px 10px;
-  font-size: var(--fs-meta);
-  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
 }
 
 .swatches {
   display: flex;
-  gap: var(--sp-3);
   flex-wrap: wrap;
   align-items: center;
+  gap: 8px;
 }
 .swatch {
-  width: 24px;
-  height: 24px;
-  border-radius: var(--r-tag);
+  width: 22px;
+  height: 22px;
   flex: none;
-  transition: box-shadow var(--t-hover) var(--ease);
+  border-radius: 50%;
+  box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.1);
+  transition:
+    box-shadow var(--t-fast) var(--ease),
+    transform var(--t-fast) var(--ease);
 }
-.swatch--light {
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+.swatch:hover {
+  transform: scale(1.08);
 }
 .swatch--active {
-  box-shadow: 0 0 0 2px var(--surface), 0 0 0 4px var(--accent);
+  box-shadow:
+    inset 0 0 0 1px rgba(0, 0, 0, 0.1),
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--text-2);
 }
 .swatch--custom {
   overflow: hidden;
   position: relative;
-  background: conic-gradient(#c8503f, #d9a441, #3f9a5a, #3b7dd8, #7c5cbf, #c8503f);
+  background: conic-gradient(#e5484d, #f5a524, #30a46c, #0091ff, #8e4ec6, #e5484d);
 }
 .swatch--custom input {
   position: absolute;
@@ -87,7 +100,12 @@
   opacity: 0;
   cursor: pointer;
 }
-
-[data-theme="dark"] .swatch:not(.swatch--active) {
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
+[data-theme="dark"] .swatch {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.14);
+}
+[data-theme="dark"] .swatch--active {
+  box-shadow:
+    inset 0 0 0 1px rgba(255, 255, 255, 0.14),
+    0 0 0 2px var(--surface),
+    0 0 0 4px var(--text-2);
 }

@@ -1,5 +1,6 @@
 import { useState } from "react";
 import clsx from "clsx";
+import { Check } from "lucide-react";
 import { Modal } from "../../components/ui/Modal";
 import { Field, TextInput, TextArea } from "../../components/ui/Field";
 import { Button } from "../../components/ui/Button";
@@ -11,13 +12,14 @@ import "./dashboard.css";
 
 interface Props {
   parentId: string | null;
+  initialType?: BoardType;
   onClose: () => void;
 }
 
-export function CreateBoardModal({ parentId, onClose }: Props) {
+export function CreateBoardModal({ parentId, initialType = "notes", onClose }: Props) {
   const createBoard = useProject((s) => s.createBoard);
   const navigate = useNav((s) => s.navigate);
-  const [type, setType] = useState<BoardType>("notes");
+  const [type, setType] = useState<BoardType>(initialType);
   const [name, setName] = useState("");
   const [description, setDescription] = useState("");
   const [busy, setBusy] = useState(false);
@@ -36,7 +38,7 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
     <Modal
       title="New board"
       onClose={onClose}
-      width={620}
+      width={640}
       footer={
         <>
           <Button variant="ghost" onClick={onClose}>
@@ -48,20 +50,23 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
         </>
       }
     >
-      <div className="typelist" role="radiogroup" aria-label="Board type">
+      <div className="typegrid" role="radiogroup" aria-label="Board type">
         {BOARD_TYPES.map((t) => (
           <button
             key={t.type}
             role="radio"
             aria-checked={type === t.type}
-            className={clsx("typeopt", type === t.type && "typeopt--on")}
+            className={clsx("typecard", type === t.type && "typecard--on")}
             onClick={() => setType(t.type)}
           >
-            <span className="typeopt__icon">{t.icon(18)}</span>
-            <span className="typeopt__text">
-              <span className="typeopt__name">{t.name}</span>
-              <span className="typeopt__desc">{t.description}</span>
-            </span>
+            <span className="typecard__icon">{t.icon(20)}</span>
+            <span className="typecard__name">{t.name}</span>
+            <span className="typecard__desc">{t.description}</span>
+            {type === t.type && (
+              <span className="typecard__check" aria-hidden>
+                <Check size={12} strokeWidth={3} />
+              </span>
+            )}
           </button>
         ))}
       </div>
@@ -70,9 +75,7 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
           <TextInput
             id={id}
             autoFocus
-            placeholder={
-              type === "plotline" ? "Main Plot" : type === "infomap" ? "Character Web" : "Research"
-            }
+            placeholder={type === "plotline" ? "Main Plot" : type === "infomap" ? "Character Web" : "Research"}
             value={name}
             onChange={(e) => setName(e.target.value)}
             onKeyDown={(e) => e.key === "Enter" && void create()}
@@ -80,13 +83,7 @@ export function CreateBoardModal({ parentId, onClose }: Props) {
         )}
       </Field>
       <Field label="Description (optional)">
-        {(id) => (
-          <TextArea
-            id={id}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-          />
-        )}
+        {(id) => <TextArea id={id} value={description} onChange={(e) => setDescription(e.target.value)} />}
       </Field>
     </Modal>
   );

@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
-import { X } from "lucide-react";
+import { Plus, X } from "lucide-react";
 import type { Editor } from "@tiptap/react";
 import { useNoteModal } from "./noteModalStore";
 import { useNotes } from "../../stores/notesStore";
@@ -9,6 +9,7 @@ import { useNav } from "../../app/navStore";
 import { IconButton } from "../../components/ui/Button";
 import { useFocusTrap } from "../../components/ui/focusTrap";
 import { longDate } from "../../lib/time";
+import { boardTypeInfo } from "../dashboard/boardTypes";
 import type { Board, TreeItem } from "../../lib/schema";
 import { CategoryChip } from "../../components/ui/CategoryChip";
 import { CategoryPicker } from "../../components/ui/CategoryPicker";
@@ -19,8 +20,8 @@ import type { MenuPosition } from "../../components/ui/Menu";
 import "./notePopup.css";
 
 /* Rendered once in App; opens whenever noteModalStore has a noteId. The note
-   is a page laid over the board: always editable, with its details in the
-   margin. "edit" mode only means the caret starts in the text. */
+   is a document sheet over the board: always editable, with its details under
+   the title. "edit" mode only means the caret starts in the text. */
 
 export function NotePopupHost() {
   const noteId = useNoteModal((s) => s.noteId);
@@ -77,96 +78,103 @@ function NotePopup({ noteId }: { noteId: string }) {
 
   return createPortal(
     <div
-      className="notepage-backdrop"
+      className="sheet-backdrop"
       onMouseDown={(e) => {
         if (e.target === e.currentTarget && Date.now() - openedAt.current > 350) close();
       }}
     >
       <div
         ref={sheetRef}
-        className="notepage"
+        className="sheet"
         role="dialog"
         aria-modal="true"
         aria-label={note.title || "Note"}
         tabIndex={-1}
         data-autofocus={note.title !== "" && !startInText ? "" : undefined}
       >
-        <div className="notepage__bar">
+        <div className="sheet__bar">
           <RichTextToolbar editor={editor} />
-          <IconButton label="Close (Esc)" className="notepage__close" onClick={close}>
-            <X size={17} strokeWidth={1.75} />
+          <IconButton label="Close (Esc)" className="sheet__close" onClick={close}>
+            <X size={17} strokeWidth={2} />
           </IconButton>
         </div>
 
-        <div className="notepage__scroll">
-          <div className="notepage__grid">
-            <article className="notepage__main">
-              <input
-                className="notepage__title"
-                placeholder="Untitled note"
-                aria-label="Note title"
-                value={note.title}
-                data-autofocus={note.title === "" ? "" : undefined}
-                onChange={(e) => updateNote(noteId, { title: e.target.value })}
-                onKeyDown={(e) => {
-                  if (e.key === "Enter" || e.key === "ArrowDown") {
-                    e.preventDefault();
-                    editor?.commands.focus("start");
-                  }
-                }}
-              />
-              <NoteEditor
-                doc={note.doc}
-                editable
-                onDocChange={(doc) => updateNote(noteId, { doc })}
-                onEditor={onEditorReady}
-              />
-              <AttachmentList note={note} editable />
-            </article>
+        <div className="sheet__scroll">
+          <article className="doc">
+            <input
+              className="doc__title"
+              placeholder="Untitled note"
+              aria-label="Note title"
+              value={note.title}
+              data-autofocus={note.title === "" ? "" : undefined}
+              onChange={(e) => updateNote(noteId, { title: e.target.value })}
+              onKeyDown={(e) => {
+                if (e.key === "Enter" || e.key === "ArrowDown") {
+                  e.preventDefault();
+                  editor?.commands.focus("start");
+                }
+              }}
+            />
 
-            <aside className="notepage__margin" aria-label="Note details">
-              <section className="notepage__note">
-                <h3 className="notepage__label">Categories</h3>
-                <div className="notepage__cats">
+            <div className="doc__props" aria-label="Note details">
+              <div className="doc__prop">
+                <span className="doc__propname">Categories</span>
+                <span className="doc__propvalue">
                   {noteCategories.map((c) => (
                     <CategoryChip key={c.id} category={c} />
                   ))}
                   <button
-                    className="notepage__add"
+                    className="doc__chipbtn"
                     onClick={(e) => {
                       const r = e.currentTarget.getBoundingClientRect();
-                      setCatPicker({ x: r.left, y: r.bottom + 4 });
+                      setCatPicker({ x: r.left, y: r.bottom + 6 });
                     }}
                   >
-                    {noteCategories.length ? "Change" : "+ Add category"}
+                    {noteCategories.length ? (
+                      "Edit"
+                    ) : (
+                      <>
+                        <Plus size={13} strokeWidth={2.25} />
+                        Add category
+                      </>
+                    )}
                   </button>
-                </div>
-              </section>
+                </span>
+              </div>
 
               {places.length > 0 && (
-                <section className="notepage__note">
-                  <h3 className="notepage__label">
-                    {places.length > 1 ? `Linked in ${places.length} places` : "Appears in"}
-                  </h3>
-                  <ul className="notepage__places">
+                <div className="doc__prop">
+                  <span className="doc__propname">
+                    {places.length > 1 ? `Linked in ${places.length} boards` : "Appears in"}
+                  </span>
+                  <span className="doc__propvalue">
                     {places.map((p) => (
-                      <li key={p.boardId}>
-                        <button className="notepage__place" onClick={() => goTo(p.boardId)}>
-                          {p.name}
-                          {p.count > 1 && <span className="notepage__placecount"> ×{p.count}</span>}
-                        </button>
-                      </li>
+                      <button key={p.boardId} className="doc__place" onClick={() => goTo(p.boardId)}>
+                        {boardTypeInfo(p.type).icon(13)}
+                        {p.name}
+                        {p.count > 1 && <span className="doc__placecount">×{p.count}</span>}
+                      </button>
                     ))}
-                  </ul>
-                </section>
+                  </span>
+                </div>
               )}
 
-              <section className="notepage__note notepage__dates">
-                <span>Created {longDate(note.createdAt)}</span>
-                <span>Edited {longDate(note.modifiedAt, true)}</span>
-              </section>
-            </aside>
-          </div>
+              <div className="doc__prop">
+                <span className="doc__propname">Edited</span>
+                <span className="doc__propvalue doc__dates" title={`Created ${longDate(note.createdAt)}`}>
+                  {longDate(note.modifiedAt, true)}
+                </span>
+              </div>
+            </div>
+
+            <NoteEditor
+              doc={note.doc}
+              editable
+              onDocChange={(doc) => updateNote(noteId, { doc })}
+              onEditor={onEditorReady}
+            />
+            <AttachmentList note={note} editable />
+          </article>
         </div>
       </div>
 
@@ -191,7 +199,7 @@ function NotePopup({ noteId }: { noteId: string }) {
 
 /** Every board that shows this note, by name, with how many copies it holds. */
 function placesOf(noteId: string, boards: Record<string, Board>, tree: TreeItem[]) {
-  const out: { boardId: string; name: string; count: number }[] = [];
+  const out: { boardId: string; name: string; type: Board["type"]; count: number }[] = [];
   for (const board of Object.values(boards)) {
     const count =
       board.type === "notes"
@@ -201,7 +209,7 @@ function placesOf(noteId: string, boards: Record<string, Board>, tree: TreeItem[
           : board.items.filter((i) => i.kind === "note" && i.noteId === noteId).length;
     if (count === 0) continue;
     const name = tree.find((t) => t.id === board.id)?.name ?? "Board";
-    out.push({ boardId: board.id, name, count });
+    out.push({ boardId: board.id, name, type: board.type, count });
   }
   return out;
 }

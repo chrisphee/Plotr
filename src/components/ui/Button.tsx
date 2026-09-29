@@ -6,7 +6,7 @@ type Variant = "primary" | "secondary" | "ghost" | "accent" | "ink" | "destructi
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   variant?: Variant;
-  size?: "md" | "lg";
+  size?: "sm" | "md" | "lg";
   /** Ghost toggle state, e.g. the Plot Line "List" button. */
   on?: boolean;
   children: ReactNode;
@@ -22,7 +22,14 @@ export function Button({
 }: ButtonProps) {
   return (
     <button
-      className={clsx("btn", `btn--${variant}`, size === "lg" && "btn--lg", on && "btn--on", className)}
+      className={clsx(
+        "btn",
+        `btn--${variant}`,
+        size !== "md" && `btn--${size}`,
+        on && "btn--on",
+        className,
+      )}
+      aria-pressed={on === undefined ? undefined : on}
       {...rest}
     >
       {children}

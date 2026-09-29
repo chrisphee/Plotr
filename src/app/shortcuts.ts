@@ -1,6 +1,7 @@
 import { useEffect, useRef } from "react";
 import { useSearch } from "../features/search/searchStore";
 import { saveQueue } from "../lib/saveQueue";
+import { useSidebar } from "../components/shell/sidebarStore";
 
 /* One window-level listener for app-global shortcuts. Editor-local combos
    (Ctrl+B/I/Z…) are handled by TipTap and never reach here with a claim. */
@@ -16,6 +17,9 @@ export function useGlobalShortcuts() {
       } else if (mod && !e.shiftKey && key === "s") {
         e.preventDefault();
         void saveQueue.flush();
+      } else if (mod && e.key === "\\") {
+        e.preventDefault();
+        useSidebar.getState().toggleCollapsed();
       }
     };
     window.addEventListener("keydown", onKey);

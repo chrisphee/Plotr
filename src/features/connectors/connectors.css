@@ -1,38 +1,37 @@
-.connectors__head {
-  display: flex;
-  flex-direction: column;
-  gap: 10px;
+.connstatus {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  flex: none;
+  height: 24px;
+  padding: 0 10px;
+  border-radius: var(--r-full);
+  background: var(--fill);
+  font-size: var(--fs-sm);
+  font-weight: 550;
+  color: var(--text-2);
+}
+.connstatus__dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--text-3);
+}
+.connstatus--on {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.connstatus--on .connstatus__dot {
+  background: var(--accent);
 }
 
-.connector-card {
-  border-top: 1px solid var(--hairline);
-  padding: 18px 0 4px;
+.connectors__actions {
   display: flex;
-  flex-direction: column;
-  gap: 14px;
-}
-
-.connector-card__head {
-  display: flex;
-  align-items: baseline;
+  flex-wrap: wrap;
   gap: var(--sp-4);
 }
-
-.connector-card__name {
-  font-family: var(--font-serif);
-  font-size: 18px;
-  font-weight: 600;
-}
-
-.connector-card__status {
-  margin-left: auto;
-  font-size: var(--fs-meta);
-  color: var(--text-muted);
-}
-
-.connector-card__status--on {
-  color: var(--accent);
-  font-weight: 500;
+.connectors__error {
+  color: var(--danger-text);
 }
 
 /* ── Pinterest picker ── */
@@ -45,11 +44,11 @@
 
 .pin-tile {
   position: relative;
-  border-radius: var(--r-btn);
+  border-radius: var(--r-md);
   overflow: hidden;
   border: 2px solid transparent;
   aspect-ratio: 3 / 4;
-  background: var(--hover-wash);
+  background: var(--fill);
   cursor: pointer;
   padding: 0;
 }
@@ -85,17 +84,16 @@
   width: 100%;
   text-align: left;
   padding: 8px 12px;
-  border-radius: var(--r-btn);
-  transition: background var(--t-hover) var(--ease);
+  border-radius: var(--r-md);
+  transition: background var(--t-fast) var(--ease);
 }
 
 .board-row:hover {
-  background: var(--hover-wash);
+  background: var(--hover);
 }
 
 .board-row__count {
   margin-left: auto;
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono);
-  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
 }

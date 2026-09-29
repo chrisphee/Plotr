@@ -1,169 +1,165 @@
-/* The note page: a galley sheet laid over the right of the board. */
+/* The note sheet: a document that rises over the board. */
 
-.notepage-backdrop {
+.sheet-backdrop {
   position: fixed;
   inset: 0;
   z-index: 100;
+  display: flex;
+  justify-content: center;
+  padding: 28px 40px;
   background: var(--backdrop);
-  animation: backdrop-fade 200ms var(--ease);
+  backdrop-filter: blur(6px) saturate(120%);
+  animation: fade-in 240ms var(--ease);
 }
 
-.notepage {
-  position: absolute;
-  top: var(--topbar-h);
-  right: 0;
-  bottom: 0;
-  width: min(920px, calc(100vw - 96px));
-  background: var(--paper);
-  box-shadow: var(--shadow-sheet);
+.sheet {
+  width: min(900px, 100%);
+  height: 100%;
   display: flex;
   flex-direction: column;
+  border-radius: 18px;
+  background: var(--bg);
+  box-shadow: var(--shadow-modal);
+  overflow: hidden;
   outline: none;
-  animation: sheet-in var(--t-enter) var(--ease);
+  animation: sheet-in var(--t-slow) var(--ease-glide);
 }
 
-.notepage__bar {
+.sheet__bar {
+  position: relative;
   flex: none;
   display: flex;
   align-items: center;
-  gap: var(--sp-4);
-  height: 46px;
-  padding: 0 12px 0 calc(var(--margin-w) - 8px);
-  border-bottom: 1px solid var(--hairline);
+  justify-content: center;
+  height: 50px;
+  padding: 0 52px;
+  box-shadow: 0 1px 0 var(--separator);
 }
-.notepage__close {
-  margin-left: auto;
+.sheet__close {
+  position: absolute;
+  right: 10px;
+  top: 10px;
 }
 
-.notepage__scroll {
+.sheet__scroll {
   flex: 1;
   min-height: 0;
   overflow-y: auto;
 }
 
-.notepage__grid {
-  display: grid;
-  grid-template-columns: minmax(0, 66ch) 200px;
-  gap: 48px;
-  padding: 44px 40px 96px var(--margin-w);
-  align-items: start;
-}
-
-.notepage__main {
+.doc {
+  width: min(700px, 100%);
+  min-height: 100%;
+  margin: 0 auto;
+  padding: 44px 40px 32px;
   display: flex;
   flex-direction: column;
   gap: 18px;
-  min-width: 0;
+}
+.doc .note-editor {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  cursor: text;
+}
+.doc .note-editor > div {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+}
+.doc .note-editor .tiptap {
+  flex: 1;
 }
 
-.notepage__title {
-  font-family: var(--font-serif);
-  font-size: var(--fs-note-title);
-  font-weight: 600;
-  font-variation-settings: "opsz" 48;
-  line-height: 1.15;
-  letter-spacing: -0.015em;
+.doc__title {
+  width: 100%;
+  padding: 0;
   border: none;
   background: transparent;
-  padding: 0;
-  width: 100%;
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  letter-spacing: -0.024em;
+  line-height: 1.15;
   color: var(--text);
 }
-.notepage__title:focus {
+.doc__title:focus {
   outline: none;
 }
-.notepage__title::placeholder {
-  color: var(--text-muted);
+.doc__title::placeholder {
+  color: var(--text-3);
 }
 
-/* Margin notes: categories, where the note appears, dates */
-.notepage__margin {
+/* Properties under the title */
+.doc__props {
   display: flex;
   flex-direction: column;
-  gap: 26px;
-  padding-top: 10px;
-  position: sticky;
-  top: 44px;
-}
-.notepage__note {
-  display: flex;
-  flex-direction: column;
-  gap: 8px;
-}
-.notepage__label {
-  font-family: var(--font-ui);
-  font-size: var(--fs-meta);
-  font-weight: 500;
-  color: var(--text-muted);
-}
-.notepage__cats {
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
   gap: 6px;
+  padding-bottom: 18px;
+  box-shadow: 0 1px 0 var(--separator);
 }
-.notepage__cats .catchip {
-  font-size: var(--fs-ui);
-  color: var(--text);
+.doc__prop {
+  display: grid;
+  grid-template-columns: 128px minmax(0, 1fr);
+  align-items: center;
+  gap: 12px;
+  min-height: 28px;
 }
-.notepage__add {
-  font-size: var(--fs-ui);
-  color: var(--text-muted);
-  transition: color var(--t-hover) var(--ease);
+.doc__propname {
+  font-size: var(--fs-sm);
+  font-weight: 500;
+  color: var(--text-2);
 }
-.notepage__add:hover {
-  color: var(--accent);
-}
-.notepage__places {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+.doc__propvalue {
   display: flex;
-  flex-direction: column;
-  gap: 4px;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 6px;
+  min-width: 0;
 }
-.notepage__place {
-  font-family: var(--font-serif);
-  font-size: 15px;
-  text-align: left;
-  color: var(--text);
-  text-decoration: underline;
-  text-decoration-color: var(--hairline-strong);
-  text-underline-offset: 3px;
-  transition:
-    color var(--t-hover) var(--ease),
-    text-decoration-color var(--t-hover) var(--ease);
-}
-.notepage__place:hover {
-  color: var(--accent);
-  text-decoration-color: var(--accent);
-}
-.notepage__placecount {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-sm);
-  color: var(--text-muted);
-}
-.notepage__dates {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-sm);
-  color: var(--text-muted);
-  gap: 2px;
+.doc__dates {
+  font-size: var(--fs-sm);
+  color: var(--text-2);
 }
 
-@media (max-width: 1100px) {
-  .notepage__grid {
-    grid-template-columns: minmax(0, 1fr);
-    padding-right: 40px;
-  }
-  .notepage__margin {
-    position: static;
-    flex-direction: row;
-    flex-wrap: wrap;
-    gap: 24px 40px;
-    padding-top: 0;
-    border-top: 1px solid var(--hairline);
-    padding-top: 18px;
-  }
+.doc__chipbtn,
+.doc__place {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  height: 24px;
+  padding: 0 9px;
+  border-radius: var(--r-full);
+  font-size: var(--fs-sm);
+  font-weight: 550;
+  transition:
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+.doc__chipbtn {
+  color: var(--text-2);
+  box-shadow: inset 0 0 0 1px var(--separator-strong);
+}
+.doc__chipbtn:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+.doc__place {
+  background: var(--fill);
+  color: var(--text);
+}
+.doc__place svg {
+  color: var(--text-2);
+}
+.doc__place:hover {
+  background: var(--accent-soft);
+  color: var(--accent-text);
+}
+.doc__place:hover svg {
+  color: inherit;
+}
+.doc__placecount {
+  color: var(--text-2);
+  font-variant-numeric: tabular-nums;
 }
 
 /* ── Attachments ── */
@@ -171,32 +167,34 @@
 .attachments {
   display: flex;
   flex-direction: column;
-  gap: var(--sp-3);
+  gap: 8px;
   align-items: flex-start;
+  padding-top: 16px;
+  box-shadow: 0 -1px 0 var(--separator);
 }
 
 .attachrow {
   display: flex;
   align-items: center;
-  gap: var(--sp-5);
+  gap: 12px;
   width: 100%;
-  max-width: 340px;
-  padding: 8px 10px;
-  border-radius: var(--r-input);
-  box-shadow: inset 0 0 0 1px var(--hairline-strong);
-  font-size: var(--fs-ui);
+  max-width: 380px;
+  padding: 8px 8px 8px 10px;
+  border-radius: var(--r-lg);
+  background: var(--surface);
+  box-shadow: var(--shadow-card);
+  font-size: var(--fs-base);
 }
 .attachrow__thumb {
-  width: 36px;
-  height: 36px;
-  flex: none;
-  border-radius: var(--r-tag);
-  box-shadow: var(--ring);
-  background: var(--hover-wash);
-  color: var(--text-muted);
   display: grid;
   place-items: center;
+  width: 38px;
+  height: 38px;
+  flex: none;
   overflow: hidden;
+  border-radius: var(--r-md);
+  background: var(--fill);
+  color: var(--text-2);
 }
 .attachrow__thumb img {
   width: 100%;
@@ -209,25 +207,56 @@
   display: flex;
   flex-direction: column;
   align-items: flex-start;
+  gap: 1px;
 }
 .attachrow__name {
   max-width: 100%;
-  font-weight: 500;
+  font-weight: 550;
   color: var(--text);
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
 }
 .attachrow__name:hover {
-  text-decoration: underline;
+  color: var(--accent-text);
 }
 .attachrow__meta {
-  font-family: var(--font-mono);
-  font-size: var(--fs-mono-sm);
-  color: var(--text-muted);
+  font-size: var(--fs-sm);
+  color: var(--text-2);
 }
 
 .attachments__add {
   display: flex;
-  gap: var(--sp-3);
+  gap: 6px;
+}
+.notepage__add {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  height: 28px;
+  padding: 0 11px;
+  border-radius: var(--r-full);
+  box-shadow: inset 0 0 0 1px var(--separator-strong);
+  font-size: var(--fs-sm);
+  font-weight: 550;
+  color: var(--text-2);
+  transition:
+    background var(--t-fast) var(--ease),
+    color var(--t-fast) var(--ease);
+}
+.notepage__add:hover {
+  background: var(--hover);
+  color: var(--text);
+}
+
+@media (max-width: 1000px) {
+  .sheet-backdrop {
+    padding: 20px 24px;
+  }
+  .doc {
+    padding: 36px 28px 80px;
+  }
+  .doc__prop {
+    grid-template-columns: 104px minmax(0, 1fr);
+  }
 }

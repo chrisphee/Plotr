@@ -1,60 +1,96 @@
-import { type ReactNode } from "react";
+import { useState, type ReactNode } from "react";
 import clsx from "clsx";
-import { Search } from "lucide-react";
+import { PanelLeft, Plus } from "lucide-react";
 import { useProject } from "../../stores/projectStore";
 import { useSettings } from "../../stores/settingsStore";
 import { saveQueue, useSaveState } from "../../lib/saveQueue";
-import { useSearch } from "../../features/search/searchStore";
 import { useKeyShortcut } from "../../app/shortcuts";
-import { Button, Kbd } from "../ui/Button";
+import { Button, IconButton } from "../ui/Button";
 import { Breadcrumb } from "./Breadcrumb";
-import { LogoMark } from "./LogoMark";
+import { Sidebar } from "./Sidebar";
+import { useSidebar } from "./sidebarStore";
 import "./shell.css";
 
 interface AppShellProps {
-  /** Contextual actions for this screen, rendered on the right of the top bar. */
+  /** Contextual actions for this screen, rendered on the right of the header. */
   actions?: ReactNode;
+  /** A short fact after the title, e.g. "12 moments". */
+  subtitle?: string;
   /** "always" shows "Saved" when clean; "auto" only speaks up when work is unsaved. */
   saveStatus?: "auto" | "always";
   /** Canvas screens clip instead of scrolling. */
   canvas?: boolean;
+  /** Settings pages sit on the grouped grey ground. */
+  grouped?: boolean;
+  /** The page shows its own large title; the header shows it only once that scrolls away. */
+  largeTitle?: boolean;
   children: ReactNode;
 }
 
-export function AppShell({ actions, saveStatus = "auto", canvas, children }: AppShellProps) {
-  return (
-    <div className="shell">
-      <TopBar actions={actions} saveStatus={saveStatus} />
-      <main className={clsx("shell__main", canvas && "shell__main--canvas")}>{children}</main>
-    </div>
-  );
-}
-
-function TopBar({ actions, saveStatus }: { actions?: ReactNode; saveStatus: "auto" | "always" }) {
+export function AppShell({
+  actions,
+  subtitle,
+  saveStatus = "auto",
+  canvas,
+  grouped,
+  largeTitle,
+  children,
+}: AppShellProps) {
   const hasProject = useProject((s) => s.projectPath !== null);
-  const openSearch = () => useSearch.getState().setOverlayOpen(true);
+  const collapsed = useSidebar((s) => s.collapsed);
+  const toggle = useSidebar((s) => s.toggleCollapsed);
+  const [scrolled, setScrolled] = useState(false);
+  const [pastTitle, setPastTitle] = useState(false);
+  const showSidebar = hasProject && !collapsed;
 
   return (
-    <header className="topbar">
-      <div className="topbar__left">
-        <LogoMark />
-        <Breadcrumb />
+    <div className={clsx("app", showSidebar && "app--sidebar")}>
+      {hasProject && (
+        <div className="app__sidebar" aria-hidden={collapsed || undefined} inert={collapsed || undefined}>
+          <Sidebar />
+        </div>
+      )}
+      <div className="app__main">
+        <header
+          className={clsx(
+            "header",
+            (canvas || scrolled) && "header--ruled",
+            largeTitle && !pastTitle && "header--titlehidden",
+          )}
+        >
+          <div className="header__left">
+            {hasProject && (
+              <IconButton
+                label={collapsed ? "Show sidebar (Ctrl+\\)" : "Hide sidebar (Ctrl+\\)"}
+                onClick={toggle}
+                aria-pressed={!collapsed}
+              >
+                <PanelLeft size={17} strokeWidth={1.75} />
+              </IconButton>
+            )}
+            <Breadcrumb />
+            {subtitle && <span className="header__subtitle">{subtitle}</span>}
+          </div>
+          <div className="header__right">
+            <SaveStatus always={saveStatus === "always"} />
+            {actions}
+          </div>
+        </header>
+        <main
+          className={clsx("content", canvas && "content--canvas", grouped && "content--grouped")}
+          onScroll={
+            canvas
+              ? undefined
+              : (e) => {
+                  setScrolled(e.currentTarget.scrollTop > 4);
+                  setPastTitle(e.currentTarget.scrollTop > 60);
+                }
+          }
+        >
+          {children}
+        </main>
       </div>
-      <button className="cmdfield" onClick={openSearch} aria-label="Search (Ctrl+K)">
-        <Search size={14} strokeWidth={1.75} />
-        <span className="cmdfield__text">
-          {hasProject ? "Search notes and boards" : "Search projects"}
-        </span>
-        <span className="cmdfield__keys">
-          <Kbd>Ctrl</Kbd>
-          <Kbd>K</Kbd>
-        </span>
-      </button>
-      <div className="topbar__right">
-        <SaveStatus always={saveStatus === "always"} />
-        {actions}
-      </div>
-    </header>
+    </div>
   );
 }
 
@@ -72,9 +108,9 @@ export function PrimaryAction({
 }) {
   useKeyShortcut(shortcut, onClick);
   return (
-    <Button variant="primary" size={size} onClick={onClick}>
+    <Button variant="primary" size={size} onClick={onClick} title={`${label} (${shortcut})`}>
+      <Plus size={15} strokeWidth={2.25} />
       {label}
-      <Kbd>{shortcut}</Kbd>
     </Button>
   );
 }
@@ -87,14 +123,14 @@ export function SaveStatus({ always }: { always?: boolean }) {
   if (saving) {
     return (
       <span className="savestatus">
-        <span className="statusdot statusdot--pending" />
+        <span className="statusdot statusdot--busy" />
         <span className="savestatus__label">Saving…</span>
       </span>
     );
   }
   if (!autosave && pendingCount > 0) {
     return (
-      <button className="savestatus" onClick={() => void saveQueue.flush()} title="Save now (Ctrl+S)">
+      <button className="savestatus savestatus--pending" onClick={() => void saveQueue.flush()} title="Save now (Ctrl+S)">
         <span className="statusdot statusdot--pending" />
         <span className="savestatus__label">Unsaved</span>
       </button>
